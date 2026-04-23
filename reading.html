@@ -7,20 +7,44 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-white-black {
+            background: white;
+            color: black;
+        }
+        
+        body.theme-black-white {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        body.theme-yellow-black {
+            background: #fffacd;
+            color: black;
         }
         
         /* Top toolbar */
         .reading-toolbar {
-            background: #2c3e50;
+            background: #3a3a3a;
             color: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 50px;
+            height: 45px;
+            border-bottom: 1px solid #555;
         }
         
         .toolbar-left {
@@ -36,69 +60,77 @@
         }
         
         .toolbar-btn {
-            background: #34495e;
-            border: none;
+            background: #4a4a4a;
+            border: 1px solid #666;
             color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 6px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: background 0.3s;
         }
         
         .toolbar-btn:hover {
-            background: #4a5f7f;
+            background: #5a5a5a;
         }
         
         .toolbar-btn.active {
-            background: var(--primary-color);
+            background: #2563eb;
         }
         
         select.toolbar-btn {
             cursor: pointer;
+            padding-right: 25px;
         }
         
         /* Main container */
         .reading-container {
             display: flex;
-            height: calc(100vh - 50px);
+            height: calc(100vh - 45px);
+            position: relative;
         }
         
         /* Left panel - Passage */
         .passage-panel {
             flex: 1;
             overflow-y: auto;
-            padding: 30px;
-            background: white;
-            color: black;
+            padding: 30px 40px;
             transition: all 0.3s;
+            user-select: text;
         }
         
-        .passage-panel.theme-white-black {
-            background: white;
-            color: black;
-        }
-        
-        .passage-panel.theme-black-white {
-            background: #1a1a1a;
-            color: white;
-        }
-        
-        .passage-panel.theme-yellow-black {
-            background: #fffacd;
-            color: black;
-        }
-        
-        .passage-panel.size-normal {
+        body.size-normal .passage-panel {
             font-size: 16px;
         }
         
-        .passage-panel.size-large {
+        body.size-large .passage-panel {
             font-size: 20px;
         }
         
-        .passage-panel.size-xlarge {
+        body.size-xlarge .passage-panel {
             font-size: 24px;
+        }
+        
+        /* Resizer */
+        .resizer {
+            width: 5px;
+            background: #ccc;
+            cursor: col-resize;
+            position: relative;
+            transition: background 0.3s;
+        }
+        
+        .resizer:hover {
+            background: #2563eb;
+        }
+        
+        .resizer::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            right: -5px;
+            top: 0;
+            bottom: 0;
         }
         
         .passage-title {
@@ -124,19 +156,88 @@
             background-color: yellow;
             cursor: pointer;
             position: relative;
+            padding: 2px 0;
         }
         
         .highlight.note {
             background-color: #90EE90;
         }
         
+        /* Selection popup menu */
+        .selection-menu {
+            position: absolute;
+            background: #2c3e50;
+            border-radius: 6px;
+            padding: 8px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .selection-menu button {
+            background: #34495e;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            margin: 0 3px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .selection-menu button:hover {
+            background: #4a5f7f;
+        }
+        
+        /* Highlight context menu */
+        .highlight-menu {
+            position: absolute;
+            background: #2c3e50;
+            border-radius: 6px;
+            padding: 5px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .highlight-menu button {
+            background: #e74c3c;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+        
+        .highlight-menu button:hover {
+            background: #c0392b;
+        }
+        
         /* Right panel - Questions */
         .questions-panel {
             width: 500px;
-            background: #f5f5f5;
             overflow-y: auto;
-            padding: 30px;
-            border-left: 2px solid #ddd;
+            padding: 25px;
+            border-left: 1px solid #ddd;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-white-black .questions-panel {
+            background: #f5f5f5;
+            color: black;
+        }
+        
+        body.theme-black-white .questions-panel {
+            background: #2a2a2a;
+            color: white;
+        }
+        
+        body.theme-yellow-black .questions-panel {
+            background: #fff9e6;
+            color: black;
         }
         
         .question-section {
@@ -145,6 +246,17 @@
             border-radius: 8px;
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-black-white .question-section {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        body.theme-yellow-black .question-section {
+            background: #fffacd;
+            color: black;
         }
         
         .question-section h3 {
@@ -158,6 +270,15 @@
             padding: 10px;
             background: #f9f9f9;
             border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        body.theme-black-white .question-item {
+            background: #2a2a2a;
+        }
+        
+        body.theme-yellow-black .question-item {
+            background: #fff9e6;
         }
         
         .question-item label {
@@ -172,6 +293,18 @@
             border: 2px solid #ddd;
             border-radius: 4px;
             font-size: 1rem;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-black-white .question-item input[type="text"] {
+            background: #1a1a1a;
+            color: white;
+            border-color: #555;
+        }
+        
+        body.theme-yellow-black .question-item input[type="text"] {
+            background: white;
+            color: black;
         }
         
         .question-item input[type="radio"] {
@@ -265,30 +398,20 @@
         </div>
         
         <div class="toolbar-right">
-            <button class="toolbar-btn" onclick="highlightText()">
-                <i class="fas fa-highlighter"></i> Highlight
-            </button>
-            <button class="toolbar-btn" onclick="addNote()">
-                <i class="fas fa-sticky-note"></i> Note
-            </button>
-            <button class="toolbar-btn" onclick="removeHighlight()">
-                <i class="fas fa-eraser"></i> Remove
-            </button>
-            
             <select class="toolbar-btn" id="themeSelect" onchange="changeTheme()">
-                <option value="white-black">White on Black</option>
-                <option value="black-white">Black on White</option>
-                <option value="yellow-black">Yellow on Black</option>
+                <option value="white-black">⚪ White on Black</option>
+                <option value="black-white">⚫ Black on White</option>
+                <option value="yellow-black">🟡 Yellow on Black</option>
             </select>
             
             <select class="toolbar-btn" id="sizeSelect" onchange="changeSize()">
-                <option value="normal">Normal</option>
-                <option value="large">Large</option>
-                <option value="xlarge">Very Large</option>
+                <option value="normal">A Normal</option>
+                <option value="large">A Large</option>
+                <option value="xlarge">A Very Large</option>
             </select>
             
             <button class="toolbar-btn" onclick="submitTest()">
-                <i class="fas fa-check-circle"></i> Submit
+                <i class="fas fa-paper-plane"></i> Finish Test
             </button>
         </div>
     </div>
@@ -296,7 +419,7 @@
     <!-- Main Container -->
     <div class="reading-container">
         <!-- Left Panel - Passage -->
-        <div class="passage-panel theme-white-black size-normal" id="passagePanel">
+        <div class="passage-panel" id="passagePanel">
             <div class="passage-title">The Pearl</div>
             <div class="passage-content" id="passageContent">
                 <p><strong>A.</strong> The pearl has always had a special status in the rich and powerful all through the history. For instance, women from ancient Rome went to bed with pearls on them, so that they could remind themselves how wealthy they were when waking up. In the eastern countries like Persia, ground pearl powders could be used as a medicine to cure anything including heart diseases and epilepsy.</p>
@@ -310,6 +433,9 @@
                 <p><strong>E.</strong> In history, pearls have had great importance within the men of wealth and power, which were treated as a symbol of their social status. Also, pearls have been used as jewellery for the rich. Besides, in some countries, pearls were ground into powder and used as medicine. These are essentially three types of pearls: natural, cultured and imitation. Most freshwater pearls sold today are cultured pearls. While a natural pearl is formed by layers of nacre coating some irritant inside the shell of mollusk, cultured pearls differ from natural pearls only in that the irritant is a surgically implanted bead. Good-quality natural pearls are exceedingly unusual.</p>
             </div>
         </div>
+
+        <!-- Resizer -->
+        <div class="resizer" id="resizer"></div>
 
         <!-- Right Panel - Questions -->
         <div class="questions-panel">
@@ -376,6 +502,17 @@
         </div>
     </div>
 
+    <!-- Selection Menu -->
+    <div class="selection-menu" id="selectionMenu">
+        <button onclick="highlightSelection()"><i class="fas fa-highlighter"></i> Highlight</button>
+        <button onclick="noteSelection()"><i class="fas fa-sticky-note"></i> Note</button>
+    </div>
+
+    <!-- Highlight Menu -->
+    <div class="highlight-menu" id="highlightMenu">
+        <button onclick="deleteHighlight()"><i class="fas fa-trash"></i> Delete Highlight</button>
+    </div>
+
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <button class="nav-btn" onclick="alert('Review mode')">Review</button>
@@ -388,90 +525,143 @@
     </div>
 
     <script>
-        // Highlight functionality
-        function highlightText() {
+        let currentHighlight = null;
+        let selectedRange = null;
+
+        // Initialize
+        document.body.className = 'theme-white-black size-normal';
+
+        // Resizer functionality
+        const resizer = document.getElementById('resizer');
+        const leftPanel = document.getElementById('passagePanel');
+        const rightPanel = document.querySelector('.questions-panel');
+        
+        let isResizing = false;
+        
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.body.style.cursor = 'col-resize';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            
+            const containerWidth = document.querySelector('.reading-container').offsetWidth;
+            const leftWidth = e.clientX;
+            const rightWidth = containerWidth - leftWidth - 5;
+            
+            if (leftWidth > 300 && rightWidth > 300) {
+                leftPanel.style.flex = `0 0 ${leftWidth}px`;
+                rightPanel.style.width = `${rightWidth}px`;
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isResizing = false;
+            document.body.style.cursor = 'default';
+        });
+
+        // Selection menu
+        const selectionMenu = document.getElementById('selectionMenu');
+        const highlightMenu = document.getElementById('highlightMenu');
+        const passageContent = document.getElementById('passageContent');
+        
+        // Show selection menu on text selection
+        passageContent.addEventListener('mouseup', (e) => {
             const selection = window.getSelection();
-            if (selection.rangeCount > 0 && selection.toString().trim() !== '') {
-                const range = selection.getRangeAt(0);
+            const selectedText = selection.toString().trim();
+            
+            if (selectedText && selection.rangeCount > 0) {
+                selectedRange = selection.getRangeAt(0);
+                const rect = selectedRange.getBoundingClientRect();
+                
+                selectionMenu.style.display = 'block';
+                selectionMenu.style.left = `${rect.left + (rect.width / 2) - 100}px`;
+                selectionMenu.style.top = `${rect.top - 45}px`;
+            } else {
+                selectionMenu.style.display = 'none';
+            }
+        });
+        
+        // Hide menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.selection-menu') && !e.target.closest('.highlight')) {
+                selectionMenu.style.display = 'none';
+                highlightMenu.style.display = 'none';
+            }
+        });
+
+        // Highlight selection
+        function highlightSelection() {
+            if (selectedRange) {
                 const span = document.createElement('span');
                 span.className = 'highlight';
-                span.onclick = function() {
-                    if (confirm('Remove this highlight?')) {
-                        const parent = this.parentNode;
-                        while (this.firstChild) {
-                            parent.insertBefore(this.firstChild, this);
-                        }
-                        parent.removeChild(this);
-                    }
+                span.onclick = function(e) {
+                    e.stopPropagation();
+                    showHighlightMenu(e, this);
                 };
+                
                 try {
-                    range.surroundContents(span);
+                    selectedRange.surroundContents(span);
+                    selectionMenu.style.display = 'none';
+                    window.getSelection().removeAllRanges();
                 } catch(e) {
                     alert('Please select text within a single paragraph');
                 }
-                selection.removeAllRanges();
-            } else {
-                alert('Please select some text first');
             }
         }
 
-        // Add note
-        function addNote() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0 && selection.toString().trim() !== '') {
-                const range = selection.getRangeAt(0);
+        // Note selection
+        function noteSelection() {
+            if (selectedRange) {
                 const span = document.createElement('span');
                 span.className = 'highlight note';
-                span.onclick = function() {
-                    if (confirm('Remove this note?')) {
-                        const parent = this.parentNode;
-                        while (this.firstChild) {
-                            parent.insertBefore(this.firstChild, this);
-                        }
-                        parent.removeChild(this);
-                    }
+                span.onclick = function(e) {
+                    e.stopPropagation();
+                    showHighlightMenu(e, this);
                 };
+                
                 try {
-                    range.surroundContents(span);
+                    selectedRange.surroundContents(span);
+                    selectionMenu.style.display = 'none';
+                    window.getSelection().removeAllRanges();
                 } catch(e) {
                     alert('Please select text within a single paragraph');
                 }
-                selection.removeAllRanges();
-            } else {
-                alert('Please select some text first');
             }
         }
 
-        // Remove all highlights
-        function removeHighlight() {
-            const highlights = document.querySelectorAll('.highlight');
-            if (highlights.length === 0) {
-                alert('No highlights to remove');
-                return;
-            }
-            if (confirm(`Remove all ${highlights.length} highlights?`)) {
-                highlights.forEach(highlight => {
-                    const parent = highlight.parentNode;
-                    while (highlight.firstChild) {
-                        parent.insertBefore(highlight.firstChild, highlight);
-                    }
-                    parent.removeChild(highlight);
-                });
+        // Show highlight menu
+        function showHighlightMenu(e, highlightElement) {
+            currentHighlight = highlightElement;
+            highlightMenu.style.display = 'block';
+            highlightMenu.style.left = `${e.pageX}px`;
+            highlightMenu.style.top = `${e.pageY + 10}px`;
+        }
+
+        // Delete highlight
+        function deleteHighlight() {
+            if (currentHighlight) {
+                const parent = currentHighlight.parentNode;
+                while (currentHighlight.firstChild) {
+                    parent.insertBefore(currentHighlight.firstChild, currentHighlight);
+                }
+                parent.removeChild(currentHighlight);
+                highlightMenu.style.display = 'none';
+                currentHighlight = null;
             }
         }
 
-        // Change theme
+        // Change theme - applies to entire page
         function changeTheme() {
-            const panel = document.getElementById('passagePanel');
             const theme = document.getElementById('themeSelect').value;
-            panel.className = panel.className.replace(/theme-\w+-\w+/, `theme-${theme}`);
+            document.body.className = document.body.className.replace(/theme-\w+-\w+/, `theme-${theme}`);
         }
 
-        // Change font size
+        // Change font size - applies to entire page
         function changeSize() {
-            const panel = document.getElementById('passagePanel');
             const size = document.getElementById('sizeSelect').value;
-            panel.className = panel.className.replace(/size-\w+/, `size-${size}`);
+            document.body.className = document.body.className.replace(/size-\w+/, `size-${size}`);
         }
 
         // Submit test
@@ -486,8 +676,6 @@
             
             console.log('Submitted answers:', answers);
             alert('Test submitted! Check console for answers.');
-            
-            // Here you can add scoring logic
         }
     </script>
 </body>
