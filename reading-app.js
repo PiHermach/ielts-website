@@ -358,10 +358,10 @@ function setupSelectionMenu() {
                 // Get menu width (approximate)
                 const menuWidth = 180;
                 
-                // Position menu above selection (centered)
+                // Position menu just above selection (close to text)
                 selectionMenu.style.display = 'block';
                 selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - (menuWidth / 2)}px`;
-                selectionMenu.style.top = `${relativeTop - 80}px`;
+                selectionMenu.style.top = `${relativeTop - 85}px`;
             } else {
                 selectionMenu.style.display = 'none';
             }
