@@ -207,6 +207,123 @@
             background: #f9fafb;
         }
         
+        .detailed-answers {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        
+        .answer-item {
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            background: white;
+        }
+        
+        .answer-item.correct {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .answer-item.wrong {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .answer-item.skipped {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .question-number-badge {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .answer-item.correct .question-number-badge {
+            background: #10b981;
+            color: white;
+        }
+        
+        .answer-item.wrong .question-number-badge {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .answer-item.skipped .question-number-badge {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .question-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+        
+        .answer-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-left: 52px;
+        }
+        
+        .answer-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .answer-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .answer-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: white;
+        }
+        
+        .answer-item.correct .answer-value.user {
+            color: #10b981;
+            border: 2px solid #10b981;
+        }
+        
+        .answer-item.wrong .answer-value.user {
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+        
+        .answer-item.skipped .answer-value.user {
+            color: #f59e0b;
+            border: 2px solid #f59e0b;
+        }
+        
+        .answer-value.correct-answer {
+            color: #10b981;
+            border: 2px solid #10b981;
+        }
+        
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -271,7 +388,10 @@
             <button class="detail-button" onclick="toggleBreakdown()">Xem giải thích chi tiết</button>
             
             <div class="breakdown-section" id="breakdownSection" style="display: none;">
-                <h2 class="breakdown-title">Bảng dữ liệu chi tiết</h2>
+                <h2 class="breakdown-title">Chi tiết từng câu hỏi</h2>
+                <div class="detailed-answers" id="detailedAnswers"></div>
+                
+                <h2 class="breakdown-title" style="margin-top: 40px;">Bảng thống kê theo loại câu hỏi</h2>
                 <table class="breakdown-table">
                     <thead>
                         <tr>
@@ -345,6 +465,34 @@
             animateNumber(document.getElementById('correctCount'), results.correct);
             animateNumber(document.getElementById('wrongCount'), results.wrong);
             animateNumber(document.getElementById('skippedCount'), results.skipped);
+            
+            // Populate detailed answers
+            if (results.detailedAnswers) {
+                const detailedAnswersDiv = document.getElementById('detailedAnswers');
+                results.detailedAnswers.forEach(answer => {
+                    const statusClass = answer.isSkipped ? 'skipped' : (answer.isCorrect ? 'correct' : 'wrong');
+                    
+                    const answerItem = document.createElement('div');
+                    answerItem.className = `answer-item ${statusClass}`;
+                    answerItem.innerHTML = `
+                        <div class="answer-header">
+                            <div class="question-number-badge">${answer.questionId}</div>
+                            <div class="question-text">${answer.questionText}</div>
+                        </div>
+                        <div class="answer-details">
+                            <div class="answer-row">
+                                <div class="answer-label">Câu trả lời của bạn</div>
+                                <div class="answer-value user">${answer.userAnswer}</div>
+                            </div>
+                            <div class="answer-row">
+                                <div class="answer-label">Đáp án đúng</div>
+                                <div class="answer-value correct-answer">${answer.correctAnswer}</div>
+                            </div>
+                        </div>
+                    `;
+                    detailedAnswersDiv.appendChild(answerItem);
+                });
+            }
             
             // Populate breakdown table
             const breakdownBody = document.getElementById('breakdownBody');

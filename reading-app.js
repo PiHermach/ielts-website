@@ -718,6 +718,7 @@ function submitTest() {
     let wrong = 0;
     let skipped = 0;
     const breakdown = [];
+    const detailedAnswers = []; // Store detailed answer info
     
     readingData.passages.forEach(passage => {
         passage.questionGroups.forEach(group => {
@@ -732,13 +733,26 @@ function submitTest() {
             if (group.questions) {
                 group.questions.forEach(q => {
                     groupStats.total++;
-                    const userAnswer = (userAnswers[q.id] || '').trim().toLowerCase();
-                    const correctAnswer = q.answer.toLowerCase();
+                    const userAnswer = (userAnswers[q.id] || '').trim();
+                    const correctAnswer = q.answer;
+                    const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+                    const isSkipped = !userAnswer;
                     
-                    if (!userAnswer) {
+                    // Store detailed answer info
+                    detailedAnswers.push({
+                        questionId: q.id,
+                        questionText: q.text,
+                        userAnswer: userAnswer || '(Không trả lời)',
+                        correctAnswer: correctAnswer,
+                        isCorrect: isCorrect,
+                        isSkipped: isSkipped,
+                        type: getQuestionTypeName(group.type)
+                    });
+                    
+                    if (isSkipped) {
                         skipped++;
                         groupStats.skipped++;
-                    } else if (userAnswer === correctAnswer) {
+                    } else if (isCorrect) {
                         correct++;
                         groupStats.correct++;
                     } else {
@@ -760,7 +774,8 @@ function submitTest() {
         wrong,
         skipped,
         total: totalQuestions,
-        breakdown
+        breakdown,
+        detailedAnswers // Add detailed answers
     };
     
     localStorage.setItem('testResults', JSON.stringify(results));
