@@ -77,6 +77,191 @@ function loadQuestions(partId) {
                     </div>
                 `;
             });
+        } else if (group.type === 'gap-filling') {
+            // Gap filling questions
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <input type="text" 
+                                   id="answer-${q.id}" 
+                                   placeholder="Type your answer here" 
+                                   value="${userAnswers[q.id] || ''}"
+                                   onchange="saveAnswer(${q.id}, this.value)">
+                        </div>
+                    </div>
+                `;
+            });
+        } else if (group.type === 'multiple-choice-table') {
+            // Multiple choice with table (A-G format)
+            html += '<div class="mc-table-container">';
+            html += '<div class="mc-table-header">';
+            group.options.forEach(opt => {
+                html += `<div class="mc-table-header-cell">${opt}</div>`;
+            });
+            html += '</div>';
+            
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item mc-table-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-horizontal">
+                                ${group.options.map(opt => `
+                                    <label class="radio-label-horizontal">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt}"
+                                               ${userAnswers[q.id] === opt ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt}')">
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        } else if (group.type === 'matching') {
+            // Matching questions with dropdown
+            if (group.note) {
+                html += `<div class="question-note"><strong>NB:</strong> ${group.note}</div>`;
+            }
+            
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item matching-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <select class="matching-select" onchange="saveAnswer(${q.id}, this.value)">
+                                <option value="">Choose an option</option>
+                                ${group.optionsList.map(opt => `
+                                    <option value="${opt.key}" ${userAnswers[q.id] === opt.key ? 'selected' : ''}>
+                                        ${opt.key}. ${opt.value}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Show list of options for reference
+            if (group.optionsList) {
+                html += '<div class="options-list-reference">';
+                html += '<h4>List of options</h4>';
+                html += '<div class="options-grid">';
+                group.optionsList.forEach(opt => {
+                    html += `<div class="option-item">${opt.key}. ${opt.value}</div>`;
+                });
+                html += '</div></div>';
+            }
+        } else if (group.type === 'multiple-choice') {
+            // Regular multiple choice
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item mc-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-vertical">
+                                ${q.options.map(opt => `
+                                    <label class="radio-label-vertical">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt.key}"
+                                               ${userAnswers[q.id] === opt.key ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt.key}')">
+                                        <span>${opt.text}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        } else if (group.type === 'summary-completion') {
+            // Summary completion with word list and drag & drop
+            if (group.summaryText) {
+                html += '<div class="summary-container">';
+                
+                // Create drop zones for each question
+                let summaryHTML = group.summaryText;
+                group.questions.forEach(q => {
+                    const currentAnswer = userAnswers[q.id] || '';
+                    const regex = new RegExp(`<input[^>]*id="answer-${q.id}"[^>]*>`, 'g');
+                    summaryHTML = summaryHTML.replace(regex, 
+                        `<span class="question-number-inline">${q.id}</span><span class="drop-zone ${currentAnswer ? 'filled' : ''}" id="drop-${q.id}" data-question-id="${q.id}" ondrop="handleDrop(event, ${q.id})" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="clearDropZone(${q.id})">${currentAnswer}</span>`
+                    );
+                });
+                html += summaryHTML;
+                html += '</div>';
+            }
+            
+            if (group.wordList) {
+                html += '<div class="word-list">';
+                html += '<h4>List of words</h4>';
+                html += '<div class="word-buttons" id="wordButtons">';
+                group.wordList.forEach(word => {
+                    const isUsed = Object.values(userAnswers).includes(word.key);
+                    html += `<button class="word-btn ${isUsed ? 'used' : ''}" draggable="true" ondragstart="handleDragStart(event)" data-word="${word.key}" data-full="${word.key}. ${word.value}">${word.key}. ${word.value}</button>`;
+                });
+                html += '</div></div>';
+            }
+        }
+        
+        html += '</div>';
+    });
+    
+    questionsPanel.innerHTML = html;
+}
+            // TRUE/FALSE/NOT GIVEN questions
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item tfng-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-vertical">
+                                ${group.options.map(opt => `
+                                    <label class="radio-label-vertical">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt}"
+                                               ${userAnswers[q.id] === opt ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt}')">
+                                        <span>${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
         } else if (group.type === 'multiple-choice-table') {
             // Multiple choice with table (A-G format)
             html += '<div class="mc-table-container">';
@@ -779,9 +964,11 @@ function getQuestionTypeName(type) {
 
 // Drag and Drop functions
 let draggedWord = null;
+let draggedElement = null;
 
 function handleDragStart(event) {
     draggedWord = event.target.getAttribute('data-word');
+    draggedElement = event.target;
     event.target.style.opacity = '0.5';
 }
 
@@ -800,49 +987,66 @@ function handleDrop(event, questionId) {
     dropZone.classList.remove('drag-over');
     
     if (draggedWord) {
-        // Save answer
+        // Get old answer if exists
+        const oldAnswer = userAnswers[questionId];
+        
+        // Save new answer
         saveAnswer(questionId, draggedWord);
         
         // Update drop zone
         dropZone.textContent = draggedWord;
         dropZone.classList.add('filled');
         
-        // Mark word as used
-        const wordButtons = document.querySelectorAll('.word-btn');
-        wordButtons.forEach(btn => {
-            if (btn.getAttribute('data-word') === draggedWord) {
-                btn.classList.add('used');
-                btn.setAttribute('draggable', 'false');
-            }
-            btn.style.opacity = '1';
-        });
-        
-        draggedWord = null;
-    }
-}
-
-// Allow removing word from drop zone
-document.addEventListener('DOMContentLoaded', () => {
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('drop-zone') && e.target.classList.contains('filled')) {
-            const questionId = parseInt(e.target.getAttribute('data-question-id'));
-            const word = e.target.textContent;
-            
-            // Remove answer
-            delete userAnswers[questionId];
-            e.target.textContent = '';
-            e.target.classList.remove('filled');
-            
-            // Unmark word
+        // If there was an old answer, unmark it
+        if (oldAnswer) {
             const wordButtons = document.querySelectorAll('.word-btn');
             wordButtons.forEach(btn => {
-                if (btn.getAttribute('data-word') === word) {
+                if (btn.getAttribute('data-word') === oldAnswer) {
                     btn.classList.remove('used');
                     btn.setAttribute('draggable', 'true');
                 }
             });
-            
-            updateNavigation();
+        }
+        
+        // Mark new word as used
+        if (draggedElement) {
+            draggedElement.classList.add('used');
+            draggedElement.setAttribute('draggable', 'false');
+            draggedElement.style.opacity = '1';
+        }
+        
+        draggedWord = null;
+        draggedElement = null;
+    }
+}
+
+// Clear drop zone by clicking
+function clearDropZone(questionId) {
+    const dropZone = document.getElementById(`drop-${questionId}`);
+    if (!dropZone.classList.contains('filled')) return;
+    
+    const word = dropZone.textContent.trim();
+    
+    // Remove answer
+    delete userAnswers[questionId];
+    dropZone.textContent = '';
+    dropZone.classList.remove('filled');
+    
+    // Unmark word
+    const wordButtons = document.querySelectorAll('.word-btn');
+    wordButtons.forEach(btn => {
+        if (btn.getAttribute('data-word') === word) {
+            btn.classList.remove('used');
+            btn.setAttribute('draggable', 'true');
         }
     });
+    
+    updateNavigation();
+}
+
+// Reset opacity when drag ends
+document.addEventListener('dragend', (e) => {
+    if (e.target.classList.contains('word-btn')) {
+        e.target.style.opacity = '1';
+    }
 });

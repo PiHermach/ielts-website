@@ -719,19 +719,29 @@
             border: 1px solid #e5e7eb;
         }
         
+        .options-list-reference {
+            margin-top: 24px;
+            padding: 16px;
+            background: #fef3c7;
+            border-radius: 6px;
+            border: 1px solid #fbbf24;
+        }
+        
         body.theme-black-white .options-list,
-        body.theme-black-white .word-list {
+        body.theme-black-white .word-list,
+        body.theme-black-white .options-list-reference {
             background: #1a1a1a;
             border-color: #374151;
         }
         
         body.theme-yellow-black .options-list,
-        body.theme-yellow-black .word-list {
+        body.theme-yellow-black .word-list,
+        body.theme-yellow-black .options-list-reference {
             background: #1a1a00;
             border-color: #374151;
         }
         
-        .options-list h4, .word-list h4 {
+        .options-list h4, .word-list h4, .options-list-reference h4 {
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 12px;
@@ -739,13 +749,42 @@
         }
         
         body.theme-black-white .options-list h4,
-        body.theme-black-white .word-list h4 {
+        body.theme-black-white .word-list h4,
+        body.theme-black-white .options-list-reference h4 {
             color: white;
         }
         
         body.theme-yellow-black .options-list h4,
-        body.theme-yellow-black .word-list h4 {
+        body.theme-yellow-black .word-list h4,
+        body.theme-yellow-black .options-list-reference h4 {
             color: yellow;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .option-item {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        body.theme-black-white .option-item {
+            background: #2a2a2a;
+            color: white;
+            border-color: #4b5563;
+        }
+        
+        body.theme-yellow-black .option-item {
+            background: #000;
+            color: yellow;
+            border-color: #4b5563;
         }
         
         .options-buttons, .word-buttons {
@@ -1160,15 +1199,17 @@
         
         .drop-zone {
             display: inline-block;
-            min-width: 100px;
-            padding: 4px 8px;
+            min-width: 120px;
+            padding: 6px 12px;
             border: 2px dashed #d1d5db;
             background: #f9fafb;
             border-radius: 4px;
             margin: 0 4px;
-            min-height: 28px;
+            min-height: 32px;
             vertical-align: middle;
             transition: all 0.2s;
+            cursor: pointer;
+            line-height: 1.5;
         }
         
         .drop-zone.drag-over {
@@ -1180,6 +1221,56 @@
             border-style: solid;
             border-color: #10b981;
             background: #f0fdf4;
+            font-weight: 500;
+        }
+        
+        .question-number-inline {
+            display: inline-block;
+            min-width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #1a1a1a;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+        
+        .summary-container {
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            line-height: 2;
+            font-size: 0.95rem;
+        }
+        
+        body.theme-black-white .summary-container {
+            background: #1a1a1a;
+            color: white;
+            border-color: #374151;
+        }
+        
+        body.theme-yellow-black .summary-container {
+            background: #1a1a00;
+            color: yellow;
+            border-color: #374151;
+        }
+        
+        body.theme-black-white .question-number-inline {
+            background: #1a1a1a;
+            color: white;
+            border-color: #4b5563;
+        }
+        
+        body.theme-yellow-black .question-number-inline {
+            background: #000;
+            color: yellow;
+            border-color: #4b5563;
         }
         
         body.theme-black-white .drop-zone {
