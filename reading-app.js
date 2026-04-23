@@ -784,6 +784,7 @@ function handleDragLeave(event) {
 
 function handleDrop(event, questionId) {
     event.preventDefault();
+    event.stopPropagation();
     const dropZone = event.currentTarget;
     dropZone.classList.remove('drag-over');
     
