@@ -77,6 +77,140 @@ function loadQuestions(partId) {
                     </div>
                 `;
             });
+        } else if (group.type === 'multiple-choice-table') {
+            // Multiple choice with table (A-G format)
+            html += '<div class="mc-table-container">';
+            html += '<div class="mc-table-header">';
+            group.options.forEach(opt => {
+                html += `<div class="mc-table-header-cell">${opt}</div>`;
+            });
+            html += '</div>';
+            
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item mc-table-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-horizontal">
+                                ${group.options.map(opt => `
+                                    <label class="radio-label-horizontal">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt}"
+                                               ${userAnswers[q.id] === opt ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt}')">
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        } else if (group.type === 'matching') {
+            // Matching questions
+            if (group.note) {
+                html += `<div class="question-note"><strong>NB:</strong> ${group.note}</div>`;
+            }
+            
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item matching-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (group.optionsList) {
+                html += '<div class="options-list">';
+                html += '<h4>List of options</h4>';
+                html += '<div class="options-buttons">';
+                group.optionsList.forEach(opt => {
+                    html += `<button class="option-btn">${opt.key}. ${opt.value}</button>`;
+                });
+                html += '</div></div>';
+            }
+        } else if (group.type === 'multiple-choice') {
+            // Regular multiple choice
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item mc-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-vertical">
+                                ${q.options.map(opt => `
+                                    <label class="radio-label-vertical">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt.key}"
+                                               ${userAnswers[q.id] === opt.key ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt.key}')">
+                                        <span>${opt.text}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        } else if (group.type === 'summary-completion') {
+            // Summary completion with word list
+            html += `<div class="summary-text">${group.summaryText}</div>`;
+            
+            if (group.wordList) {
+                html += '<div class="word-list">';
+                html += '<h4>List of words</h4>';
+                html += '<div class="word-buttons">';
+                group.wordList.forEach(word => {
+                    html += `<button class="word-btn">${word.key}. ${word.value}</button>`;
+                });
+                html += '</div></div>';
+            }
+        } else if (group.type === 'gap-filling') {
+            // TRUE/FALSE/NOT GIVEN questions
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item tfng-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-vertical">
+                                ${group.options.map(opt => `
+                                    <label class="radio-label-vertical">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt}"
+                                               ${userAnswers[q.id] === opt ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt}')">
+                                        <span>${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
         } else if (group.type === 'gap-filling') {
             // Gap filling questions
             group.questions.forEach(q => {
