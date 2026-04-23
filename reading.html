@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading - IELTS THGB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        /* Top toolbar */
+        .reading-toolbar {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 50px;
+        }
+        
+        .toolbar-left {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .toolbar-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .toolbar-btn {
+            background: #34495e;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .toolbar-btn:hover {
+            background: #4a5f7f;
+        }
+        
+        .toolbar-btn.active {
+            background: var(--primary-color);
+        }
+        
+        select.toolbar-btn {
+            cursor: pointer;
+        }
+        
+        /* Main container */
+        .reading-container {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+        
+        /* Left panel - Passage */
+        .passage-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: white;
+            color: black;
+            transition: all 0.3s;
+        }
+        
+        .passage-panel.theme-white-black {
+            background: white;
+            color: black;
+        }
+        
+        .passage-panel.theme-black-white {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .passage-panel.theme-yellow-black {
+            background: #fffacd;
+            color: black;
+        }
+        
+        .passage-panel.size-normal {
+            font-size: 16px;
+        }
+        
+        .passage-panel.size-large {
+            font-size: 20px;
+        }
+        
+        .passage-panel.size-xlarge {
+            font-size: 24px;
+        }
+        
+        .passage-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .passage-content p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        .passage-content strong {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Highlight styles */
+        .highlight {
+            background-color: yellow;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .highlight.note {
+            background-color: #90EE90;
+        }
+        
+        /* Right panel - Questions */
+        .questions-panel {
+            width: 500px;
+            background: #f5f5f5;
+            overflow-y: auto;
+            padding: 30px;
+            border-left: 2px solid #ddd;
+        }
+        
+        .question-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .question-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .question-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .question-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .question-item input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .question-item input[type="radio"] {
+            margin-right: 8px;
+        }
+        
+        .radio-option {
+            display: block;
+            padding: 8px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .radio-option:hover {
+            background: #e8f4f8;
+        }
+        
+        .submit-section {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px;
+            border-top: 2px solid #ddd;
+            text-align: center;
+        }
+        
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+        }
+        
+        /* Bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(44, 62, 80, 0.95);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .nav-btn {
+            background: #34495e;
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+        
+        .nav-btn.active {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Toolbar -->
+    <div class="reading-toolbar">
+        <div class="toolbar-left">
+            <a href="index.html" style="color: white; text-decoration: none;">
+                <i class="fas fa-home"></i> IELTS THGB
+            </a>
+            <span>|</span>
+            <span><i class="fas fa-book-open"></i> Reading Test</span>
+        </div>
+        
+        <div class="toolbar-right">
+            <button class="toolbar-btn" onclick="highlightText()">
+                <i class="fas fa-highlighter"></i> Highlight
+            </button>
+            <button class="toolbar-btn" onclick="addNote()">
+                <i class="fas fa-sticky-note"></i> Note
+            </button>
+            <button class="toolbar-btn" onclick="removeHighlight()">
+                <i class="fas fa-eraser"></i> Remove
+            </button>
+            
+            <select class="toolbar-btn" id="themeSelect" onchange="changeTheme()">
+                <option value="white-black">White on Black</option>
+                <option value="black-white">Black on White</option>
+                <option value="yellow-black">Yellow on Black</option>
+            </select>
+            
+            <select class="toolbar-btn" id="sizeSelect" onchange="changeSize()">
+                <option value="normal">Normal</option>
+                <option value="large">Large</option>
+                <option value="xlarge">Very Large</option>
+            </select>
+            
+            <button class="toolbar-btn" onclick="submitTest()">
+                <i class="fas fa-check-circle"></i> Submit
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="reading-container">
+        <!-- Left Panel - Passage -->
+        <div class="passage-panel theme-white-black size-normal" id="passagePanel">
+            <div class="passage-title">The Pearl</div>
+            <div class="passage-content" id="passageContent">
+                <p><strong>A.</strong> The pearl has always had a special status in the rich and powerful all through the history. For instance, women from ancient Rome went to bed with pearls on them, so that they could remind themselves how wealthy they were when waking up. In the eastern countries like Persia, ground pearl powders could be used as a medicine to cure anything including heart diseases and epilepsy.</p>
+
+                <p><strong>B.</strong> Pearls can generally be divided into three categories: natural, cultured and imitation. When an irritant (such as a grain of sand) gets inside an oyster or clam, the mollusk will secrete a fluid as a means of defence to coat the irritant. Gradually, layers are accumulated around the irritant until a lustrous natural pearl is formed.</p>
+
+                <p><strong>C.</strong> A cultured pearl undergoes the same process. There is only one difference between cultured pearls and natural ones. In cultured pearls, the irritant is a head called "mother of pearl" and is placed in the oyster through surgical implantation. The bead is much larger than any natural pearl. As a result, much larger pearls can be produced. Today, almost all the pearls sold are cultured pearls. The size of the bead is enough layers of nacre (the secreted fluid covering the irritant) to create a gorgeous, gem-quality pearl. As long as there are enough layers of nacre (the secreted fluid covering the irritant) to create a gorgeous, gem-quality pearl, the size of the nucleus is almost irrelevant to the quality.</p>
+
+                <p><strong>D.</strong> Pearls can come from both salt and freshwater sources. Typically, pearls from salt water usually have high quality. In addition, freshwater pearls come in a wider range of colours than saltwater pearls. Naturally, black pearls are highly valued because of their rarity. The rarest are the black pearls from Tahiti and the golden South Sea pearls, which are also among the largest.</p>
+
+                <p><strong>E.</strong> In history, pearls have had great importance within the men of wealth and power, which were treated as a symbol of their social status. Also, pearls have been used as jewellery for the rich. Besides, in some countries, pearls were ground into powder and used as medicine. These are essentially three types of pearls: natural, cultured and imitation. Most freshwater pearls sold today are cultured pearls. While a natural pearl is formed by layers of nacre coating some irritant inside the shell of mollusk, cultured pearls differ from natural pearls only in that the irritant is a surgically implanted bead. Good-quality natural pearls are exceedingly unusual.</p>
+            </div>
+        </div>
+
+        <!-- Right Panel - Questions -->
+        <div class="questions-panel">
+            <div class="question-section">
+                <h3>Questions 1-4</h3>
+                <p><em>The reading passage has five paragraphs, A-E. Which paragraph contains the following information?</em></p>
+                <p><strong>Choose the correct letter, A-E.</strong></p>
+                
+                <div class="question-item">
+                    <label>1. Ancient stories and ancient people used to cultivate pearls as medicines to cure illnesses.</label>
+                    <input type="text" id="q1" placeholder="Enter A-E">
+                </div>
+                
+                <div class="question-item">
+                    <label>2. Decide the value of natural pearls.</label>
+                    <input type="text" id="q2" placeholder="Enter A-E">
+                </div>
+                
+                <div class="question-item">
+                    <label>3. Distinguish cultured pearls from natural ones.</label>
+                    <input type="text" id="q3" placeholder="Enter A-E">
+                </div>
+                
+                <div class="question-item">
+                    <label>4. There are essentially three types of pearls: natural, cultured and imitation.</label>
+                    <input type="text" id="q4" placeholder="Enter A-E">
+                </div>
+            </div>
+
+            <div class="question-section">
+                <h3>Questions 5-10</h3>
+                <p><em>Complete the following summary. Choose NO MORE THAN TWO WORDS from the passage for each answer.</em></p>
+                
+                <div class="question-item">
+                    <label>5. Precious stones like pearls have had great importance within the men of wealth and power, which were treated as a symbol of their <input type="text" id="q5" placeholder="Answer" style="width: 150px; display: inline-block;">.</label>
+                </div>
+                
+                <div class="question-item">
+                    <label>6. In history, pearls have been used as <input type="text" id="q6" placeholder="Answer" style="width: 150px; display: inline-block;"> for the rich.</label>
+                </div>
+                
+                <div class="question-item">
+                    <label>7. Also, in some countries, pearls were ground into powder and used as <input type="text" id="q7" placeholder="Answer" style="width: 150px; display: inline-block;">.</label>
+                </div>
+                
+                <div class="question-item">
+                    <label>8. Nowadays, the world's best pearls can be found in the <input type="text" id="q8" placeholder="Answer" style="width: 150px; display: inline-block;"> in the past.</label>
+                </div>
+                
+                <div class="question-item">
+                    <label>9. Freshwater pearls come in a wider range of <input type="text" id="q9" placeholder="Answer" style="width: 150px; display: inline-block;"> than saltwater pearls.</label>
+                </div>
+                
+                <div class="question-item">
+                    <label>10. The rarest are the black pearls from Tahiti and the golden <input type="text" id="q10" placeholder="Answer" style="width: 150px; display: inline-block;"> pearls.</label>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button class="submit-btn" onclick="submitTest()">
+                    <i class="fas fa-paper-plane"></i> Submit Test
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-btn" onclick="alert('Review mode')">Review</button>
+        <button class="nav-btn active">1</button>
+        <button class="nav-btn">2</button>
+        <button class="nav-btn">3</button>
+        <button class="nav-btn">...</button>
+        <button class="nav-btn">Part 2</button>
+        <button class="nav-btn">Part 3</button>
+    </div>
+
+    <script>
+        // Highlight functionality
+        function highlightText() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0 && selection.toString().trim() !== '') {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                span.onclick = function() {
+                    if (confirm('Remove this highlight?')) {
+                        const parent = this.parentNode;
+                        while (this.firstChild) {
+                            parent.insertBefore(this.firstChild, this);
+                        }
+                        parent.removeChild(this);
+                    }
+                };
+                try {
+                    range.surroundContents(span);
+                } catch(e) {
+                    alert('Please select text within a single paragraph');
+                }
+                selection.removeAllRanges();
+            } else {
+                alert('Please select some text first');
+            }
+        }
+
+        // Add note
+        function addNote() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0 && selection.toString().trim() !== '') {
+                const range = selection.getRangeAt(0);
+                const span = document.createElement('span');
+                span.className = 'highlight note';
+                span.onclick = function() {
+                    if (confirm('Remove this note?')) {
+                        const parent = this.parentNode;
+                        while (this.firstChild) {
+                            parent.insertBefore(this.firstChild, this);
+                        }
+                        parent.removeChild(this);
+                    }
+                };
+                try {
+                    range.surroundContents(span);
+                } catch(e) {
+                    alert('Please select text within a single paragraph');
+                }
+                selection.removeAllRanges();
+            } else {
+                alert('Please select some text first');
+            }
+        }
+
+        // Remove all highlights
+        function removeHighlight() {
+            const highlights = document.querySelectorAll('.highlight');
+            if (highlights.length === 0) {
+                alert('No highlights to remove');
+                return;
+            }
+            if (confirm(`Remove all ${highlights.length} highlights?`)) {
+                highlights.forEach(highlight => {
+                    const parent = highlight.parentNode;
+                    while (highlight.firstChild) {
+                        parent.insertBefore(highlight.firstChild, highlight);
+                    }
+                    parent.removeChild(highlight);
+                });
+            }
+        }
+
+        // Change theme
+        function changeTheme() {
+            const panel = document.getElementById('passagePanel');
+            const theme = document.getElementById('themeSelect').value;
+            panel.className = panel.className.replace(/theme-\w+-\w+/, `theme-${theme}`);
+        }
+
+        // Change font size
+        function changeSize() {
+            const panel = document.getElementById('passagePanel');
+            const size = document.getElementById('sizeSelect').value;
+            panel.className = panel.className.replace(/size-\w+/, `size-${size}`);
+        }
+
+        // Submit test
+        function submitTest() {
+            const answers = {};
+            for (let i = 1; i <= 10; i++) {
+                const input = document.getElementById(`q${i}`);
+                if (input) {
+                    answers[`q${i}`] = input.value.trim().toUpperCase();
+                }
+            }
+            
+            console.log('Submitted answers:', answers);
+            alert('Test submitted! Check console for answers.');
+            
+            // Here you can add scoring logic
+        }
+    </script>
+</body>
+</html>
