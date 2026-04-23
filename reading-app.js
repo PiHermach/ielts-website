@@ -40,27 +40,70 @@ function loadQuestions(partId) {
     const passage = readingData.passages[partId - 1];
     const questionsPanel = document.getElementById('questionsPanel');
     
-    let html = '<div class="question-section">';
-    html += `<h3>Questions ${passage.questions[0].id}-${passage.questions[passage.questions.length-1].id}</h3>`;
+    let html = '';
     
-    passage.questions.forEach(q => {
-        const isFlagged = flaggedQuestions.has(q.id);
-        const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+    passage.questionGroups.forEach(group => {
+        html += '<div class="question-section">';
+        html += `<h3>${group.title}</h3>`;
         
-        html += `
-            <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
-                <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
-                <label><strong>Question ${q.id}</strong><br>${q.text}</label>
-                <input type="text" 
-                       id="answer-${q.id}" 
-                       placeholder="Type your answer here" 
-                       value="${userAnswers[q.id] || ''}"
-                       onchange="saveAnswer(${q.id}, this.value)">
-            </div>
-        `;
+        if (group.instruction) {
+            html += `<div class="question-instruction">${group.instruction}</div>`;
+        }
+        
+        if (group.type === 'tfng') {
+            // TRUE/FALSE/NOT GIVEN questions
+            html += '<div class="tfng-options">';
+            group.options.forEach(opt => {
+                html += `<span class="tfng-option">${opt}</span>`;
+            });
+            html += '</div>';
+            
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <label><strong>Question ${q.id}</strong><br>${q.text}</label>
+                        <div class="radio-group">
+                            ${group.options.map(opt => `
+                                <label class="radio-label">
+                                    <input type="radio" 
+                                           name="q${q.id}" 
+                                           value="${opt}"
+                                           ${userAnswers[q.id] === opt ? 'checked' : ''}
+                                           onchange="saveAnswer(${q.id}, '${opt}')">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+        } else if (group.type === 'gap-filling') {
+            // Gap filling questions
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `
+                    <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
+                        <label><strong>Question ${q.id}</strong><br>${q.text}</label>
+                        <input type="text" 
+                               id="answer-${q.id}" 
+                               placeholder="Type your answer here" 
+                               value="${userAnswers[q.id] || ''}"
+                               onchange="saveAnswer(${q.id}, this.value)">
+                    </div>
+                `;
+            });
+        }
+        
+        html += '</div>';
     });
     
-    html += '</div>';
     questionsPanel.innerHTML = html;
 }
 
@@ -97,7 +140,13 @@ function toggleFlag(questionId) {
 function showPart(partId) {
     currentPart = partId;
     const passage = readingData.passages[partId - 1];
-    currentQuestion = passage.questions[0].id;
+    
+    // Get first question from first group
+    let allQuestions = [];
+    passage.questionGroups.forEach(group => {
+        allQuestions = allQuestions.concat(group.questions);
+    });
+    currentQuestion = allQuestions[0].id;
     
     loadPassage(partId);
     loadQuestions(partId);
@@ -114,12 +163,22 @@ function updateNavigation() {
     const navCenter = document.getElementById('navCenter');
     const passage = readingData.passages[currentPart - 1];
     
+    // Get all questions from all groups
+    let allQuestions = [];
+    passage.questionGroups.forEach(group => {
+        allQuestions = allQuestions.concat(group.questions);
+    });
+    
     let html = '';
     
     // Add all part buttons
     for (let i = 1; i <= 3; i++) {
         const partPassage = readingData.passages[i - 1];
-        const partHasFlag = partPassage.questions.some(q => flaggedQuestions.has(q.id));
+        let partAllQuestions = [];
+        partPassage.questionGroups.forEach(group => {
+            partAllQuestions = partAllQuestions.concat(group.questions);
+        });
+        const partHasFlag = partAllQuestions.some(q => flaggedQuestions.has(q.id));
         
         html += `
             <button class="part-btn ${i === currentPart ? 'active' : ''}" onclick="showPart(${i})">
@@ -130,7 +189,7 @@ function updateNavigation() {
     }
     
     // Add question numbers for current part
-    passage.questions.forEach(q => {
+    allQuestions.forEach(q => {
         const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
         const isFlagged = flaggedQuestions.has(q.id);
         const isActive = q.id === currentQuestion;
@@ -146,8 +205,8 @@ function updateNavigation() {
     navCenter.innerHTML = html;
     
     // Update part info
-    const answeredCount = passage.questions.filter(q => userAnswers[q.id] && userAnswers[q.id].trim() !== '').length;
-    document.getElementById('partInfo').textContent = `Part ${currentPart}: ${answeredCount} of ${passage.questions.length}`;
+    const answeredCount = allQuestions.filter(q => userAnswers[q.id] && userAnswers[q.id].trim() !== '').length;
+    document.getElementById('partInfo').textContent = `Part ${currentPart}: ${answeredCount} of ${allQuestions.length}`;
 }
 
 // Go to question
@@ -157,7 +216,12 @@ function goToQuestion(questionId) {
     // Find which part this question belongs to
     for (let i = 0; i < readingData.passages.length; i++) {
         const passage = readingData.passages[i];
-        if (passage.questions.some(q => q.id === questionId)) {
+        let allQuestions = [];
+        passage.questionGroups.forEach(group => {
+            allQuestions = allQuestions.concat(group.questions);
+        });
+        
+        if (allQuestions.some(q => q.id === questionId)) {
             if (currentPart !== i + 1) {
                 showPart(i + 1);
             }
@@ -170,7 +234,7 @@ function goToQuestion(questionId) {
     if (questionElement) {
         questionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Focus input
+        // Focus input if it's a text input
         const input = document.getElementById(`answer-${questionId}`);
         if (input) {
             setTimeout(() => input.focus(), 300);
@@ -183,30 +247,48 @@ function goToQuestion(questionId) {
 // Previous question
 function prevQuestion() {
     const passage = readingData.passages[currentPart - 1];
-    const currentIndex = passage.questions.findIndex(q => q.id === currentQuestion);
+    let allQuestions = [];
+    passage.questionGroups.forEach(group => {
+        allQuestions = allQuestions.concat(group.questions);
+    });
+    
+    const currentIndex = allQuestions.findIndex(q => q.id === currentQuestion);
     
     if (currentIndex > 0) {
-        goToQuestion(passage.questions[currentIndex - 1].id);
+        goToQuestion(allQuestions[currentIndex - 1].id);
     } else if (currentPart > 1) {
         // Go to previous part
         showPart(currentPart - 1);
         const prevPassage = readingData.passages[currentPart - 1];
-        goToQuestion(prevPassage.questions[prevPassage.questions.length - 1].id);
+        let prevAllQuestions = [];
+        prevPassage.questionGroups.forEach(group => {
+            prevAllQuestions = prevAllQuestions.concat(group.questions);
+        });
+        goToQuestion(prevAllQuestions[prevAllQuestions.length - 1].id);
     }
 }
 
 // Next question
 function nextQuestion() {
     const passage = readingData.passages[currentPart - 1];
-    const currentIndex = passage.questions.findIndex(q => q.id === currentQuestion);
+    let allQuestions = [];
+    passage.questionGroups.forEach(group => {
+        allQuestions = allQuestions.concat(group.questions);
+    });
     
-    if (currentIndex < passage.questions.length - 1) {
-        goToQuestion(passage.questions[currentIndex + 1].id);
+    const currentIndex = allQuestions.findIndex(q => q.id === currentQuestion);
+    
+    if (currentIndex < allQuestions.length - 1) {
+        goToQuestion(allQuestions[currentIndex + 1].id);
     } else if (currentPart < 3) {
         // Go to next part
         showPart(currentPart + 1);
         const nextPassage = readingData.passages[currentPart - 1];
-        goToQuestion(nextPassage.questions[0].id);
+        let nextAllQuestions = [];
+        nextPassage.questionGroups.forEach(group => {
+            nextAllQuestions = nextAllQuestions.concat(group.questions);
+        });
+        goToQuestion(nextAllQuestions[0].id);
     }
 }
 
@@ -455,7 +537,13 @@ function startTimer() {
 
 // Submit test
 function submitTest() {
-    const totalQuestions = readingData.passages.reduce((sum, p) => sum + p.questions.length, 0);
+    let totalQuestions = 0;
+    readingData.passages.forEach(p => {
+        p.questionGroups.forEach(group => {
+            totalQuestions += group.questions.length;
+        });
+    });
+    
     const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k].trim() !== '').length;
     
     if (answeredCount < totalQuestions) {
@@ -467,12 +555,14 @@ function submitTest() {
     // Calculate score
     let correct = 0;
     readingData.passages.forEach(passage => {
-        passage.questions.forEach(q => {
-            const userAnswer = (userAnswers[q.id] || '').trim().toLowerCase();
-            const correctAnswer = q.answer.toLowerCase();
-            if (userAnswer === correctAnswer) {
-                correct++;
-            }
+        passage.questionGroups.forEach(group => {
+            group.questions.forEach(q => {
+                const userAnswer = (userAnswers[q.id] || '').trim().toLowerCase();
+                const correctAnswer = q.answer.toLowerCase();
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                }
+            });
         });
     });
     

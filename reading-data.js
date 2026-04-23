@@ -15,20 +15,35 @@ const readingData = {
 
                 <p><strong>E.</strong> In history, pearls have had great importance within the men of wealth and power. Good-quality natural pearls are exceedingly unusual. While a natural pearl is formed by layers of nacre coating some irritant inside the shell of mollusk, cultured pearls differ from natural pearls only in that the irritant is a surgically implanted bead.</p>
             `,
-            questions: [
-                { id: 1, text: "Ancient people used pearls as medicines", type: "text", answer: "A" },
-                { id: 2, text: "Decide the value of natural pearls", type: "text", answer: "E" },
-                { id: 3, text: "Distinguish cultured pearls from natural ones", type: "text", answer: "C" },
-                { id: 4, text: "Three types of pearls", type: "text", answer: "B" },
-                { id: 5, text: "Pearls were a symbol of their ___", type: "text", answer: "social status" },
-                { id: 6, text: "Used as ___ for the rich", type: "text", answer: "jewellery" },
-                { id: 7, text: "Ground into powder and used as ___", type: "text", answer: "medicine" },
-                { id: 8, text: "Best pearls found in the ___", type: "text", answer: "salt water" },
-                { id: 9, text: "Wider range of ___", type: "text", answer: "colours" },
-                { id: 10, text: "Golden ___ pearls", type: "text", answer: "South Sea" },
-                { id: 11, text: "The rarest pearls are from ___", type: "text", answer: "Tahiti" },
-                { id: 12, text: "Pearls form when an ___ enters the oyster", type: "text", answer: "irritant" },
-                { id: 13, text: "The mollusk secretes a ___ to coat the irritant", type: "text", answer: "fluid" }
+            questionGroups: [
+                {
+                    type: "tfng",
+                    title: "Questions 1-5",
+                    instruction: "Do the following statements agree with the information given in the passage?",
+                    options: ["TRUE", "FALSE", "NOT GIVEN"],
+                    questions: [
+                        { id: 1, text: "Ancient Romans used pearls as a symbol of wealth", answer: "TRUE" },
+                        { id: 2, text: "Pearl powder was used to cure all diseases in Persia", answer: "FALSE" },
+                        { id: 3, text: "Natural pearls are more expensive than cultured pearls", answer: "NOT GIVEN" },
+                        { id: 4, text: "Cultured pearls use surgical implantation method", answer: "TRUE" },
+                        { id: 5, text: "Black pearls are the most common type", answer: "FALSE" }
+                    ]
+                },
+                {
+                    type: "gap-filling",
+                    title: "Questions 6-13",
+                    instruction: "Answer the questions below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER from the passage for each answer.",
+                    questions: [
+                        { id: 6, text: "What substance does a mollusk secrete to coat an irritant?", answer: "fluid" },
+                        { id: 7, text: "What is the bead in cultured pearls called?", answer: "mother of pearl" },
+                        { id: 8, text: "Which type of water typically produces higher quality pearls?", answer: "salt water" },
+                        { id: 9, text: "What characteristic do freshwater pearls have more variety in?", answer: "colours" },
+                        { id: 10, text: "What color of pearls are highly valued due to rarity?", answer: "black" },
+                        { id: 11, text: "How many categories can pearls be divided into?", answer: "three" },
+                        { id: 12, text: "What enters the oyster to start pearl formation?", answer: "irritant" },
+                        { id: 13, text: "What accumulates around the irritant in layers?", answer: "nacre" }
+                    ]
+                }
             ]
         },
         {
@@ -45,20 +60,35 @@ const readingData = {
 
                 <p><strong>E.</strong> Despite the challenges, there is reason for optimism. Technological innovations in clean energy, carbon capture, and sustainable agriculture offer promising solutions. Public awareness of climate issues has grown significantly, leading to increased pressure on governments and corporations to take action. Young activists around the world have mobilized to demand urgent climate action.</p>
             `,
-            questions: [
-                { id: 14, text: "The Earth's temperature has increased by ___°C", type: "text", answer: "1.1" },
-                { id: 15, text: "Main cause of climate change is burning ___", type: "text", answer: "fossil fuels" },
-                { id: 16, text: "Coastal communities face threat from ___", type: "text", answer: "sea-level rise" },
-                { id: 17, text: "The ___ has warned about catastrophic consequences", type: "text", answer: "IPCC" },
-                { id: 18, text: "International agreement mentioned is the ___", type: "text", answer: "Paris Agreement" },
-                { id: 19, text: "Three types of renewable energy: solar, wind, and ___", type: "text", answer: "hydroelectric" },
-                { id: 20, text: "Individuals can reduce their ___", type: "text", answer: "carbon footprint" },
-                { id: 21, text: "Technology offers solutions in clean energy and ___", type: "text", answer: "carbon capture" },
-                { id: 22, text: "___ activists have mobilized for climate action", type: "text", answer: "Young" },
-                { id: 23, text: "Glaciers are melting at an ___ rate", type: "text", answer: "alarming" },
-                { id: 24, text: "Ocean ___ is a key indicator of climate change", type: "text", answer: "acidification" },
-                { id: 25, text: "Some islands face complete ___", type: "text", answer: "submersion" },
-                { id: 26, text: "Public ___ of climate issues has grown", type: "text", answer: "awareness" }
+            questionGroups: [
+                {
+                    type: "tfng",
+                    title: "Questions 14-18",
+                    instruction: "Do the following statements agree with the information given in the passage?",
+                    options: ["TRUE", "FALSE", "NOT GIVEN"],
+                    questions: [
+                        { id: 14, text: "The Earth's temperature has increased by more than 1°C", answer: "TRUE" },
+                        { id: 15, text: "Deforestation is the main cause of climate change", answer: "FALSE" },
+                        { id: 16, text: "All coastal communities will be underwater by 2050", answer: "NOT GIVEN" },
+                        { id: 17, text: "The IPCC has warned about catastrophic consequences", answer: "TRUE" },
+                        { id: 18, text: "Solar energy is more efficient than wind energy", answer: "NOT GIVEN" }
+                    ]
+                },
+                {
+                    type: "gap-filling",
+                    title: "Questions 19-26",
+                    instruction: "Complete the sentences below. Write NO MORE THAN TWO WORDS from the passage for each answer.",
+                    questions: [
+                        { id: 19, text: "Human activities include burning ___ and deforestation.", answer: "fossil fuels" },
+                        { id: 20, text: "Glaciers are melting at an ___ rate.", answer: "alarming" },
+                        { id: 21, text: "Low-lying islands face the threat of complete ___.", answer: "submersion" },
+                        { id: 22, text: "Ocean ___ is a key indicator of climate change.", answer: "acidification" },
+                        { id: 23, text: "The ___ is an international agreement on climate.", answer: "Paris Agreement" },
+                        { id: 24, text: "Three renewable energy sources: solar, wind, and ___.", answer: "hydroelectric" },
+                        { id: 25, text: "Individuals can reduce their ___.", answer: "carbon footprint" },
+                        { id: 26, text: "___ activists have mobilized for climate action.", answer: "Young" }
+                    ]
+                }
             ]
         },
         {
@@ -75,21 +105,36 @@ const readingData = {
 
                 <p><strong>E.</strong> Today, coffee is a global commodity and one of the world's most valuable traded products. Modern coffee culture has evolved significantly, with specialty coffee shops and various brewing methods gaining popularity. The industry faces challenges including climate change, which threatens coffee-growing regions, and concerns about fair trade and sustainable farming practices.</p>
             `,
-            questions: [
-                { id: 27, text: "Coffee plant originated in ___", type: "text", answer: "Ethiopia" },
-                { id: 28, text: "Goat herder who discovered coffee was named ___", type: "text", answer: "Kaldi" },
-                { id: 29, text: "By 15th century, coffee was grown in ___", type: "text", answer: "Yemen" },
-                { id: 30, text: "Coffee houses in Middle East were called ___", type: "text", answer: "qahveh khaneh" },
-                { id: 31, text: "Coffee reached Europe in the ___ century", type: "text", answer: "17th" },
-                { id: 32, text: "The ___ transported coffee to Indonesia", type: "text", answer: "Dutch" },
-                { id: 33, text: "The French brought coffee to the ___", type: "text", answer: "Caribbean" },
-                { id: 34, text: "___ became a major coffee producer", type: "text", answer: "Brazil" },
-                { id: 35, text: "Coffee is one of the world's most valuable ___ products", type: "text", answer: "traded" },
-                { id: 36, text: "___ threatens coffee-growing regions", type: "text", answer: "climate change" },
-                { id: 37, text: "Industry concerns include fair trade and ___ farming", type: "text", answer: "sustainable" },
-                { id: 38, text: "Coffee houses became centers for ___ exchange", type: "text", answer: "intellectual" },
-                { id: 39, text: "Goats became more ___ after eating coffee berries", type: "text", answer: "active" },
-                { id: 40, text: "Modern ___ coffee shops have gained popularity", type: "text", answer: "specialty" }
+            questionGroups: [
+                {
+                    type: "tfng",
+                    title: "Questions 27-31",
+                    instruction: "Do the following statements agree with the information given in the passage?",
+                    options: ["TRUE", "FALSE", "NOT GIVEN"],
+                    questions: [
+                        { id: 27, text: "Coffee originated in Ethiopia according to legend", answer: "TRUE" },
+                        { id: 28, text: "Kaldi was a farmer who discovered coffee", answer: "FALSE" },
+                        { id: 29, text: "Coffee was first grown commercially in Yemen", answer: "NOT GIVEN" },
+                        { id: 30, text: "Coffee houses in the Middle East were called qahveh khaneh", answer: "TRUE" },
+                        { id: 31, text: "Religious authorities initially welcomed coffee in Europe", answer: "FALSE" }
+                    ]
+                },
+                {
+                    type: "gap-filling",
+                    title: "Questions 32-40",
+                    instruction: "Answer the questions below. Write NO MORE THAN TWO WORDS from the passage for each answer.",
+                    questions: [
+                        { id: 32, text: "In which century did coffee reach Europe?", answer: "17th" },
+                        { id: 33, text: "Which European country transported coffee to Indonesia?", answer: "Dutch" },
+                        { id: 34, text: "Where did the French bring coffee to?", answer: "Caribbean" },
+                        { id: 35, text: "Which country became a major coffee producer?", answer: "Brazil" },
+                        { id: 36, text: "What type of coffee shops have gained popularity?", answer: "specialty" },
+                        { id: 37, text: "What threatens coffee-growing regions?", answer: "climate change" },
+                        { id: 38, text: "Coffee houses became centers for ___ exchange.", answer: "intellectual" },
+                        { id: 39, text: "Goats became more ___ after eating coffee berries.", answer: "active" },
+                        { id: 40, text: "Coffee is one of the world's most valuable ___ products.", answer: "traded" }
+                    ]
+                }
             ]
         }
     ]
