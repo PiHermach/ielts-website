@@ -71,71 +71,6 @@ function createLightRays() {
     document.body.appendChild(lightRays);
 }
 
-// Create ripple effect on mouse move with continuous waves
-let lastRippleTime = 0;
-const rippleThrottle = 100; // Reduced throttle for more responsive ripples
-let mouseX = 0;
-let mouseY = 0;
-let isMouseMoving = false;
-let mouseMoveTimeout;
-
-function createRipple(x, y) {
-    const now = Date.now();
-    if (now - lastRippleTime < rippleThrottle) return;
-    lastRippleTime = now;
-    
-    let rippleContainer = document.querySelector('.ripple-container');
-    if (!rippleContainer) {
-        rippleContainer = document.createElement('div');
-        rippleContainer.className = 'ripple-container';
-        document.body.appendChild(rippleContainer);
-    }
-    
-    // Create main ripple
-    const ripple = document.createElement('div');
-    ripple.className = 'ripple';
-    ripple.style.left = `${x}px`;
-    ripple.style.top = `${y}px`;
-    ripple.style.marginLeft = '-200px';
-    ripple.style.marginTop = '-200px';
-    
-    rippleContainer.appendChild(ripple);
-    
-    // Remove ripple after animation
-    setTimeout(() => {
-        ripple.remove();
-    }, 2000);
-}
-
-// Continuous ripple generation while mouse is moving
-function generateContinuousRipples() {
-    if (isMouseMoving && document.body.classList.contains('theme-ocean')) {
-        createRipple(mouseX, mouseY);
-        requestAnimationFrame(generateContinuousRipples);
-    }
-}
-
-// Mouse move handler with smooth tracking
-function handleMouseMove(e) {
-    if (document.body.classList.contains('theme-ocean')) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        if (!isMouseMoving) {
-            isMouseMoving = true;
-            generateContinuousRipples();
-        }
-        
-        // Clear existing timeout
-        clearTimeout(mouseMoveTimeout);
-        
-        // Set new timeout to stop ripples when mouse stops
-        mouseMoveTimeout = setTimeout(() => {
-            isMouseMoving = false;
-        }, 200);
-    }
-}
-
 // Initialize ocean theme effects
 function initOceanTheme() {
     if (document.body.classList.contains('theme-ocean')) {
@@ -143,16 +78,6 @@ function initOceanTheme() {
         createBubbles();
         createParticles();
         createLightRays();
-        
-        // Add mouse move listener for ripples
-        document.addEventListener('mousemove', handleMouseMove);
-        
-        // Add subtle screen shake on click for immersion
-        document.addEventListener('click', (e) => {
-            if (document.body.classList.contains('theme-ocean')) {
-                createRipple(e.clientX, e.clientY);
-            }
-        });
     }
 }
 
@@ -166,19 +91,6 @@ function cleanupOceanTheme() {
     
     // Remove light rays
     document.querySelectorAll('.light-rays').forEach(rays => rays.remove());
-    
-    // Remove ripple container
-    const rippleContainer = document.querySelector('.ripple-container');
-    if (rippleContainer) {
-        rippleContainer.remove();
-    }
-    
-    // Remove mouse move listener
-    document.removeEventListener('mousemove', handleMouseMove);
-    
-    // Reset mouse tracking
-    isMouseMoving = false;
-    clearTimeout(mouseMoveTimeout);
 }
 
 // Watch for theme changes
