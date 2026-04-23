@@ -802,17 +802,21 @@ function handleDrop(event, questionId) {
     const dropZone = event.currentTarget;
     dropZone.classList.remove('drag-over');
     
-    if (draggedWord) {
+    if (draggedWord && draggedKey) {
         // Get old answer if exists
         const oldAnswer = userAnswers[questionId];
         
         // Save new answer (the actual word, not the key)
         saveAnswer(questionId, draggedWord);
         
-        // Update drop zone with display text
-        const displayText = draggedKey ? `${draggedKey}. ${draggedWord}` : draggedWord;
-        dropZone.textContent = displayText;
+        // Update drop zone with display text - FORCE UPDATE
+        const displayText = `${draggedKey}. ${draggedWord}`;
+        dropZone.innerHTML = ''; // Clear first
+        dropZone.textContent = displayText; // Set text
         dropZone.classList.add('filled');
+        
+        // Force a reflow to ensure the update is applied
+        void dropZone.offsetHeight;
         
         // If there was an old answer, unmark it
         if (oldAnswer) {
