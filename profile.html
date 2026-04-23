@@ -344,8 +344,8 @@
                         <div class="stat-label">Bài thi đã làm</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-value" id="avgScore">0.0</div>
-                        <div class="stat-label">Điểm trung bình</div>
+                        <div class="stat-value" style="color: #f59e0b;" id="userTokens">0</div>
+                        <div class="stat-label"><i class="fas fa-coins"></i> Tokens</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-value" id="targetScore">0.0</div>
@@ -458,9 +458,11 @@
             
             // Update stats
             document.getElementById('targetScore').textContent = user.bandScore;
+            document.getElementById('userTokens').textContent = user.tokens || 0;
             
-            // TODO: Calculate actual stats from test history
-            document.getElementById('testsCompleted').textContent = '0';
+            // Calculate tests completed
+            const completedTests = user.completedTests ? user.completedTests.length : 0;
+            document.getElementById('testsCompleted').textContent = completedTests;
             document.getElementById('avgScore').textContent = '0.0';
         }
         
@@ -515,7 +517,8 @@
                 bandScore: users[userIndex].bandScore,
                 description: users[userIndex].description,
                 avatar: users[userIndex].avatar,
-                isOP: users[userIndex].isOP || false
+                isOP: users[userIndex].isOP || false,
+                tokens: users[userIndex].tokens || 0
             };
             localStorage.setItem('currentUser', JSON.stringify(updatedCurrentUser));
             

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Shop - IELTS THGB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .header-left {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .btn-home {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-home:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+        
+        .token-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .token-icon {
+            font-size: 1.5rem;
+        }
+        
+        .token-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+        
+        .token-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .shop-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .shop-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .shop-title p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .theme-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .theme-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        }
+        
+        .theme-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .theme-preview.gradient-sunset {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+        }
+        
+        .theme-preview.gradient-ocean {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .theme-preview.gradient-forest {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .theme-preview.gradient-royal {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+        }
+        
+        .theme-preview.gradient-fire {
+            background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);
+        }
+        
+        .theme-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .theme-badge.owned {
+            background: #10b981;
+            color: white;
+        }
+        
+        .theme-info {
+            padding: 25px;
+        }
+        
+        .theme-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .theme-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .theme-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .theme-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+        
+        .btn-buy {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-buy:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-owned {
+            padding: 10px 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: default;
+        }
+        
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .success-modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .modal-text {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+        
+        .btn-close-modal {
+            padding: 12px 32px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-close-modal:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <a href="index.html" class="btn btn-home">
+                    <i class="fas fa-home"></i> Trang chủ
+                </a>
+            </div>
+            <div class="token-display">
+                <div class="token-icon">🪙</div>
+                <div>
+                    <div class="token-amount" id="userTokens">0</div>
+                    <div class="token-label">Tokens</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="shop-title">
+            <h1>🛍️ Token Shop</h1>
+            <p>Mua giao diện đẹp cho bài thi của bạn</p>
+        </div>
+        
+        <div class="themes-grid" id="themesGrid">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+    
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <div class="modal-title">Mua thành công!</div>
+            <div class="modal-text">Giao diện đã được thêm vào tài khoản của bạn. Bạn có thể sử dụng nó khi làm bài test.</div>
+            <button class="btn-close-modal" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+    
+    <script>
+        // Check if user is logged in
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            alert('Vui lòng đăng nhập để truy cập shop!');
+            window.location.href = 'auth.html';
+        }
+        
+        // Theme data
+        const themes = [
+            {
+                id: 'default',
+                name: 'Giao diện mặc định',
+                description: 'Giao diện cơ bản với màu trắng đen, miễn phí cho tất cả người dùng.',
+                price: 0,
+                icon: '📄',
+                gradient: 'gradient-default',
+                owned: true
+            },
+            {
+                id: 'sunset',
+                name: 'Hoàng hôn rực rỡ',
+                description: 'Giao diện ấm áp với tông màu cam đỏ, tạo cảm giác năng động và tích cực.',
+                price: 500,
+                icon: '🌅',
+                gradient: 'gradient-sunset'
+            },
+            {
+                id: 'ocean',
+                name: 'Đại dương xanh',
+                description: 'Giao diện mát mẻ với tông màu xanh dương, giúp tập trung và thư giãn.',
+                price: 750,
+                icon: '🌊',
+                gradient: 'gradient-ocean'
+            },
+            {
+                id: 'forest',
+                name: 'Rừng xanh',
+                description: 'Giao diện tươi mới với tông màu xanh lá, mang lại cảm giác gần gũi thiên nhiên.',
+                price: 1000,
+                icon: '🌲',
+                gradient: 'gradient-forest'
+            },
+            {
+                id: 'royal',
+                name: 'Hoàng gia sang trọng',
+                description: 'Giao diện cao cấp với tông màu tím đậm, thể hiện sự sang trọng và đẳng cấp.',
+                price: 1500,
+                icon: '👑',
+                gradient: 'gradient-royal'
+            },
+            {
+                id: 'fire',
+                name: 'Ngọn lửa nhiệt huyết',
+                description: 'Giao diện mạnh mẽ với tông màu đỏ cam, khơi dậy động lực và quyết tâm.',
+                price: 2000,
+                icon: '🔥',
+                gradient: 'gradient-fire'
+            }
+        ];
+        
+        // Load user data
+        function loadUserData() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.id === currentUser.id);
+            
+            if (!user) {
+                alert('Không tìm thấy thông tin người dùng!');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Initialize ownedThemes if not present
+            if (!user.ownedThemes) {
+                user.ownedThemes = ['default'];
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                users[userIndex].ownedThemes = ['default'];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // Display tokens
+            document.getElementById('userTokens').textContent = user.tokens || 0;
+            
+            // Display themes
+            displayThemes(user);
+        }
+        
+        // Display themes
+        function displayThemes(user) {
+            const themesGrid = document.getElementById('themesGrid');
+            
+            themesGrid.innerHTML = themes.map(theme => {
+                const isOwned = user.ownedThemes && user.ownedThemes.includes(theme.id);
+                const canAfford = (user.tokens || 0) >= theme.price;
+                
+                return `
+                    <div class="theme-card">
+                        <div class="theme-preview ${theme.gradient}">
+                            <span style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">${theme.icon}</span>
+                            ${isOwned ? '<div class="theme-badge owned"><i class="fas fa-check"></i> Đã sở hữu</div>' : ''}
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">${theme.name}</div>
+                            <div class="theme-description">${theme.description}</div>
+                            <div class="theme-footer">
+                                <div class="theme-price">
+                                    <i class="fas fa-coins"></i>
+                                    <span>${theme.price}</span>
+                                </div>
+                                ${isOwned ? 
+                                    '<button class="btn-owned"><i class="fas fa-check"></i> Đã mua</button>' :
+                                    `<button class="btn-buy" onclick="buyTheme('${theme.id}', ${theme.price})" ${!canAfford ? 'disabled' : ''}>
+                                        ${canAfford ? '<i class="fas fa-shopping-cart"></i> Mua ngay' : '<i class="fas fa-lock"></i> Không đủ'}
+                                    </button>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Buy theme
+        function buyTheme(themeId, price) {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex === -1) {
+                alert('Không tìm thấy thông tin người dùng!');
+                return;
+            }
+            
+            const user = users[userIndex];
+            
+            // Check if user has enough tokens
+            if ((user.tokens || 0) < price) {
+                alert('Bạn không đủ tokens để mua giao diện này!');
+                return;
+            }
+            
+            // Check if already owned
+            if (user.ownedThemes && user.ownedThemes.includes(themeId)) {
+                alert('Bạn đã sở hữu giao diện này!');
+                return;
+            }
+            
+            // Deduct tokens
+            user.tokens -= price;
+            
+            // Add theme to owned themes
+            if (!user.ownedThemes) {
+                user.ownedThemes = ['default'];
+            }
+            user.ownedThemes.push(themeId);
+            
+            // Save to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Update current user
+            currentUser.tokens = user.tokens;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Show success modal
+            document.getElementById('successModal').classList.add('show');
+            
+            // Reload themes
+            loadUserData();
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('show');
+        }
+        
+        // Initialize
+        loadUserData();
+    </script>
+</body>
+</html>

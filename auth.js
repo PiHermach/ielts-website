@@ -13,10 +13,20 @@ function initializeOPAccount() {
             description: 'Administrator Account',
             avatar: null,
             isOP: true,
+            tokens: 10000, // Admin starts with 10000 tokens for testing
+            completedTests: [], // Track completed tests to prevent duplicate token rewards
             createdAt: new Date().toISOString()
         };
         users.push(opAccount);
         localStorage.setItem('users', JSON.stringify(users));
+    } else {
+        // Update existing OP account to have tokens if not present
+        const opIndex = users.findIndex(u => u.email === 'tranhoanggiabao2009@gmail.com');
+        if (opIndex !== -1 && users[opIndex].tokens === undefined) {
+            users[opIndex].tokens = 10000;
+            users[opIndex].completedTests = users[opIndex].completedTests || [];
+            localStorage.setItem('users', JSON.stringify(users));
+        }
     }
 }
 
@@ -103,7 +113,8 @@ function handleLogin(event) {
             bandScore: user.bandScore,
             description: user.description,
             avatar: user.avatar,
-            isOP: user.isOP || false
+            isOP: user.isOP || false,
+            tokens: user.tokens || 0
         };
         
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -172,6 +183,8 @@ function handleRegister(event) {
             description: description,
             avatar: avatar,
             isOP: false,
+            tokens: 0, // New users start with 0 tokens
+            completedTests: [], // Track completed tests
             createdAt: new Date().toISOString()
         };
         
@@ -186,7 +199,8 @@ function handleRegister(event) {
             bandScore: newUser.bandScore,
             description: newUser.description,
             avatar: newUser.avatar,
-            isOP: false
+            isOP: false,
+            tokens: newUser.tokens
         };
         
         localStorage.setItem('currentUser', JSON.stringify(currentUser));

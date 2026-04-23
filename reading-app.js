@@ -799,6 +799,49 @@ function submitTest() {
         });
     });
     
+    // Calculate band score
+    const bandScore = getBandScoreFromCorrect(correct);
+    
+    // Calculate tokens earned based on band score
+    const tokensEarned = calculateTokens(bandScore);
+    
+    // Get current test identifier (basic or advanced)
+    const testType = window.location.pathname.includes('basic') ? 'reading-basic' : 'reading-advanced';
+    const testId = `${testType}-${new Date().toISOString().split('T')[0]}`; // Test type + date
+    
+    // Check if user already completed this test today and award tokens
+    let isFirstCompletion = false;
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
+        
+        if (userIndex !== -1) {
+            // Initialize tokens and completedTests if not present
+            if (users[userIndex].tokens === undefined) {
+                users[userIndex].tokens = 0;
+            }
+            if (!users[userIndex].completedTests) {
+                users[userIndex].completedTests = [];
+            }
+            
+            // Check if this test was already completed today
+            if (!users[userIndex].completedTests.includes(testId)) {
+                // First time completing this test today - award tokens
+                users[userIndex].tokens += tokensEarned;
+                users[userIndex].completedTests.push(testId);
+                isFirstCompletion = true;
+                
+                // Update currentUser tokens
+                currentUser.tokens = users[userIndex].tokens;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            // Save updated users
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+    }
+    
     // Save results to localStorage
     const results = {
         correct,
@@ -806,13 +849,45 @@ function submitTest() {
         skipped,
         total: totalQuestions,
         breakdown,
-        detailedAnswers // Add detailed answers
+        detailedAnswers, // Add detailed answers
+        bandScore,
+        tokensEarned: isFirstCompletion ? tokensEarned : 0,
+        isFirstCompletion
     };
     
     localStorage.setItem('testResults', JSON.stringify(results));
     
     // Redirect to result page
     window.location.href = 'result.html';
+}
+
+// Calculate tokens based on band score (exponential growth)
+function calculateTokens(bandScore) {
+    // Formula: tokens = 10 * (bandScore^2.5)
+    // This creates exponential growth:
+    // 5.0 -> 56 tokens
+    // 6.0 -> 88 tokens
+    // 7.0 -> 130 tokens
+    // 8.0 -> 181 tokens
+    // 8.5 -> 213 tokens
+    // 9.0 -> 243 tokens
+    const tokens = Math.floor(10 * Math.pow(bandScore, 2.5));
+    return tokens;
+}
+
+// Get band score from correct answers
+function getBandScoreFromCorrect(correctAnswers) {
+    const bandScoreTable = {
+        40: 9.0, 39: 8.5, 38: 8.5, 37: 8.0, 36: 8.0,
+        35: 7.5, 34: 7.5, 33: 7.0, 32: 7.0, 31: 6.5,
+        30: 6.5, 29: 6.0, 28: 6.0, 27: 6.0, 26: 5.5,
+        25: 5.5, 24: 5.5, 23: 5.0, 22: 5.0, 21: 5.0,
+        20: 5.0, 19: 4.5, 18: 4.0, 17: 4.0, 16: 4.0,
+        15: 3.5, 14: 3.5, 13: 3.0, 12: 3.0, 11: 3.0,
+        10: 2.5, 9: 2.5, 8: 2.5, 7: 2.0, 6: 2.0,
+        5: 2.0, 4: 2.0, 3: 1.0, 2: 1.0, 1: 1.0, 0: 0.0
+    };
+    return bandScoreTable[correctAnswers] || 0.0;
 }
 
 function getQuestionTypeName(type) {
