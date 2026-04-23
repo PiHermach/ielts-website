@@ -840,37 +840,6 @@
             border-color: #374151;
         }
         
-        .matching-item {
-            display: grid;
-            grid-template-columns: 40px 1fr;
-            gap: 12px;
-            align-items: start;
-            padding: 16px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .matching-item:last-child {
-            border-bottom: none;
-        }
-        
-        body.theme-black-white .matching-item {
-            border-bottom-color: #374151;
-        }
-        
-        body.theme-yellow-black .matching-item {
-            border-bottom-color: #374151;
-        }
-            display: inline-block;
-            width: 100px;
-            padding: 4px 8px;
-            border: none;
-            border-bottom: 2px solid #3b82f6;
-            background: transparent;
-            font-size: 0.95rem;
-            outline: none;
-            margin: 0 4px;
-        }
-        
         .flag-icon {
             position: absolute;
             top: 2px;
@@ -1103,26 +1072,6 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        .matching-item {
-            display: grid;
-            grid-template-columns: 40px 1fr;
-            gap: 12px;
-            align-items: start;
-            padding: 16px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .matching-item:last-child {
-            border-bottom: none;
-        }
-        
-        body.theme-black-white .matching-item {
-            border-bottom-color: #374151;
-        }
-        
-        body.theme-yellow-black .matching-item {
-            border-bottom-color: #374151;
-        }
         
         .matching-select {
             width: 100%;
@@ -1141,7 +1090,7 @@
             border-color: #3b82f6;
         }
         
-        .matching-item.answered .matching-select {
+        .question-item.answered .matching-select {
             background: #f0fdf4;
             border-color: #86efac;
         }
@@ -1156,7 +1105,7 @@
             border-color: #3b82f6;
         }
         
-        body.theme-black-white .matching-item.answered .matching-select {
+        body.theme-black-white .question-item.answered .matching-select {
             background: #064e3b;
             border-color: #10b981;
         }

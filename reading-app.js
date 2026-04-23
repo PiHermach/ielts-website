@@ -144,7 +144,7 @@ function loadQuestions(partId) {
                 const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
                 
                 html += `
-                    <div class="question-item matching-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                    <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
                         <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
                         <div class="question-number">${q.id}</div>
                         <div class="question-content">
