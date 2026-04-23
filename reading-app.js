@@ -134,35 +134,12 @@ function loadQuestions(partId) {
             });
             html += '</div>';
         } else if (group.type === 'matching') {
-            // Matching questions with dropdown
+            // Matching questions with table layout
             if (group.note) {
                 html += `<div class="question-note"><strong>NB:</strong> ${group.note}</div>`;
             }
             
-            group.questions.forEach(q => {
-                const isFlagged = flaggedQuestions.has(q.id);
-                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
-                
-                html += `
-                    <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
-                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
-                        <div class="question-number">${q.id}</div>
-                        <div class="question-content">
-                            <label class="question-text">${q.text}</label>
-                            <select class="matching-select" onchange="saveAnswer(${q.id}, this.value)">
-                                <option value="">Choose an option</option>
-                                ${group.optionsList.map(opt => `
-                                    <option value="${opt.key}" ${userAnswers[q.id] === opt.key ? 'selected' : ''}>
-                                        ${opt.key}. ${opt.value}
-                                    </option>
-                                `).join('')}
-                            </select>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Show list of options for reference
+            // Show list of options for reference first
             if (group.optionsList) {
                 html += '<div class="options-list-reference">';
                 html += '<h4>List of options</h4>';
@@ -172,6 +149,43 @@ function loadQuestions(partId) {
                 });
                 html += '</div></div>';
             }
+            
+            // Create table with header
+            html += '<div class="matching-table-container">';
+            html += '<table class="matching-table">';
+            
+            // Header row
+            html += '<thead><tr><th class="matching-header-empty"></th>';
+            group.optionsList.forEach(opt => {
+                html += `<th class="matching-header-cell">${opt.key}</th>`;
+            });
+            html += '</tr></thead>';
+            
+            // Question rows
+            html += '<tbody>';
+            group.questions.forEach(q => {
+                const isFlagged = flaggedQuestions.has(q.id);
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
+                
+                html += `<tr class="matching-row ${isAnswered ? 'answered' : ''}" id="question-${q.id}">`;
+                html += `<td class="matching-question-cell">`;
+                html += `<i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>`;
+                html += `<span class="question-number-inline">${q.id}</span>`;
+                html += `<span class="question-text-inline">${q.text}</span>`;
+                html += `</td>`;
+                
+                // Radio button cells
+                group.optionsList.forEach(opt => {
+                    html += `<td class="matching-radio-cell">`;
+                    html += `<input type="radio" name="q${q.id}" value="${opt.key}" ${userAnswers[q.id] === opt.key ? 'checked' : ''} onchange="saveAnswer(${q.id}, '${opt.key}')">`;
+                    html += `</td>`;
+                });
+                
+                html += '</tr>';
+            });
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
         } else if (group.type === 'multiple-choice') {
             // Regular multiple choice
             group.questions.forEach(q => {
