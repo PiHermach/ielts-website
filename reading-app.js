@@ -361,7 +361,7 @@ function setupSelectionMenu() {
                 // Position menu just above selection (very close to text)
                 selectionMenu.style.display = 'block';
                 selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - (menuWidth / 2)}px`;
-                selectionMenu.style.top = `${relativeTop - 75}px`;
+                selectionMenu.style.top = `${relativeTop - 10}px`;
             } else {
                 selectionMenu.style.display = 'none';
             }
