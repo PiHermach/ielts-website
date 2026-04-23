@@ -1120,6 +1120,96 @@
             border-color: yellow;
         }
         
+        /* Matching Questions Horizontal Layout */
+        .matching-header-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            margin-left: 40px;
+            padding-left: 20px;
+        }
+        
+        .matching-header-letter {
+            width: 60px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+        }
+        
+        body.theme-black-white .matching-header-letter {
+            background: #2a2a2a;
+            color: white;
+            border-color: #4b5563;
+        }
+        
+        body.theme-yellow-black .matching-header-letter {
+            background: #1a1a00;
+            color: yellow;
+            border-color: #4b5563;
+        }
+        
+        .matching-question {
+            margin-bottom: 20px;
+        }
+        
+        .matching-radio-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .matching-radio-label {
+            width: 60px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .matching-radio-label:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .matching-radio-label input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin: 0;
+        }
+        
+        body.theme-black-white .matching-radio-label {
+            background: #1a1a1a;
+            border-color: #4b5563;
+        }
+        
+        body.theme-black-white .matching-radio-label:hover {
+            border-color: #3b82f6;
+            background: #1e3a5f;
+        }
+        
+        body.theme-yellow-black .matching-radio-label {
+            background: #000;
+            border-color: #4b5563;
+        }
+        
+        body.theme-yellow-black .matching-radio-label:hover {
+            border-color: yellow;
+            background: #1a1a00;
+        }
+        
         /* Matching Table Styles */
         .matching-table-container {
             margin-top: 20px;
@@ -1503,7 +1593,7 @@
         </div>
     </div>
 
-    <script src="reading-data.js?v=2"></script>
-    <script src="reading-app.js?v=2"></script>
+    <script src="reading-data.js?v=3"></script>
+    <script src="reading-app.js?v=3"></script>
 </body>
 </html>

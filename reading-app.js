@@ -134,7 +134,7 @@ function loadQuestions(partId) {
             });
             html += '</div>';
         } else if (group.type === 'matching') {
-            // Matching questions with table layout
+            // Matching questions with horizontal radio layout
             if (group.note) {
                 html += `<div class="question-note"><strong>NB:</strong> ${group.note}</div>`;
             }
@@ -150,42 +150,34 @@ function loadQuestions(partId) {
                 html += '</div></div>';
             }
             
-            // Create table with header
-            html += '<div class="matching-table-container">';
-            html += '<table class="matching-table">';
-            
-            // Header row
-            html += '<thead><tr><th class="matching-header-empty"></th>';
+            // Create header with option letters
+            html += '<div class="matching-header-row">';
             group.optionsList.forEach(opt => {
-                html += `<th class="matching-header-cell">${opt.key}</th>`;
+                html += `<div class="matching-header-letter">${opt.key}</div>`;
             });
-            html += '</tr></thead>';
+            html += '</div>';
             
-            // Question rows
-            html += '<tbody>';
+            // Create questions with radio buttons
             group.questions.forEach(q => {
                 const isFlagged = flaggedQuestions.has(q.id);
                 const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
                 
-                html += `<tr class="matching-row ${isAnswered ? 'answered' : ''}" id="question-${q.id}">`;
-                html += `<td class="matching-question-cell">`;
+                html += `<div class="question-item matching-question ${isAnswered ? 'answered' : ''}" id="question-${q.id}">`;
                 html += `<i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>`;
-                html += `<span class="question-number-inline">${q.id}</span>`;
-                html += `<span class="question-text-inline">${q.text}</span>`;
-                html += `</td>`;
+                html += `<div class="question-number">${q.id}</div>`;
+                html += `<div class="question-content">`;
+                html += `<label class="question-text">${q.text}</label>`;
+                html += `<div class="matching-radio-row">`;
                 
-                // Radio button cells
+                // Radio buttons for each option
                 group.optionsList.forEach(opt => {
-                    html += `<td class="matching-radio-cell">`;
+                    html += `<label class="matching-radio-label">`;
                     html += `<input type="radio" name="q${q.id}" value="${opt.key}" ${userAnswers[q.id] === opt.key ? 'checked' : ''} onchange="saveAnswer(${q.id}, '${opt.key}')">`;
-                    html += `</td>`;
+                    html += `</label>`;
                 });
                 
-                html += '</tr>';
+                html += `</div></div></div>`;
             });
-            html += '</tbody>';
-            html += '</table>';
-            html += '</div>';
         } else if (group.type === 'multiple-choice') {
             // Regular multiple choice
             group.questions.forEach(q => {
@@ -806,17 +798,21 @@ function handleDrop(event, questionId) {
         // Get old answer if exists
         const oldAnswer = userAnswers[questionId];
         
-        // Save new answer (the actual word, not the key)
-        saveAnswer(questionId, draggedWord);
-        
-        // Update drop zone with display text - FORCE UPDATE
+        // Update drop zone FIRST before saving
         const displayText = `${draggedKey}. ${draggedWord}`;
-        dropZone.innerHTML = ''; // Clear first
-        dropZone.textContent = displayText; // Set text
+        
+        // Clear and update the drop zone immediately
+        dropZone.textContent = '';
+        dropZone.innerText = displayText;
         dropZone.classList.add('filled');
         
-        // Force a reflow to ensure the update is applied
-        void dropZone.offsetHeight;
+        // Force browser to render the change
+        dropZone.style.display = 'none';
+        dropZone.offsetHeight; // Trigger reflow
+        dropZone.style.display = 'inline-block';
+        
+        // Now save the answer
+        saveAnswer(questionId, draggedWord);
         
         // If there was an old answer, unmark it
         if (oldAnswer) {
