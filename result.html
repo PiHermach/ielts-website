@@ -390,9 +390,9 @@
                 <div style="text-align: center;">
                     <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 10px; font-weight: 600;">BAND SCORE</div>
                     <div style="font-size: 4rem; font-weight: 700; color: #2563eb; line-height: 1;" id="bandScore">0.0</div>
-                    <div style="margin-top: 20px; padding: 15px; background: #e0f2fe; border-radius: 8px; border: 2px dashed #3b82f6;">
-                        <p style="font-size: 0.875rem; color: #1e40af; line-height: 1.6; margin: 0;">
-                            Bạn cũ nhận đề quả bài làm này dựa trên tiêu chuẩn chấm điểm IELTS của Cambridge
+                    <div style="margin-top: 20px; padding: 15px; border-radius: 8px; border: 2px dashed #3b82f6;" id="motivationBox">
+                        <p style="font-size: 0.875rem; line-height: 1.6; margin: 0;" id="motivationText">
+                            Đang tải...
                         </p>
                     </div>
                 </div>
@@ -507,10 +507,61 @@
             }, 100);
         }
         
+        // Get motivation message based on target and achieved band score
+        function getMotivationMessage(targetScore, achievedScore) {
+            const difference = achievedScore - targetScore;
+            
+            let message = '';
+            let bgColor = '';
+            let textColor = '';
+            let icon = '';
+            
+            if (difference >= 0.5) {
+                // Exceeded target significantly
+                message = '🎉 Xuất sắc! Bạn đã vượt qua mục tiêu của mình. Hãy tiếp tục phát huy!';
+                bgColor = '#d1fae5';
+                textColor = '#065f46';
+                icon = '🌟';
+            } else if (difference >= 0) {
+                // Met or slightly exceeded target
+                message = '👏 Tuyệt vời! Bạn đã đạt được mục tiêu. Tiếp tục duy trì phong độ này!';
+                bgColor = '#dbeafe';
+                textColor = '#1e40af';
+                icon = '✨';
+            } else if (difference >= -0.5) {
+                // Close to target
+                message = '💪 Gần đạt mục tiêu rồi! Hãy cố gắng thêm một chút nữa!';
+                bgColor = '#fef3c7';
+                textColor = '#92400e';
+                icon = '🔥';
+            } else {
+                // Far from target
+                message = '📚 Bạn cần cố gắng hơn! Hãy luyện tập thêm để đạt mục tiêu của mình.';
+                bgColor = '#fee2e2';
+                textColor = '#991b1b';
+                icon = '💡';
+            }
+            
+            return { message, bgColor, textColor, icon };
+        }
+        
         // Initialize
         window.addEventListener('load', () => {
             const percentage = (results.correct / results.total) * 100;
             const bandScore = getBandScore(results.correct);
+            
+            // Get user's target band score
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const targetBandScore = currentUser ? parseFloat(currentUser.bandScore) : 7.0;
+            
+            // Get motivation message
+            const motivation = getMotivationMessage(targetBandScore, bandScore);
+            const motivationBox = document.getElementById('motivationBox');
+            const motivationText = document.getElementById('motivationText');
+            
+            motivationBox.style.background = motivation.bgColor;
+            motivationText.style.color = motivation.textColor;
+            motivationText.innerHTML = `<strong>${motivation.icon}</strong> ${motivation.message}<br><small style="opacity: 0.8;">Mục tiêu: ${targetBandScore} | Đạt được: ${bandScore.toFixed(1)}</small>`;
             
             // Animate progress bar
             animateProgress(percentage);

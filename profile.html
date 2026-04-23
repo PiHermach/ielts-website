@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ cá nhân - IELTS THGB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .btn-home {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-home:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 10px;
+        }
+        
+        .profile-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .avatar-section {
+            margin: -60px auto 0;
+            width: 120px;
+            height: 120px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .avatar-display {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            object-fit: cover;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .avatar-display img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .profile-body {
+            padding: 80px 40px 40px;
+        }
+        
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .success-message.show {
+            display: flex;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+        
+        .form-group label .optional {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            outline: none;
+            font-family: Arial, sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-group input:disabled {
+            background: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .avatar-upload-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid #e5e7eb;
+        }
+        
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-preview i {
+            font-size: 2rem;
+            color: #9ca3af;
+        }
+        
+        .avatar-upload-btn {
+            flex: 1;
+        }
+        
+        .avatar-upload-btn input[type="file"] {
+            display: none;
+        }
+        
+        .avatar-upload-btn label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .avatar-upload-btn label:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-save {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-cancel {
+            padding: 14px 30px;
+            background: white;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-cancel:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        .info-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .info-box p {
+            font-size: 0.875rem;
+            color: #92400e;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-box {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <a href="index.html" class="btn btn-home">
+                <i class="fas fa-home"></i> Trang chủ
+            </a>
+        </div>
+        
+        <div class="profile-card">
+            <div class="profile-header">
+                <h1><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</h1>
+                <p>Quản lý thông tin tài khoản của bạn</p>
+            </div>
+            
+            <div class="avatar-section">
+                <div class="avatar-display" id="avatarDisplay">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="profile-body">
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Cập nhật thông tin thành công!</span>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="testsCompleted">0</div>
+                        <div class="stat-label">Bài thi đã làm</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="avgScore">0.0</div>
+                        <div class="stat-label">Điểm trung bình</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="targetScore">0.0</div>
+                        <div class="stat-label">Mục tiêu</div>
+                    </div>
+                </div>
+                
+                <form id="profileForm" onsubmit="handleSave(event)">
+                    <div class="form-group">
+                        <label>Họ và tên</label>
+                        <input type="text" id="name" required placeholder="Nhập họ và tên đầy đủ">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" disabled placeholder="Email không thể thay đổi">
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><i class="fas fa-info-circle"></i> <strong>Lưu ý:</strong> Để thay đổi mật khẩu, vui lòng đăng xuất và sử dụng chức năng "Quên mật khẩu" khi đăng nhập lại.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Band Score mong muốn</label>
+                        <select id="bandScore" required>
+                            <option value="">Chọn band score</option>
+                            <option value="5.0">5.0</option>
+                            <option value="5.5">5.5</option>
+                            <option value="6.0">6.0</option>
+                            <option value="6.5">6.5</option>
+                            <option value="7.0">7.0</option>
+                            <option value="7.5">7.5</option>
+                            <option value="8.0">8.0</option>
+                            <option value="8.5">8.5</option>
+                            <option value="9.0">9.0</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Mô tả <span class="optional">(không bắt buộc)</span></label>
+                        <textarea id="description" placeholder="Giới thiệu về bản thân..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ảnh đại diện <span class="optional">(không bắt buộc)</span></label>
+                        <div class="avatar-upload-section">
+                            <div class="avatar-preview" id="avatarPreview">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="avatar-upload-btn">
+                                <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(event)">
+                                <label for="avatarInput">
+                                    <i class="fas fa-upload"></i> Chọn ảnh mới
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-save"></i> Lưu thay đổi
+                        </button>
+                        <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">
+                            Hủy
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check if user is logged in
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            alert('Vui lòng đăng nhập để xem hồ sơ!');
+            window.location.href = 'auth.html';
+        }
+        
+        let newAvatar = null;
+        
+        // Load user data
+        function loadUserData() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.id === currentUser.id);
+            
+            if (!user) {
+                alert('Không tìm thấy thông tin người dùng!');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Populate form
+            document.getElementById('name').value = user.name;
+            document.getElementById('email').value = user.email;
+            document.getElementById('bandScore').value = user.bandScore;
+            document.getElementById('description').value = user.description || '';
+            
+            // Display avatar
+            const avatarDisplay = document.getElementById('avatarDisplay');
+            const avatarPreview = document.getElementById('avatarPreview');
+            
+            if (user.avatar) {
+                avatarDisplay.innerHTML = `<img src="${user.avatar}" alt="Avatar">`;
+                avatarPreview.innerHTML = `<img src="${user.avatar}" alt="Avatar">`;
+            } else {
+                avatarDisplay.textContent = user.name.charAt(0).toUpperCase();
+                avatarPreview.innerHTML = `<i class="fas fa-user"></i>`;
+            }
+            
+            // Update stats
+            document.getElementById('targetScore').textContent = user.bandScore;
+            
+            // TODO: Calculate actual stats from test history
+            document.getElementById('testsCompleted').textContent = '0';
+            document.getElementById('avgScore').textContent = '0.0';
+        }
+        
+        // Preview avatar
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newAvatar = e.target.result;
+                    const preview = document.getElementById('avatarPreview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Handle save
+        function handleSave(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const bandScore = document.getElementById('bandScore').value;
+            const description = document.getElementById('description').value.trim();
+            
+            // Get all users
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex === -1) {
+                alert('Không tìm thấy thông tin người dùng!');
+                return;
+            }
+            
+            // Update user data
+            users[userIndex].name = name;
+            users[userIndex].bandScore = bandScore;
+            users[userIndex].description = description;
+            
+            if (newAvatar) {
+                users[userIndex].avatar = newAvatar;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Update current user
+            const updatedCurrentUser = {
+                id: users[userIndex].id,
+                name: users[userIndex].name,
+                email: users[userIndex].email,
+                bandScore: users[userIndex].bandScore,
+                description: users[userIndex].description,
+                avatar: users[userIndex].avatar,
+                isOP: users[userIndex].isOP || false
+            };
+            localStorage.setItem('currentUser', JSON.stringify(updatedCurrentUser));
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            
+            // Reload data
+            loadUserData();
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 3000);
+            
+            // Reset new avatar
+            newAvatar = null;
+        }
+        
+        // Initialize
+        loadUserData();
+    </script>
+</body>
+</html>
