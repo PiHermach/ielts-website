@@ -324,6 +324,29 @@
             border: 2px solid #10b981;
         }
         
+        .answer-explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-left: 3px solid #3b82f6;
+            border-radius: 4px;
+        }
+        
+        .explanation-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        
+        .explanation-text {
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.6;
+        }
+        
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -352,14 +375,28 @@
         <div class="result-card">
             <h1 class="result-title">Kết quả làm bài</h1>
             
-            <div class="circular-progress">
-                <svg width="200" height="200">
-                    <circle class="progress-bg" cx="100" cy="100" r="90"></circle>
-                    <circle class="progress-bar" id="progressBar" cx="100" cy="100" r="90"></circle>
-                </svg>
-                <div class="progress-text" id="progressText">0/36</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
+                <div>
+                    <div class="circular-progress">
+                        <svg width="200" height="200">
+                            <circle class="progress-bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="progress-bar" id="progressBar" cx="100" cy="100" r="90"></circle>
+                        </svg>
+                        <div class="progress-text" id="progressText">0/40</div>
+                    </div>
+                    <div class="progress-label">câu đúng</div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 10px; font-weight: 600;">BAND SCORE</div>
+                    <div style="font-size: 4rem; font-weight: 700; color: #2563eb; line-height: 1;" id="bandScore">0.0</div>
+                    <div style="margin-top: 20px; padding: 15px; background: #e0f2fe; border-radius: 8px; border: 2px dashed #3b82f6;">
+                        <p style="font-size: 0.875rem; color: #1e40af; line-height: 1.6; margin: 0;">
+                            Bạn cũ nhận đề quả bài làm này dựa trên tiêu chuẩn chấm điểm IELTS của Cambridge
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="progress-label">câu đúng</div>
             
             <div class="stats-grid">
                 <div class="stat-item">
@@ -388,28 +425,45 @@
             <button class="detail-button" onclick="toggleBreakdown()">Xem giải thích chi tiết</button>
             
             <div class="breakdown-section" id="breakdownSection" style="display: none;">
-                <h2 class="breakdown-title">Chi tiết từng câu hỏi</h2>
-                <div class="detailed-answers" id="detailedAnswers"></div>
-                
-                <h2 class="breakdown-title" style="margin-top: 40px;">Bảng thống kê theo loại câu hỏi</h2>
+                <h2 class="breakdown-title">Bảng dữ liệu chi tiết</h2>
                 <table class="breakdown-table">
                     <thead>
                         <tr>
                             <th>Loại câu hỏi</th>
                             <th>Số câu hỏi</th>
-                            <th>Đúng</th>
-                            <th>Sai</th>
-                            <th>Bỏ qua</th>
+                            <th style="color: #10b981;">Đúng</th>
+                            <th style="color: #ef4444;">Sai</th>
+                            <th style="color: #f59e0b;">Bỏ qua</th>
+                            <th>Tổng</th>
                         </tr>
                     </thead>
                     <tbody id="breakdownBody">
                     </tbody>
                 </table>
+                
+                <h2 class="breakdown-title" style="margin-top: 40px;">Hướng dẫn giải chi tiết</h2>
+                <div class="detailed-answers" id="detailedAnswers"></div>
             </div>
         </div>
     </div>
     
     <script>
+        // IELTS Band Score Conversion Table (Academic Reading)
+        const bandScoreTable = {
+            40: 9.0, 39: 8.5, 38: 8.5, 37: 8.0, 36: 8.0,
+            35: 7.5, 34: 7.5, 33: 7.0, 32: 7.0, 31: 6.5,
+            30: 6.5, 29: 6.0, 28: 6.0, 27: 6.0, 26: 5.5,
+            25: 5.5, 24: 5.5, 23: 5.0, 22: 5.0, 21: 5.0,
+            20: 5.0, 19: 4.5, 18: 4.0, 17: 4.0, 16: 4.0,
+            15: 3.5, 14: 3.5, 13: 3.0, 12: 3.0, 11: 3.0,
+            10: 2.5, 9: 2.5, 8: 2.5, 7: 2.0, 6: 2.0,
+            5: 2.0, 4: 2.0, 3: 1.0, 2: 1.0, 1: 1.0, 0: 0.0
+        };
+        
+        function getBandScore(correctAnswers) {
+            return bandScoreTable[correctAnswers] || 0.0;
+        }
+        
         // Get results from localStorage or use demo data
         const results = JSON.parse(localStorage.getItem('testResults')) || {
             correct: 13,
@@ -456,21 +510,41 @@
         // Initialize
         window.addEventListener('load', () => {
             const percentage = (results.correct / results.total) * 100;
+            const bandScore = getBandScore(results.correct);
             
             // Animate progress bar
             animateProgress(percentage);
             
             // Animate numbers
             document.getElementById('progressText').textContent = `${results.correct}/${results.total}`;
+            document.getElementById('bandScore').textContent = bandScore.toFixed(1);
             animateNumber(document.getElementById('correctCount'), results.correct);
             animateNumber(document.getElementById('wrongCount'), results.wrong);
             animateNumber(document.getElementById('skippedCount'), results.skipped);
             
-            // Populate detailed answers
+            // Populate breakdown table
+            const breakdownBody = document.getElementById('breakdownBody');
+            results.breakdown.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 600;">${item.type}</td>
+                    <td>${item.total}</td>
+                    <td style="color: #10b981; font-weight: 600;">${item.correct}</td>
+                    <td style="color: #ef4444; font-weight: 600;">${item.wrong}</td>
+                    <td style="color: #f59e0b; font-weight: 600;">${item.skipped}</td>
+                    <td style="font-weight: 600;">${item.correct}/${item.total}</td>
+                `;
+                breakdownBody.appendChild(row);
+            });
+            
+            // Populate detailed answers with explanations
             if (results.detailedAnswers) {
                 const detailedAnswersDiv = document.getElementById('detailedAnswers');
                 results.detailedAnswers.forEach(answer => {
                     const statusClass = answer.isSkipped ? 'skipped' : (answer.isCorrect ? 'correct' : 'wrong');
+                    
+                    // Generate explanation
+                    const explanation = generateExplanation(answer);
                     
                     const answerItem = document.createElement('div');
                     answerItem.className = `answer-item ${statusClass}`;
@@ -489,25 +563,46 @@
                                 <div class="answer-value correct-answer">${answer.correctAnswer}</div>
                             </div>
                         </div>
+                        ${explanation ? `
+                            <div class="answer-explanation">
+                                <div class="explanation-title">💡 Giải thích</div>
+                                <div class="explanation-text">${explanation}</div>
+                            </div>
+                        ` : ''}
                     `;
                     detailedAnswersDiv.appendChild(answerItem);
                 });
             }
-            
-            // Populate breakdown table
-            const breakdownBody = document.getElementById('breakdownBody');
-            results.breakdown.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.type}</td>
-                    <td>${item.total}</td>
-                    <td style="color: #10b981; font-weight: 600;">${item.correct}</td>
-                    <td style="color: #ef4444; font-weight: 600;">${item.wrong}</td>
-                    <td style="color: #f59e0b; font-weight: 600;">${item.skipped}</td>
-                `;
-                breakdownBody.appendChild(row);
-            });
         });
+        
+        // Generate explanation for each answer
+        function generateExplanation(answer) {
+            const qId = answer.questionId;
+            const type = answer.type;
+            const correct = answer.correctAnswer;
+            const user = answer.userAnswer;
+            
+            // Basic explanations based on question type
+            if (type.includes('TRUE/FALSE/NOT GIVEN')) {
+                if (correct === 'TRUE') {
+                    return `Thông tin trong câu hỏi được nêu rõ trong đoạn văn và khớp với nội dung. Đáp án đúng là <strong>TRUE</strong>.`;
+                } else if (correct === 'FALSE') {
+                    return `Thông tin trong câu hỏi mâu thuẫn với nội dung trong đoạn văn. Đáp án đúng là <strong>FALSE</strong>.`;
+                } else {
+                    return `Thông tin này không được đề cập trong đoạn văn. Đáp án đúng là <strong>NOT GIVEN</strong>.`;
+                }
+            } else if (type.includes('Gap Filling') || type.includes('Sentence Completion')) {
+                return `Từ khóa "<strong>${correct}</strong>" xuất hiện trong đoạn văn và phù hợp với ngữ cảnh của câu. Hãy chú ý đến các từ xung quanh để xác định đáp án chính xác.`;
+            } else if (type.includes('Multiple Choice')) {
+                return `Đáp án <strong>${correct}</strong> là lựa chọn đúng dựa trên thông tin được cung cấp trong đoạn văn. Các lựa chọn khác không được hỗ trợ bởi văn bản hoặc mâu thuẫn với nội dung.`;
+            } else if (type.includes('Matching')) {
+                return `Thông tin trong câu hỏi khớp với đoạn <strong>${correct}</strong>. Hãy tìm kiếm các từ khóa và ý chính trong đoạn văn để xác định đáp án.`;
+            } else if (type.includes('Summary')) {
+                return `Từ "<strong>${correct}</strong>" là từ phù hợp nhất để điền vào chỗ trống dựa trên ngữ cảnh và ý nghĩa của câu trong bản tóm tắt.`;
+            }
+            
+            return `Đáp án đúng là <strong>${correct}</strong>. Hãy đọc kỹ đoạn văn và chú ý đến các từ khóa để tìm ra đáp án chính xác.`;
+        }
         
         function toggleBreakdown() {
             const section = document.getElementById('breakdownSection');
