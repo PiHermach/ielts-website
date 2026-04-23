@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress - IELTS Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="practice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>IELTS Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="reading.html">Reading</a></li>
+                <li><a href="listening.html">Listening</a></li>
+                <li><a href="writing.html">Writing</a></li>
+                <li><a href="speaking.html">Speaking</a></li>
+                <li><a href="progress.html" class="active">Tiến độ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="practice-header">
+        <div class="container">
+            <h1><i class="fas fa-chart-line"></i> Tiến độ học tập</h1>
+            <p>Theo dõi kết quả và tiến bộ của bạn</p>
+        </div>
+    </section>
+
+    <section class="practice-content">
+        <div class="container">
+            <div style="max-width: 1000px; margin: 0 auto;">
+                
+                <div class="stats-grid" style="margin-bottom: 40px;">
+                    <div class="stat-item" style="background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow);">
+                        <i class="fas fa-book-open" style="color: var(--primary-color);"></i>
+                        <h3 id="readingTests">0</h3>
+                        <p>Bài Reading</p>
+                    </div>
+                    <div class="stat-item" style="background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow);">
+                        <i class="fas fa-headphones" style="color: var(--secondary-color);"></i>
+                        <h3 id="listeningTests">0</h3>
+                        <p>Bài Listening</p>
+                    </div>
+                    <div class="stat-item" style="background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow);">
+                        <i class="fas fa-star" style="color: #f59e0b;"></i>
+                        <h3 id="avgScore">0.0</h3>
+                        <p>Điểm trung bình</p>
+                    </div>
+                    <div class="stat-item" style="background: white; padding: 30px; border-radius: 12px; box-shadow: var(--shadow);">
+                        <i class="fas fa-trophy" style="color: #10b981;"></i>
+                        <h3 id="bestScore">0.0</h3>
+                        <p>Điểm cao nhất</p>
+                    </div>
+                </div>
+
+                <div class="questions-section">
+                    <h2><i class="fas fa-history"></i> Lịch sử làm bài Reading</h2>
+                    <div id="readingHistory" style="margin-top: 20px;">
+                        <p style="text-align: center; color: var(--text-light); padding: 40px;">
+                            Chưa có dữ liệu. Hãy bắt đầu làm bài tập!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="questions-section" style="margin-top: 30px;">
+                    <h2><i class="fas fa-chart-bar"></i> Biểu đồ tiến độ</h2>
+                    <div style="background: var(--bg-light); padding: 40px; border-radius: 8px; text-align: center; margin-top: 20px;">
+                        <i class="fas fa-chart-line" style="font-size: 5rem; color: var(--primary-color); opacity: 0.3;"></i>
+                        <p style="margin-top: 20px; color: var(--text-light);">
+                            Biểu đồ tiến độ sẽ hiển thị sau khi bạn hoàn thành nhiều bài tập hơn
+                        </p>
+                    </div>
+                </div>
+
+                <div class="questions-section" style="margin-top: 30px;">
+                    <h2><i class="fas fa-target"></i> Mục tiêu của bạn</h2>
+                    <div style="padding: 20px;">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600;">
+                                Điểm mục tiêu:
+                            </label>
+                            <select id="targetScore" style="width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 5px; font-size: 1rem;">
+                                <option value="5.5">5.5</option>
+                                <option value="6.0">6.0</option>
+                                <option value="6.5" selected>6.5</option>
+                                <option value="7.0">7.0</option>
+                                <option value="7.5">7.5</option>
+                                <option value="8.0">8.0</option>
+                                <option value="8.5">8.5</option>
+                                <option value="9.0">9.0</option>
+                            </select>
+                        </div>
+                        <button onclick="saveTarget()" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Lưu mục tiêu
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <button onclick="clearData()" class="btn btn-secondary">
+                        <i class="fas fa-trash"></i> Xóa toàn bộ dữ liệu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 IELTS Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function loadProgress() {
+            const readingScores = JSON.parse(localStorage.getItem('readingScores') || '[]');
+            
+            document.getElementById('readingTests').textContent = readingScores.length;
+            document.getElementById('listeningTests').textContent = '0';
+            
+            if (readingScores.length > 0) {
+                const scores = readingScores.map(s => s.score);
+                const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+                const best = Math.max(...scores);
+                
+                document.getElementById('avgScore').textContent = avg;
+                document.getElementById('bestScore').textContent = best + '/10';
+                
+                displayHistory(readingScores);
+            }
+
+            const target = localStorage.getItem('targetScore');
+            if (target) {
+                document.getElementById('targetScore').value = target;
+            }
+        }
+
+        function displayHistory(scores) {
+            const historyDiv = document.getElementById('readingHistory');
+            let html = '<div style="overflow-x: auto;">';
+            html += '<table style="width: 100%; border-collapse: collapse;">';
+            html += '<thead><tr style="background: var(--bg-light);">';
+            html += '<th style="padding: 15px; text-align: left; border-bottom: 2px solid var(--primary-color);">Ngày</th>';
+            html += '<th style="padding: 15px; text-align: center; border-bottom: 2px solid var(--primary-color);">Điểm</th>';
+            html += '<th style="padding: 15px; text-align: center; border-bottom: 2px solid var(--primary-color);">Band</th>';
+            html += '</tr></thead><tbody>';
+            
+            scores.reverse().forEach(score => {
+                const date = new Date(score.date).toLocaleString('vi-VN');
+                html += '<tr style="border-bottom: 1px solid #e5e7eb;">';
+                html += `<td style="padding: 15px;">${date}</td>`;
+                html += `<td style="padding: 15px; text-align: center; font-weight: bold; color: var(--primary-color);">${score.score}/10</td>`;
+                html += `<td style="padding: 15px; text-align: center;">${score.band}</td>`;
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table></div>';
+            historyDiv.innerHTML = html;
+        }
+
+        function saveTarget() {
+            const target = document.getElementById('targetScore').value;
+            localStorage.setItem('targetScore', target);
+            alert(`Đã lưu mục tiêu: ${target}`);
+        }
+
+        function clearData() {
+            if (confirm('Bạn có chắc muốn xóa toàn bộ dữ liệu?')) {
+                localStorage.removeItem('readingScores');
+                localStorage.removeItem('targetScore');
+                location.reload();
+            }
+        }
+
+        window.onload = loadProgress;
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

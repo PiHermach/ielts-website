@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume 1 - IELTS Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 40px 0;
+        }
+        .test-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border-left: 5px solid var(--primary-color);
+        }
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .test-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .test-info {
+            color: var(--text-light);
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .test-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        .btn-practice {
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-practice:hover {
+            background: #1e40af;
+        }
+        .btn-pdf {
+            background: #dc2626;
+            color: white;
+        }
+        .btn-pdf:hover {
+            background: #b91c1c;
+        }
+        .btn-audio {
+            background: #059669;
+            color: white;
+        }
+        .btn-audio:hover {
+            background: #047857;
+        }
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>IELTS Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="vol1.html" class="active">Volume 1</a></li>
+                <li><a href="progress.html">Tiến độ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Quay lại trang chủ
+            </a>
+            <h1><i class="fas fa-book"></i> Volume 1 - Original Exams</h1>
+            <p>10 bài thi IELTS hoàn chỉnh với Reading, Listening, Writing & Speaking</p>
+        </div>
+    </section>
+
+    <section style="padding: 40px 0; background: var(--bg-light); min-height: 100vh;">
+        <div class="container">
+            <div class="test-grid">
+                <div class="test-card">
+                    <div class="test-number">Test 1</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test1-listening.html" class="btn-small btn-practice">
+                            <i class="fas fa-headphones"></i> Listening
+                        </a>
+                        <a href="test.html?vol=1&test=1" class="btn-small btn-practice">
+                            <i class="fas fa-book-open"></i> Reading
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 1/Test 1.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 2</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=2" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 2/Test 2.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=2" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 3</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=3" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 3/Test 3.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=3" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 4</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=4" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 4/Test 4.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=4" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 5</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=5" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 5/Test 5 .pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=5" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 6</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=6" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 6/Test 6 .pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=6" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 7</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=7" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 7/Test 7.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=7" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 8</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=8" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 8/Test 8.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=8" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 9</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=9" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 9/Test 9 .pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=9" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-number">Test 10</div>
+                    <div class="test-info">
+                        <i class="fas fa-book-open"></i>
+                        <span>3 Reading Passages</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-headphones"></i>
+                        <span>4 Listening Parts</span>
+                    </div>
+                    <div class="test-info">
+                        <i class="fas fa-pen"></i>
+                        <span>2 Writing Tasks</span>
+                    </div>
+                    <div class="test-actions">
+                        <a href="test.html?vol=1&test=10" class="btn-small btn-practice">
+                            <i class="fas fa-play"></i> Làm bài
+                        </a>
+                        <a href="VOL 1- ORIGINAL EXAMS/test 10/test 10.pdf" target="_blank" class="btn-small btn-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        <a href="audio.html?vol=1&test=10" class="btn-small btn-audio">
+                            <i class="fas fa-volume-up"></i> Audio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 IELTS Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

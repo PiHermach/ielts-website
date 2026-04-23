@@ -1,0 +1,9 @@
+# Ignore large files
+*.mp3
+*.mp4
+*.pdf
+*.rar
+*.zip
+
+# Keep structure
+!.gitkeep
