@@ -430,6 +430,9 @@
                 <div style="font-size: 0.875rem; opacity: 0.9;">
                     Chúc mừng! Bạn đã nhận được phần thưởng
                 </div>
+                <div style="margin-top: 10px; font-size: 0.875rem; opacity: 0.9;">
+                    Tổng tokens: <span id="totalTokens" style="font-weight: 700;">0</span>
+                </div>
             </div>
             
             <div id="noTokenMessage" style="display: none; margin-top: 30px; padding: 15px; background: #f3f4f6; border-radius: 8px; color: #6b7280; text-align: center; font-size: 0.875rem;">
@@ -589,8 +592,10 @@
             
             // Show token reward if earned
             if (results.isFirstCompletion && results.tokensEarned > 0) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 document.getElementById('tokenReward').style.display = 'block';
                 document.getElementById('tokensEarned').textContent = results.tokensEarned;
+                document.getElementById('totalTokens').textContent = currentUser ? (currentUser.tokens || 0) : 0;
             } else if (!results.isFirstCompletion) {
                 document.getElementById('noTokenMessage').style.display = 'block';
             }

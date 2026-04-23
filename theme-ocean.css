@@ -342,14 +342,28 @@ body.theme-ocean .summary-text {
 }
 
 body.theme-ocean .drop-zone {
-    background: rgba(10, 77, 104, 0.6);
-    border-color: rgba(5, 191, 219, 0.5);
+    background: rgba(10, 77, 104, 0.8);
+    border: 2px dashed rgba(5, 191, 219, 0.6);
     color: #e0f7fa;
+    padding: 8px 12px;
+    border-radius: 4px;
+    min-width: 120px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+body.theme-ocean .drop-zone:hover {
+    background: rgba(8, 131, 149, 0.8);
+    border-color: #05bfdb;
 }
 
 body.theme-ocean .drop-zone.filled {
-    background: rgba(16, 185, 129, 0.3);
-    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.4);
+    border: 2px solid #10b981;
+    color: #d1fae5;
 }
 
 /* Question note */

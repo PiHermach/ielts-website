@@ -1564,7 +1564,11 @@
 
     <div class="settings-menu" id="settingsMenu">
         <h4>Settings</h4>
-        <label>Theme:</label>
+        <label>Visual Theme:</label>
+        <select id="visualThemeSelect" onchange="changeVisualTheme()">
+            <option value="">Loading...</option>
+        </select>
+        <label>Color Theme:</label>
         <select id="themeSelect" onchange="changeTheme()">
             <option value="white-black">White on Black</option>
             <option value="black-white">Black on White</option>
@@ -1605,12 +1609,14 @@
         }
         
         // Load equipped theme
+        let currentVisualTheme = 'default';
         if (currentUser) {
             const users = JSON.parse(localStorage.getItem('users')) || [];
             const user = users.find(u => u.id === currentUser.id);
             
             if (user && user.equippedTheme) {
                 const themeId = user.equippedTheme;
+                currentVisualTheme = themeId;
                 
                 // Apply theme class
                 document.body.classList.add(`theme-${themeId}`);
@@ -1628,6 +1634,49 @@
                     document.head.appendChild(themeJS);
                 }
             }
+            
+            // Load visual theme selector
+            if (user) {
+                const ownedThemes = user.ownedThemes || ['default'];
+                const visualThemeSelect = document.getElementById('visualThemeSelect');
+                
+                const themeNames = {
+                    'default': '📄 Mặc định',
+                    'ocean': '🌊 Đại dương'
+                };
+                
+                visualThemeSelect.innerHTML = ownedThemes.map(themeId => 
+                    `<option value="${themeId}" ${themeId === currentVisualTheme ? 'selected' : ''}>${themeNames[themeId] || themeId}</option>`
+                ).join('');
+            }
+        }
+        
+        // Change visual theme function
+        function changeVisualTheme() {
+            const newTheme = document.getElementById('visualThemeSelect').value;
+            
+            // Remove old theme classes
+            document.body.classList.remove('theme-default', 'theme-ocean');
+            
+            // Remove old theme CSS
+            document.querySelectorAll('link[href^="theme-"]').forEach(link => link.remove());
+            document.querySelectorAll('script[src^="theme-"]').forEach(script => script.remove());
+            
+            // Apply new theme
+            document.body.classList.add(`theme-${newTheme}`);
+            
+            if (newTheme !== 'default') {
+                const themeCSS = document.createElement('link');
+                themeCSS.rel = 'stylesheet';
+                themeCSS.href = `theme-${newTheme}.css`;
+                document.head.appendChild(themeCSS);
+                
+                const themeJS = document.createElement('script');
+                themeJS.src = `theme-${newTheme}.js`;
+                document.head.appendChild(themeJS);
+            }
+            
+            currentVisualTheme = newTheme;
         }
     </script>
     <script src="reading-data-basic.js?v=11"></script>
