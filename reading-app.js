@@ -50,10 +50,10 @@ function loadQuestions(partId) {
         html += `
             <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
                 <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
-                <label><strong>${q.id}.</strong> ${q.text}</label>
+                <label><strong>Question ${q.id}</strong><br>${q.text}</label>
                 <input type="text" 
                        id="answer-${q.id}" 
-                       placeholder="Your answer" 
+                       placeholder="Type your answer here" 
                        value="${userAnswers[q.id] || ''}"
                        onchange="saveAnswer(${q.id}, this.value)">
             </div>
