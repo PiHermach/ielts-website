@@ -13,6 +13,40 @@
             padding: 40px 20px;
         }
         
+        .header {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .logo-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        .logo-icon {
+            font-size: 1.5rem;
+        }
+        
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -190,6 +224,13 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <a href="index.html" class="logo-link">
+            <span class="logo-icon">📚</span>
+            <span class="logo-text">IELTS THGB</span>
+        </a>
+    </div>
+    
     <div class="container">
         <div class="result-card">
             <h1 class="result-title">Kết quả làm bài</h1>

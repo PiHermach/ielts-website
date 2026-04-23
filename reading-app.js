@@ -171,15 +171,25 @@ function loadQuestions(partId) {
                 `;
             });
         } else if (group.type === 'summary-completion') {
-            // Summary completion with word list
-            html += `<div class="summary-text">${group.summaryText}</div>`;
+            // Summary completion with word list and drag & drop
+            if (group.summaryText) {
+                // Replace input fields with drop zones
+                let summaryHTML = group.summaryText;
+                group.questions.forEach(q => {
+                    const regex = new RegExp(`<input[^>]*id="answer-${q.id}"[^>]*>`, 'g');
+                    summaryHTML = summaryHTML.replace(regex, 
+                        `<span class="drop-zone" id="drop-${q.id}" data-question-id="${q.id}" ondrop="handleDrop(event, ${q.id})" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></span>`
+                    );
+                });
+                html += `<div class="summary-text">${summaryHTML}</div>`;
+            }
             
             if (group.wordList) {
                 html += '<div class="word-list">';
                 html += '<h4>List of words</h4>';
-                html += '<div class="word-buttons">';
+                html += '<div class="word-buttons" id="wordButtons">';
                 group.wordList.forEach(word => {
-                    html += `<button class="word-btn">${word.key}. ${word.value}</button>`;
+                    html += `<button class="word-btn" draggable="true" ondragstart="handleDragStart(event)" data-word="${word.key}">${word.key}. ${word.value}</button>`;
                 });
                 html += '</div></div>';
             }
@@ -757,3 +767,74 @@ function getQuestionTypeName(type) {
     };
     return names[type] || type;
 }
+
+
+// Drag and Drop functions
+let draggedWord = null;
+
+function handleDragStart(event) {
+    draggedWord = event.target.getAttribute('data-word');
+    event.target.style.opacity = '0.5';
+}
+
+function handleDragOver(event) {
+    event.preventDefault();
+    event.currentTarget.classList.add('drag-over');
+}
+
+function handleDragLeave(event) {
+    event.currentTarget.classList.remove('drag-over');
+}
+
+function handleDrop(event, questionId) {
+    event.preventDefault();
+    const dropZone = event.currentTarget;
+    dropZone.classList.remove('drag-over');
+    
+    if (draggedWord) {
+        // Save answer
+        saveAnswer(questionId, draggedWord);
+        
+        // Update drop zone
+        dropZone.textContent = draggedWord;
+        dropZone.classList.add('filled');
+        
+        // Mark word as used
+        const wordButtons = document.querySelectorAll('.word-btn');
+        wordButtons.forEach(btn => {
+            if (btn.getAttribute('data-word') === draggedWord) {
+                btn.classList.add('used');
+                btn.setAttribute('draggable', 'false');
+            }
+            btn.style.opacity = '1';
+        });
+        
+        draggedWord = null;
+    }
+}
+
+// Allow removing word from drop zone
+document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('drop-zone') && e.target.classList.contains('filled')) {
+            const questionId = parseInt(e.target.getAttribute('data-question-id'));
+            const word = e.target.textContent;
+            
+            // Remove answer
+            delete userAnswers[questionId];
+            e.target.textContent = '';
+            e.target.classList.remove('filled');
+            
+            // Unmark word
+            const wordButtons = document.querySelectorAll('.word-btn');
+            wordButtons.forEach(btn => {
+                if (btn.getAttribute('data-word') === word) {
+                    btn.classList.remove('used');
+                    btn.setAttribute('draggable', 'true');
+                }
+            });
+            
+            updateNavigation();
+        }
+    });
+});

@@ -801,7 +801,26 @@
             border-color: #374151;
         }
         
-        .summary-text input[type="text"] {
+        .matching-item {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .matching-item:last-child {
+            border-bottom: none;
+        }
+        
+        body.theme-black-white .matching-item {
+            border-bottom-color: #374151;
+        }
+        
+        body.theme-yellow-black .matching-item {
+            border-bottom-color: #374151;
+        }
             display: inline-block;
             width: 100px;
             padding: 4px 8px;
@@ -1044,6 +1063,86 @@
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+        .matching-item {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .matching-item:last-child {
+            border-bottom: none;
+        }
+        
+        body.theme-black-white .matching-item {
+            border-bottom-color: #374151;
+        }
+        
+        body.theme-yellow-black .matching-item {
+            border-bottom-color: #374151;
+        }
+        
+        .summary-text input[type="text"] {
+            display: inline-block;
+            width: 100px;
+            padding: 4px 8px;
+            border: none;
+            border-bottom: 2px solid #3b82f6;
+            background: transparent;
+            font-size: 0.95rem;
+            outline: none;
+            margin: 0 4px;
+        }
+        
+        .word-btn {
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .word-btn:active {
+            cursor: grabbing;
+        }
+        
+        .word-btn.used {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .drop-zone {
+            display: inline-block;
+            min-width: 100px;
+            padding: 4px 8px;
+            border: 2px dashed #d1d5db;
+            background: #f9fafb;
+            border-radius: 4px;
+            margin: 0 4px;
+            min-height: 28px;
+            vertical-align: middle;
+            transition: all 0.2s;
+        }
+        
+        .drop-zone.drag-over {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .drop-zone.filled {
+            border-style: solid;
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        body.theme-black-white .drop-zone {
+            background: #1a1a1a;
+            border-color: #4b5563;
+        }
+        
+        body.theme-yellow-black .drop-zone {
+            background: #000;
+            border-color: #4b5563;
         }
     </style>
 </head>
