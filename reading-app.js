@@ -44,39 +44,35 @@ function loadQuestions(partId) {
     
     passage.questionGroups.forEach(group => {
         html += '<div class="question-section">';
-        html += `<h3>${group.title}</h3>`;
-        
-        if (group.instruction) {
-            html += `<div class="question-instruction">${group.instruction}</div>`;
-        }
+        html += `<div class="question-group-header">
+                    <h3>${group.title}</h3>
+                    ${group.instruction ? `<div class="question-instruction">${group.instruction}</div>` : ''}
+                 </div>`;
         
         if (group.type === 'tfng') {
             // TRUE/FALSE/NOT GIVEN questions
-            html += '<div class="tfng-options">';
-            group.options.forEach(opt => {
-                html += `<span class="tfng-option">${opt}</span>`;
-            });
-            html += '</div>';
-            
             group.questions.forEach(q => {
                 const isFlagged = flaggedQuestions.has(q.id);
                 const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
                 
                 html += `
-                    <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
+                    <div class="question-item tfng-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
                         <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
-                        <label><strong>Question ${q.id}</strong><br>${q.text}</label>
-                        <div class="radio-group">
-                            ${group.options.map(opt => `
-                                <label class="radio-label">
-                                    <input type="radio" 
-                                           name="q${q.id}" 
-                                           value="${opt}"
-                                           ${userAnswers[q.id] === opt ? 'checked' : ''}
-                                           onchange="saveAnswer(${q.id}, '${opt}')">
-                                    <span>${opt}</span>
-                                </label>
-                            `).join('')}
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <div class="radio-group-vertical">
+                                ${group.options.map(opt => `
+                                    <label class="radio-label-vertical">
+                                        <input type="radio" 
+                                               name="q${q.id}" 
+                                               value="${opt}"
+                                               ${userAnswers[q.id] === opt ? 'checked' : ''}
+                                               onchange="saveAnswer(${q.id}, '${opt}')">
+                                        <span>${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -90,12 +86,15 @@ function loadQuestions(partId) {
                 html += `
                     <div class="question-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
                         <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
-                        <label><strong>Question ${q.id}</strong><br>${q.text}</label>
-                        <input type="text" 
-                               id="answer-${q.id}" 
-                               placeholder="Type your answer here" 
-                               value="${userAnswers[q.id] || ''}"
-                               onchange="saveAnswer(${q.id}, this.value)">
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-content">
+                            <label class="question-text">${q.text}</label>
+                            <input type="text" 
+                                   id="answer-${q.id}" 
+                                   placeholder="Type your answer here" 
+                                   value="${userAnswers[q.id] || ''}"
+                                   onchange="saveAnswer(${q.id}, this.value)">
+                        </div>
                     </div>
                 `;
             });
