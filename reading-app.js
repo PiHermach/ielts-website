@@ -738,12 +738,6 @@ function submitTest() {
     
     const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].trim() !== '').length;
     
-    if (answeredCount < totalQuestions) {
-        if (!confirm(`You have only answered ${answeredCount} out of ${totalQuestions} questions. Do you want to submit anyway?`)) {
-            return;
-        }
-    }
-    
     // Calculate score and breakdown
     let correct = 0;
     let wrong = 0;
