@@ -486,15 +486,10 @@ function setupSelectionMenu() {
     const selectionMenu = document.getElementById('selectionMenu');
     const highlightMenu = document.getElementById('highlightMenu');
     const passagePanel = document.getElementById('passagePanel');
+    const questionsPanel = document.getElementById('questionsPanel');
     
-    // Remove old event listener if exists
-    const oldHandler = passagePanel._mouseupHandler;
-    if (oldHandler) {
-        passagePanel.removeEventListener('mouseup', oldHandler);
-    }
-    
-    // Create new handler
-    const mouseupHandler = (e) => {
+    // Function to handle text selection
+    const handleSelection = (e, panel) => {
         // Prevent if resizing
         if (isResizing) return;
         
@@ -506,11 +501,11 @@ function setupSelectionMenu() {
             if (selectedText && selection.rangeCount > 0) {
                 selectedRange = selection.getRangeAt(0);
                 const rect = selectedRange.getBoundingClientRect();
-                const panelRect = passagePanel.getBoundingClientRect();
+                const panelRect = panel.getBoundingClientRect();
                 
-                // Calculate position relative to passage panel
-                const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
-                const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
+                // Calculate position relative to the panel
+                const relativeTop = rect.top - panelRect.top + panel.scrollTop;
+                const relativeLeft = rect.left - panelRect.left + panel.scrollLeft;
                 
                 // Get menu width (approximate)
                 const menuWidth = 180;
@@ -525,9 +520,26 @@ function setupSelectionMenu() {
         }, 50);
     };
     
-    // Store handler reference and add event listener
-    passagePanel._mouseupHandler = mouseupHandler;
-    passagePanel.addEventListener('mouseup', mouseupHandler);
+    // Remove old event listeners if exist
+    const oldPassageHandler = passagePanel._mouseupHandler;
+    if (oldPassageHandler) {
+        passagePanel.removeEventListener('mouseup', oldPassageHandler);
+    }
+    
+    const oldQuestionsHandler = questionsPanel._mouseupHandler;
+    if (oldQuestionsHandler) {
+        questionsPanel.removeEventListener('mouseup', oldQuestionsHandler);
+    }
+    
+    // Create handlers for both panels
+    const passageHandler = (e) => handleSelection(e, passagePanel);
+    const questionsHandler = (e) => handleSelection(e, questionsPanel);
+    
+    // Store handler references and add event listeners
+    passagePanel._mouseupHandler = passageHandler;
+    questionsPanel._mouseupHandler = questionsHandler;
+    passagePanel.addEventListener('mouseup', passageHandler);
+    questionsPanel.addEventListener('mouseup', questionsHandler);
     
     // Hide menus when clicking outside (only setup once)
     if (!document._selectionMenuSetup) {
@@ -541,14 +553,6 @@ function setupSelectionMenu() {
                 document.getElementById('noteInputMenu').style.display = 'none';
                 document.getElementById('noteViewMenu').style.display = 'none';
             }
-        });
-        
-        // Also hide when clicking on questions panel
-        document.querySelector('.questions-panel').addEventListener('click', () => {
-            selectionMenu.style.display = 'none';
-            highlightMenu.style.display = 'none';
-            document.getElementById('noteInputMenu').style.display = 'none';
-            document.getElementById('noteViewMenu').style.display = 'none';
         });
         
         document._selectionMenuSetup = true;
