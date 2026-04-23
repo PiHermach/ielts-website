@@ -171,48 +171,116 @@
             text-align: justify;
         }
         
-        .highlight { background-color: yellow; cursor: pointer; }
-        .highlight.note { background-color: #90EE90; }
+        .highlight { 
+            background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+            cursor: pointer;
+            padding: 2px 0;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .highlight:hover {
+            background: linear-gradient(120deg, #fde047 0%, #facc15 100%);
+            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+        }
+        
+        .highlight.note { 
+            background: linear-gradient(120deg, #86efac 0%, #4ade80 100%);
+        }
+        
+        .highlight.note:hover {
+            background: linear-gradient(120deg, #4ade80 0%, #22c55e 100%);
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+        }
         
         .selection-menu {
             position: absolute;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 8px 12px;
             display: none;
             z-index: 10000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 4px 8px rgba(0,0,0,0.15);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .selection-menu button {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 6px 12px;
-            margin: 2px;
-            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            padding: 8px 16px;
+            margin: 0 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .selection-menu button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .selection-menu button i {
+            font-size: 1rem;
+        }
+        
+        .selection-menu button:first-child {
+            color: #f59e0b;
+        }
+        
+        .selection-menu button:last-child {
+            color: #10b981;
         }
         
         .highlight-menu {
             position: fixed;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 5px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 6px 10px;
             display: none;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 10000;
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3), 0 4px 8px rgba(0,0,0,0.15);
+            animation: fadeIn 0.2s ease-in-out;
         }
         
         .highlight-menu button {
-            background: #dc3545;
+            background: rgba(255, 255, 255, 0.95);
             border: none;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 3px;
+            color: #dc2626;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .highlight-menu button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         
         .question-section {

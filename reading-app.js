@@ -274,10 +274,10 @@ function setupSelectionMenu() {
                 const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
                 const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
                 
-                // Position menu above selection
+                // Position menu above selection (closer to the text)
                 selectionMenu.style.display = 'block';
-                selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 100}px`;
-                selectionMenu.style.top = `${relativeTop - 45}px`;
+                selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 110}px`;
+                selectionMenu.style.top = `${relativeTop - 55}px`;
             } else {
                 selectionMenu.style.display = 'none';
             }
