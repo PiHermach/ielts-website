@@ -501,19 +501,23 @@ function setupSelectionMenu() {
             if (selectedText && selection.rangeCount > 0) {
                 selectedRange = selection.getRangeAt(0);
                 const rect = selectedRange.getBoundingClientRect();
-                const panelRect = panel.getBoundingClientRect();
-                
-                // Calculate position relative to the panel
-                const relativeTop = rect.top - panelRect.top + panel.scrollTop;
-                const relativeLeft = rect.left - panelRect.left + panel.scrollLeft;
                 
                 // Get menu width (approximate)
                 const menuWidth = 180;
                 
-                // Position menu just above selection (very close to text)
+                // Position menu using absolute positioning relative to viewport
+                const menuLeft = rect.left + (rect.width / 2) - (menuWidth / 2);
+                const menuTop = rect.top - 60; // Position above the selection
+                
+                // Make sure menu stays within viewport
+                const finalLeft = Math.max(10, Math.min(menuLeft, window.innerWidth - menuWidth - 10));
+                const finalTop = Math.max(70, menuTop); // Keep below header
+                
+                // Position menu using fixed positioning
+                selectionMenu.style.position = 'fixed';
                 selectionMenu.style.display = 'block';
-                selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - (menuWidth / 2)}px`;
-                selectionMenu.style.top = `${relativeTop - 10}px`;
+                selectionMenu.style.left = `${finalLeft}px`;
+                selectionMenu.style.top = `${finalTop}px`;
             } else {
                 selectionMenu.style.display = 'none';
             }
@@ -590,7 +594,8 @@ function showNoteInput() {
         const noteInputMenu = document.getElementById('noteInputMenu');
         const noteText = document.getElementById('noteText');
         
-        // Position note input at same place as selection menu
+        // Position note input at same place as selection menu (using fixed positioning)
+        noteInputMenu.style.position = 'fixed';
         noteInputMenu.style.left = selectionMenu.style.left;
         noteInputMenu.style.top = selectionMenu.style.top;
         
