@@ -1655,6 +1655,11 @@
         function changeVisualTheme() {
             const newTheme = document.getElementById('visualThemeSelect').value;
             
+            // Cleanup old theme effects
+            if (typeof window.cleanupModernTheme === 'function') {
+                window.cleanupModernTheme();
+            }
+            
             // Remove old theme classes
             document.body.classList.remove('theme-default', 'theme-ocean', 'theme-modern');
             
@@ -1673,6 +1678,9 @@
                 
                 const themeJS = document.createElement('script');
                 themeJS.src = `theme-${newTheme}.js`;
+                themeJS.onload = () => {
+                    console.log(`🎨 ${newTheme} theme loaded and initialized!`);
+                };
                 document.head.appendChild(themeJS);
             }
             
@@ -1705,7 +1713,7 @@
                         questionsPanel.style.transform = '';
                     }, 50);
                 }
-            }, 200);
+            }, 300);
         }
     </script>
     <script src="reading-data-basic.js?v=11"></script>

@@ -124,35 +124,58 @@ modernAnimations.textContent = `
 `;
 document.head.appendChild(modernAnimations);
 
-// Enhanced interactions
+// Enhanced interactions with proper re-initialization
 function addModernInteractions() {
+    // Remove old event listeners first
+    document.querySelectorAll('.modern-glow, .modern-pulse').forEach(el => {
+        el.classList.remove('modern-glow', 'modern-pulse');
+    });
+    
     // Add glow effect to interactive elements
-    const interactiveElements = document.querySelectorAll('.nav-btn, .part-btn, input[type="text"], .drop-zone');
+    const interactiveElements = document.querySelectorAll('.nav-btn, .part-btn, input[type="text"], .drop-zone, .nav-btn-arrow, .nav-btn-check');
     
     interactiveElements.forEach(element => {
-        element.addEventListener('mouseenter', () => {
+        // Remove old listeners
+        element.removeEventListener('mouseenter', element._modernMouseEnter);
+        element.removeEventListener('mouseleave', element._modernMouseLeave);
+        element.removeEventListener('focus', element._modernFocus);
+        element.removeEventListener('blur', element._modernBlur);
+        
+        // Create new listeners
+        element._modernMouseEnter = () => {
             element.classList.add('modern-glow');
-        });
-        
-        element.addEventListener('mouseleave', () => {
+        };
+        element._modernMouseLeave = () => {
             element.classList.remove('modern-glow');
-        });
-        
-        element.addEventListener('focus', () => {
+        };
+        element._modernFocus = () => {
             element.classList.add('modern-pulse');
-        });
-        
-        element.addEventListener('blur', () => {
+        };
+        element._modernBlur = () => {
             element.classList.remove('modern-pulse');
-        });
+        };
+        
+        // Add new listeners
+        element.addEventListener('mouseenter', element._modernMouseEnter);
+        element.addEventListener('mouseleave', element._modernMouseLeave);
+        element.addEventListener('focus', element._modernFocus);
+        element.addEventListener('blur', element._modernBlur);
     });
     
     // Add ripple effect to buttons
     const buttons = document.querySelectorAll('.nav-btn, .part-btn, .nav-btn-arrow, .nav-btn-check');
     
     buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
+        // Remove old click listener
+        button.removeEventListener('click', button._modernClick);
+        
+        // Create new click listener
+        button._modernClick = function(e) {
+            // Remove old ripples
+            this.querySelectorAll('.ripple-effect').forEach(ripple => ripple.remove());
+            
             const ripple = document.createElement('span');
+            ripple.className = 'ripple-effect';
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
@@ -169,6 +192,7 @@ function addModernInteractions() {
                 transform: scale(0);
                 animation: ripple 0.6s ease-out;
                 pointer-events: none;
+                z-index: 1;
             `;
             
             this.style.position = 'relative';
@@ -178,8 +202,13 @@ function addModernInteractions() {
             setTimeout(() => {
                 ripple.remove();
             }, 600);
-        });
+        };
+        
+        // Add new click listener
+        button.addEventListener('click', button._modernClick);
     });
+    
+    console.log('🎨 Modern interactions re-initialized!');
 }
 
 // Add ripple animation
@@ -278,6 +307,36 @@ trailStyle.textContent = `
 `;
 document.head.appendChild(trailStyle);
 
+// Force apply modern styles to drop zones
+function forceApplyModernStyles() {
+    const dropZones = document.querySelectorAll('.drop-zone');
+    
+    dropZones.forEach(zone => {
+        // Force remove any inline styles that might override
+        zone.style.background = '';
+        zone.style.border = '';
+        zone.style.color = '';
+        
+        // Add modern class for additional targeting
+        zone.classList.add('modern-drop-zone');
+        
+        // Force CSS recalculation
+        zone.offsetHeight;
+        
+        // Apply styles directly as backup
+        if (document.body.classList.contains('theme-modern')) {
+            zone.style.setProperty('background', 'rgba(255, 255, 255, 0.4)', 'important');
+            zone.style.setProperty('backdrop-filter', 'blur(15px) saturate(180%)', 'important');
+            zone.style.setProperty('border', '2px dashed rgba(102, 126, 234, 0.5)', 'important');
+            zone.style.setProperty('color', '#1a202c', 'important');
+            zone.style.setProperty('border-radius', '12px', 'important');
+            zone.style.setProperty('box-shadow', '0 4px 12px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5)', 'important');
+        }
+    });
+    
+    console.log('🎨 Modern styles force applied to', dropZones.length, 'drop zones');
+}
+
 // Initialize all modern effects
 function initModernTheme() {
     // Small delay to ensure DOM is ready
@@ -288,19 +347,61 @@ function initModernTheme() {
         addParallaxEffect();
         addMouseTrail();
         
+        // Force apply modern styles to existing drop zones
+        forceApplyModernStyles();
+        
         // Add modern class to body for additional styling
         document.body.classList.add('modern-enhanced');
         
         console.log('🎨 Modern Theme activated with advanced effects!');
+        
+        // Re-apply styles periodically to ensure they stick
+        setInterval(() => {
+            if (document.body.classList.contains('theme-modern')) {
+                forceApplyModernStyles();
+            }
+        }, 2000);
     }, 100);
 }
 
 // Auto-initialize when script loads
 initModernTheme();
 
+// Cleanup function for when switching away from modern theme
+function cleanupModernTheme() {
+    // Remove all modern effects
+    document.querySelectorAll('.floating-particle').forEach(el => el.remove());
+    document.querySelectorAll('.geometric-shape').forEach(el => el.remove());
+    document.querySelectorAll('.mouse-trail').forEach(el => el.remove());
+    document.querySelectorAll('.ripple-effect').forEach(el => el.remove());
+    
+    // Remove modern classes
+    document.querySelectorAll('.modern-glow, .modern-pulse, .modern-enhanced').forEach(el => {
+        el.classList.remove('modern-glow', 'modern-pulse', 'modern-enhanced');
+    });
+    
+    // Remove event listeners
+    document.querySelectorAll('.nav-btn, .part-btn, input[type="text"], .drop-zone, .nav-btn-arrow, .nav-btn-check').forEach(element => {
+        element.removeEventListener('mouseenter', element._modernMouseEnter);
+        element.removeEventListener('mouseleave', element._modernMouseLeave);
+        element.removeEventListener('focus', element._modernFocus);
+        element.removeEventListener('blur', element._modernBlur);
+        element.removeEventListener('click', element._modernClick);
+    });
+    
+    console.log('🧹 Modern theme cleaned up!');
+}
+
+// Make functions globally available
+window.cleanupModernTheme = cleanupModernTheme;
+window.forceApplyModernStyles = forceApplyModernStyles;
+
 // Re-initialize interactions when content changes
 const observer = new MutationObserver(() => {
-    addModernInteractions();
+    if (document.body.classList.contains('theme-modern')) {
+        addModernInteractions();
+        forceApplyModernStyles();
+    }
 });
 
 observer.observe(document.body, {

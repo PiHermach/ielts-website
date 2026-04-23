@@ -324,7 +324,7 @@ body.theme-modern .word-btn:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* MODERN DROP ZONES - ULTRA BEAUTIFUL - FORCE OVERRIDE ALL STYLES */
+/* MODERN DROP ZONES - ULTRA BEAUTIFUL - MAXIMUM SPECIFICITY OVERRIDE */
 body.theme-modern .summary-text {
     background: rgba(255, 255, 255, 0.3) !important;
     backdrop-filter: blur(15px) saturate(180%) !important;
@@ -337,7 +337,7 @@ body.theme-modern .summary-text {
     font-weight: 500 !important;
 }
 
-/* Force override for ALL possible drop-zone selectors */
+/* MAXIMUM SPECIFICITY - Force override ALL possible drop-zone styles */
 body.theme-modern .drop-zone,
 body.theme-modern span.drop-zone,
 body.theme-modern .summary-container .drop-zone,
@@ -346,7 +346,9 @@ body.theme-modern .drop-zone[id^="drop-"],
 body.theme-modern .question-content .drop-zone,
 body.theme-modern .summary-completion .drop-zone,
 body.theme-modern div.drop-zone,
-body.theme-modern .question-item .drop-zone {
+body.theme-modern .question-item .drop-zone,
+body.theme-modern .summary-container span.drop-zone,
+body.theme-modern .summary-text span.drop-zone {
     background: rgba(255, 255, 255, 0.4) !important;
     backdrop-filter: blur(15px) saturate(180%) !important;
     border: 2px dashed rgba(102, 126, 234, 0.5) !important;
@@ -370,7 +372,7 @@ body.theme-modern .question-item .drop-zone {
     min-height: 32px !important;
 }
 
-/* Hover states for all drop zones */
+/* Hover states with maximum specificity */
 body.theme-modern .drop-zone:hover,
 body.theme-modern span.drop-zone:hover,
 body.theme-modern .summary-container .drop-zone:hover,
@@ -379,7 +381,9 @@ body.theme-modern .drop-zone[id^="drop-"]:hover,
 body.theme-modern .question-content .drop-zone:hover,
 body.theme-modern .summary-completion .drop-zone:hover,
 body.theme-modern div.drop-zone:hover,
-body.theme-modern .question-item .drop-zone:hover {
+body.theme-modern .question-item .drop-zone:hover,
+body.theme-modern .summary-container span.drop-zone:hover,
+body.theme-modern .summary-text span.drop-zone:hover {
     background: rgba(255, 255, 255, 0.5) !important;
     border-color: #667eea !important;
     transform: translateY(-2px) scale(1.02) !important;
@@ -388,7 +392,7 @@ body.theme-modern .question-item .drop-zone:hover {
         inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
 }
 
-/* Filled states for all drop zones */
+/* Filled states with maximum specificity */
 body.theme-modern .drop-zone.filled,
 body.theme-modern span.drop-zone.filled,
 body.theme-modern .summary-container .drop-zone.filled,
@@ -397,7 +401,9 @@ body.theme-modern .drop-zone[id^="drop-"].filled,
 body.theme-modern .question-content .drop-zone.filled,
 body.theme-modern .summary-completion .drop-zone.filled,
 body.theme-modern div.drop-zone.filled,
-body.theme-modern .question-item .drop-zone.filled {
+body.theme-modern .question-item .drop-zone.filled,
+body.theme-modern .summary-container span.drop-zone.filled,
+body.theme-modern .summary-text span.drop-zone.filled {
     background: rgba(16, 185, 129, 0.2) !important;
     border: 2px solid #10b981 !important;
     color: #065f46 !important;
@@ -407,7 +413,7 @@ body.theme-modern .question-item .drop-zone.filled {
     font-weight: 600 !important;
 }
 
-/* Drag over states for all drop zones */
+/* Drag over states with maximum specificity */
 body.theme-modern .drop-zone.drag-over,
 body.theme-modern span.drop-zone.drag-over,
 body.theme-modern .summary-container .drop-zone.drag-over,
@@ -416,7 +422,9 @@ body.theme-modern .drop-zone[id^="drop-"].drag-over,
 body.theme-modern .question-content .drop-zone.drag-over,
 body.theme-modern .summary-completion .drop-zone.drag-over,
 body.theme-modern div.drop-zone.drag-over,
-body.theme-modern .question-item .drop-zone.drag-over {
+body.theme-modern .question-item .drop-zone.drag-over,
+body.theme-modern .summary-container span.drop-zone.drag-over,
+body.theme-modern .summary-text span.drop-zone.drag-over {
     background: rgba(102, 126, 234, 0.3) !important;
     border-color: #667eea !important;
     transform: translateY(-4px) scale(1.05) !important;
@@ -492,15 +500,31 @@ body.theme-modern .note-content {
     font-weight: 500;
 }
 
-/* Modern bottom navigation */
+/* Modern bottom navigation - Ultra Beautiful */
 body.theme-modern .bottom-nav {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 24px 24px 0 0 !important;
     box-shadow: 
-        0 -8px 32px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        0 -12px 40px rgba(0, 0, 0, 0.15) !important,
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 20px !important;
+    z-index: 1000 !important;
+}
+
+/* Modern navigation layout */
+body.theme-modern .nav-center {
+    display: flex !important;
+    gap: 8px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
 }
 
 body.theme-modern .part-info-text {
@@ -628,6 +652,18 @@ body.theme-modern .settings-menu select {
 body.theme-modern .settings-menu select:focus {
     border-color: #667eea;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+}
+
+/* Additional class for JavaScript targeting */
+body.theme-modern .modern-drop-zone {
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 2px dashed rgba(102, 126, 234, 0.5) !important;
+    color: #1a202c !important;
+    border-radius: 12px !important;
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.1) !important,
+        inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Smooth transitions for all elements */
