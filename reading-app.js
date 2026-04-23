@@ -810,27 +810,14 @@ function handleDrop(event, questionId) {
     dropZone.classList.remove('drag-over');
     
     if (draggedWord && draggedKey) {
-        // Get old answer if exists
-        const oldAnswer = userAnswers[questionId];
+        // Save the answer
+        userAnswers[questionId] = draggedWord;
         
-        // Update drop zone FIRST before saving
-        const displayText = `${draggedKey}. ${draggedWord}`;
+        // Update navigation
+        updateNavigation();
         
-        // Clear and update the drop zone immediately
-        dropZone.textContent = '';
-        dropZone.innerText = displayText;
-        dropZone.classList.add('filled');
-        
-        // Force browser to render the change
-        dropZone.style.display = 'none';
-        dropZone.offsetHeight; // Trigger reflow
-        dropZone.style.display = 'inline-block';
-        
-        // Now save the answer
-        saveAnswer(questionId, draggedWord);
-        
-        // Reload the word list to hide used words
-        reloadWordList();
+        // Reload the entire summary section to show the answer
+        reloadSummarySection();
         
         draggedWord = null;
         draggedKey = null;
@@ -843,38 +830,64 @@ function clearDropZone(questionId) {
     const dropZone = document.getElementById(`drop-${questionId}`);
     if (!dropZone || !dropZone.classList.contains('filled')) return;
     
-    const word = userAnswers[questionId];
-    
     // Remove answer
     delete userAnswers[questionId];
-    dropZone.textContent = '';
-    dropZone.classList.remove('filled');
     
+    // Update navigation
     updateNavigation();
     
-    // Reload the word list to show the word again
-    reloadWordList();
+    // Reload the entire summary section
+    reloadSummarySection();
 }
 
-// Reload word list to update visibility
-function reloadWordList() {
+// Reload summary section to update drop zones and word list
+function reloadSummarySection() {
     const passage = readingData.passages[currentPart - 1];
     passage.questionGroups.forEach(group => {
-        if (group.type === 'summary-completion' && group.wordList) {
-            const wordButtons = document.getElementById('wordButtons');
-            if (wordButtons) {
-                let html = '';
-                group.wordList.forEach(word => {
-                    const isUsed = Object.values(userAnswers).some(ans => ans && ans.toLowerCase() === word.value.toLowerCase());
-                    // Only show words that are NOT used
-                    if (!isUsed) {
-                        html += `<button class="word-btn" draggable="true" ondragstart="handleDragStart(event)" data-word="${word.value}" data-key="${word.key}" data-full="${word.key}. ${word.value}">${word.key}. ${word.value}</button>`;
+        if (group.type === 'summary-completion') {
+            // Find the summary container
+            const summaryContainer = document.querySelector('.summary-container');
+            const wordList = document.querySelector('.word-list');
+            
+            if (summaryContainer && group.summaryText) {
+                // Rebuild summary with updated answers
+                let summaryHTML = group.summaryText;
+                group.questions.forEach(q => {
+                    const currentAnswer = userAnswers[q.id] || '';
+                    let displayText = '';
+                    if (currentAnswer && group.wordList) {
+                        const wordItem = group.wordList.find(w => w.value.toLowerCase() === currentAnswer.toLowerCase());
+                        displayText = wordItem ? `${wordItem.key}. ${wordItem.value}` : currentAnswer;
                     }
+                    const regex = new RegExp(`<input[^>]*id="answer-${q.id}"[^>]*>`, 'g');
+                    summaryHTML = summaryHTML.replace(regex, 
+                        `<span class="question-number-inline">${q.id}</span><span class="drop-zone ${currentAnswer ? 'filled' : ''}" id="drop-${q.id}" data-question-id="${q.id}" ondrop="handleDrop(event, ${q.id})" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="clearDropZone(${q.id})">${displayText}</span>`
+                    );
                 });
-                wordButtons.innerHTML = html;
+                summaryContainer.innerHTML = summaryHTML;
+            }
+            
+            if (wordList && group.wordList) {
+                // Rebuild word list
+                const wordButtons = wordList.querySelector('.word-buttons');
+                if (wordButtons) {
+                    let html = '';
+                    group.wordList.forEach(word => {
+                        const isUsed = Object.values(userAnswers).some(ans => ans && ans.toLowerCase() === word.value.toLowerCase());
+                        if (!isUsed) {
+                            html += `<button class="word-btn" draggable="true" ondragstart="handleDragStart(event)" data-word="${word.value}" data-key="${word.key}" data-full="${word.key}. ${word.value}">${word.key}. ${word.value}</button>`;
+                        }
+                    });
+                    wordButtons.innerHTML = html;
+                }
             }
         }
     });
+}
+
+// Reload word list to update visibility (kept for compatibility)
+function reloadWordList() {
+    reloadSummarySection();
 }
 
 // Reset opacity when drag ends
