@@ -1,34 +1,50 @@
-/* Ocean Theme - Beautiful underwater experience with bubbles and ripple effects */
+/* Ocean Theme - Immersive underwater experience with realistic water effects */
 
-/* Ocean gradient background */
+/* Ocean gradient background with depth */
 body.theme-ocean {
-    background: linear-gradient(180deg, #0a4d68 0%, #088395 50%, #05bfdb 100%);
+    background: linear-gradient(180deg, #001f3f 0%, #0a4d68 30%, #088395 60%, #05bfdb 100%);
     position: relative;
     overflow-x: hidden;
 }
 
-/* Animated water overlay */
+/* Animated caustics (light patterns on ocean floor) */
 body.theme-ocean::before {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 200%;
+    height: 200%;
     background: 
-        radial-gradient(ellipse at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+        radial-gradient(ellipse at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.12) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(5, 191, 219, 0.1) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
-    animation: waterShimmer 8s ease-in-out infinite;
+    animation: caustics 15s ease-in-out infinite;
+    opacity: 0.6;
 }
 
-@keyframes waterShimmer {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
+@keyframes caustics {
+    0%, 100% { 
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
+    }
+    25% { 
+        transform: translate(-5%, -5%) scale(1.05);
+        opacity: 0.8;
+    }
+    50% { 
+        transform: translate(-10%, 5%) scale(1);
+        opacity: 0.7;
+    }
+    75% { 
+        transform: translate(-5%, 10%) scale(1.05);
+        opacity: 0.8;
+    }
 }
 
-/* Bubbles container */
+/* Underwater fog/particles layer */
 body.theme-ocean::after {
     content: '';
     position: fixed;
@@ -36,29 +52,75 @@ body.theme-ocean::after {
     left: 0;
     width: 100%;
     height: 100%;
+    background: 
+        radial-gradient(circle at 30% 40%, rgba(5, 191, 219, 0.05) 0%, transparent 30%),
+        radial-gradient(circle at 70% 60%, rgba(8, 131, 149, 0.05) 0%, transparent 30%),
+        radial-gradient(circle at 50% 80%, rgba(10, 77, 104, 0.05) 0%, transparent 30%);
     pointer-events: none;
-    z-index: 2;
+    z-index: 1;
+    animation: underwaterFog 20s ease-in-out infinite;
 }
 
-/* Individual bubbles */
+@keyframes underwaterFog {
+    0%, 100% { 
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    50% { 
+        transform: translateY(-20px);
+        opacity: 0.6;
+    }
+}
+
+/* Water distortion overlay for text */
+.water-distortion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: overlay;
+    opacity: 0.15;
+}
+
+/* Individual bubbles with wobble */
 .bubble {
     position: fixed;
     bottom: -100px;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
     border-radius: 50%;
-    opacity: 0.6;
+    opacity: 0.7;
     pointer-events: none;
     z-index: 2;
-    animation: rise linear infinite;
+    animation: rise linear infinite, wobble 3s ease-in-out infinite;
     box-shadow: 
-        inset 0 0 10px rgba(255, 255, 255, 0.5),
-        0 0 20px rgba(255, 255, 255, 0.3);
+        inset -5px -5px 10px rgba(255, 255, 255, 0.6),
+        inset 5px 5px 10px rgba(5, 191, 219, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.4);
+    filter: blur(0.5px);
 }
 
 @keyframes rise {
     to {
         bottom: 110%;
-        transform: translateX(var(--drift)) scale(1.2);
+        transform: translateX(var(--drift)) scale(1.3);
+    }
+}
+
+@keyframes wobble {
+    0%, 100% { 
+        border-radius: 50%;
+    }
+    25% { 
+        border-radius: 45% 55% 50% 50%;
+    }
+    50% { 
+        border-radius: 50% 50% 45% 55%;
+    }
+    75% { 
+        border-radius: 55% 45% 55% 45%;
     }
 }
 
@@ -76,10 +138,13 @@ body.theme-ocean::after {
 
 .ripple {
     position: absolute;
-    border: 2px solid rgba(255, 255, 255, 0.6);
+    border: 3px solid rgba(5, 191, 219, 0.8);
     border-radius: 50%;
-    animation: ripple-animation 1.5s ease-out;
+    animation: ripple-animation 2s ease-out;
     pointer-events: none;
+    box-shadow: 
+        0 0 20px rgba(5, 191, 219, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 @keyframes ripple-animation {
@@ -87,20 +152,62 @@ body.theme-ocean::after {
         width: 0;
         height: 0;
         opacity: 1;
+        border-width: 3px;
+    }
+    50% {
+        opacity: 0.6;
+        border-width: 2px;
     }
     100% {
-        width: 300px;
-        height: 300px;
+        width: 400px;
+        height: 400px;
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+/* Multiple ripple waves */
+.ripple::before,
+.ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(5, 191, 219, 0.4);
+    border-radius: 50%;
+    animation: ripple-wave 2s ease-out;
+}
+
+.ripple::before {
+    animation-delay: 0.2s;
+}
+
+.ripple::after {
+    animation-delay: 0.4s;
+}
+
+@keyframes ripple-wave {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        width: 400px;
+        height: 400px;
         opacity: 0;
     }
 }
 
-/* Header styling */
+/* Header styling with depth */
 body.theme-ocean .top-header {
-    background: rgba(10, 77, 104, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid rgba(5, 191, 219, 0.3);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(1, 31, 63, 0.95);
+    backdrop-filter: blur(15px) saturate(180%);
+    border-bottom: 2px solid rgba(5, 191, 219, 0.4);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        inset 0 -1px 0 rgba(5, 191, 219, 0.3);
 }
 
 body.theme-ocean .logo-text {
@@ -130,19 +237,27 @@ body.theme-ocean .toolbar-text {
     color: #e0f7fa;
 }
 
-/* Main panels */
+/* Main panels with glass effect */
 body.theme-ocean .passage-panel {
-    background: rgba(10, 77, 104, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(10, 77, 104, 0.75);
+    backdrop-filter: blur(15px) saturate(180%);
     position: relative;
     z-index: 10;
+    box-shadow: 
+        inset 0 0 60px rgba(5, 191, 219, 0.1),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    border-right: 1px solid rgba(5, 191, 219, 0.2);
 }
 
 body.theme-ocean .questions-panel {
-    background: rgba(8, 131, 149, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(8, 131, 149, 0.75);
+    backdrop-filter: blur(15px) saturate(180%);
     position: relative;
     z-index: 10;
+    box-shadow: 
+        inset 0 0 60px rgba(5, 191, 219, 0.1),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid rgba(5, 191, 219, 0.2);
 }
 
 /* Resizer */
@@ -156,35 +271,65 @@ body.theme-ocean .resizer:hover {
     box-shadow: 0 0 20px rgba(5, 191, 219, 0.8);
 }
 
-/* Text styling */
+/* Text styling with subtle water distortion */
 body.theme-ocean .passage-title {
     color: #e0f7fa;
     border-bottom-color: rgba(5, 191, 219, 0.3);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 
+        0 0 10px rgba(5, 191, 219, 0.5),
+        0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: textWave 8s ease-in-out infinite;
 }
 
 body.theme-ocean .passage-content p {
     color: #e0f7fa;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    text-shadow: 
+        0 0 5px rgba(5, 191, 219, 0.3),
+        0 1px 3px rgba(0, 0, 0, 0.2);
+    animation: textWave 10s ease-in-out infinite;
+}
+
+@keyframes textWave {
+    0%, 100% {
+        transform: translateY(0) scaleY(1);
+        filter: blur(0);
+    }
+    25% {
+        transform: translateY(-1px) scaleY(1.002);
+        filter: blur(0.1px);
+    }
+    50% {
+        transform: translateY(0) scaleY(0.998);
+        filter: blur(0);
+    }
+    75% {
+        transform: translateY(1px) scaleY(1.002);
+        filter: blur(0.1px);
+    }
 }
 
 /* Question sections */
 body.theme-ocean .question-group-header {
     background: rgba(5, 191, 219, 0.2);
     border: 1px solid rgba(5, 191, 219, 0.3);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 body.theme-ocean .question-section h3 {
     color: #e0f7fa;
+    text-shadow: 0 0 10px rgba(5, 191, 219, 0.5);
+    animation: textWave 9s ease-in-out infinite;
 }
 
 body.theme-ocean .question-instruction {
     color: #b2ebf2;
+    animation: textWave 11s ease-in-out infinite;
 }
 
 body.theme-ocean .question-text {
     color: #e0f7fa;
+    animation: textWave 12s ease-in-out infinite;
 }
 
 body.theme-ocean .question-number {
@@ -328,12 +473,14 @@ body.theme-ocean .note-content {
     color: #e0f7fa;
 }
 
-/* Bottom navigation */
+/* Bottom navigation with depth */
 body.theme-ocean .bottom-nav {
-    background: rgba(10, 77, 104, 0.95);
-    backdrop-filter: blur(10px);
-    border-top: 2px solid rgba(5, 191, 219, 0.3);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(1, 31, 63, 0.95);
+    backdrop-filter: blur(15px) saturate(180%);
+    border-top: 2px solid rgba(5, 191, 219, 0.4);
+    box-shadow: 
+        0 -4px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(5, 191, 219, 0.3);
 }
 
 body.theme-ocean .part-info-text {
@@ -430,7 +577,77 @@ body.theme-ocean .settings-menu select {
     }
 }
 
+/* Light rays effect */
+.light-rays {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 1;
+    background: 
+        linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.03) 50%, transparent 70%),
+        linear-gradient(-45deg, transparent 30%, rgba(5, 191, 219, 0.02) 50%, transparent 70%);
+    animation: lightRays 30s linear infinite;
+}
+
+@keyframes lightRays {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Floating particles */
+.particle {
+    position: fixed;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    animation: floatParticle linear infinite;
+    opacity: 0.4;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.4;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(-100px) translateX(var(--drift)) scale(1);
+        opacity: 0;
+    }
+}
+
 /* Smooth transitions */
 body.theme-ocean * {
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Enhance glass morphism on interactive elements */
+body.theme-ocean .nav-btn,
+body.theme-ocean .part-btn,
+body.theme-ocean .question-content input[type="text"] {
+    backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.theme-ocean .nav-btn:hover,
+body.theme-ocean .part-btn:hover {
+    box-shadow: 
+        0 6px 20px rgba(5, 191, 219, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
