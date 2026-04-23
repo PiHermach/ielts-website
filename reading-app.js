@@ -507,7 +507,7 @@ function setupSelectionMenu() {
                 
                 // Position menu using absolute positioning relative to viewport
                 const menuLeft = rect.left + (rect.width / 2) - (menuWidth / 2);
-                const menuTop = rect.top - 60; // Position above the selection
+                const menuTop = rect.top - 12; // Position 12px above the selection
                 
                 // Make sure menu stays within viewport
                 const finalLeft = Math.max(10, Math.min(menuLeft, window.innerWidth - menuWidth - 10));
