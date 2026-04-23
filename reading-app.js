@@ -30,6 +30,9 @@ function loadPassage(partId) {
     `;
     
     document.getElementById('currentPassage').textContent = `PASSAGE ${partId}`;
+    
+    // Re-setup selection menu after content is loaded
+    setupSelectionMenu();
 }
 
 // Load questions
@@ -246,45 +249,62 @@ function setupSelectionMenu() {
     const highlightMenu = document.getElementById('highlightMenu');
     const passagePanel = document.getElementById('passagePanel');
     
-    // Show menu immediately when text is selected
-    passagePanel.addEventListener('mouseup', (e) => {
+    // Remove old event listener if exists
+    const oldHandler = passagePanel._mouseupHandler;
+    if (oldHandler) {
+        passagePanel.removeEventListener('mouseup', oldHandler);
+    }
+    
+    // Create new handler
+    const mouseupHandler = (e) => {
         // Prevent if resizing
         if (isResizing) return;
         
-        const selection = window.getSelection();
-        const selectedText = selection.toString().trim();
-        
-        if (selectedText && selection.rangeCount > 0) {
-            selectedRange = selection.getRangeAt(0);
-            const rect = selectedRange.getBoundingClientRect();
-            const panelRect = passagePanel.getBoundingClientRect();
+        // Small delay to ensure selection is complete
+        setTimeout(() => {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
             
-            // Calculate position relative to passage panel
-            const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
-            const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
-            
-            // Position menu above selection
-            selectionMenu.style.display = 'block';
-            selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 100}px`;
-            selectionMenu.style.top = `${relativeTop - 45}px`;
-        } else {
-            selectionMenu.style.display = 'none';
-        }
-    });
+            if (selectedText && selection.rangeCount > 0) {
+                selectedRange = selection.getRangeAt(0);
+                const rect = selectedRange.getBoundingClientRect();
+                const panelRect = passagePanel.getBoundingClientRect();
+                
+                // Calculate position relative to passage panel
+                const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
+                const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
+                
+                // Position menu above selection
+                selectionMenu.style.display = 'block';
+                selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 100}px`;
+                selectionMenu.style.top = `${relativeTop - 45}px`;
+            } else {
+                selectionMenu.style.display = 'none';
+            }
+        }, 50);
+    };
     
-    // Hide menus when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.selection-menu') && !e.target.closest('.highlight')) {
+    // Store handler reference and add event listener
+    passagePanel._mouseupHandler = mouseupHandler;
+    passagePanel.addEventListener('mouseup', mouseupHandler);
+    
+    // Hide menus when clicking outside (only setup once)
+    if (!document._selectionMenuSetup) {
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.selection-menu') && !e.target.closest('.highlight')) {
+                selectionMenu.style.display = 'none';
+                highlightMenu.style.display = 'none';
+            }
+        });
+        
+        // Also hide when clicking on questions panel
+        document.querySelector('.questions-panel').addEventListener('click', () => {
             selectionMenu.style.display = 'none';
             highlightMenu.style.display = 'none';
-        }
-    });
-    
-    // Also hide when clicking on questions panel
-    document.querySelector('.questions-panel').addEventListener('click', () => {
-        selectionMenu.style.display = 'none';
-        highlightMenu.style.display = 'none';
-    });
+        });
+        
+        document._selectionMenuSetup = true;
+    }
 }
 
 // Highlight selection
