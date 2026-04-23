@@ -99,42 +99,46 @@ function loadQuestions(partId) {
                 `;
             });
         } else if (group.type === 'multiple-choice-table') {
-            // Multiple choice with table (A-G format)
-            html += '<div class="mc-table-container">';
-            html += '<div class="mc-table-header">';
-            group.options.forEach(opt => {
-                html += `<div class="mc-table-header-cell">${opt}</div>`;
-            });
-            html += '</div>';
+            // Multiple choice with table layout (A-G format)
             
+            // Create table with header
+            html += '<div class="matching-table-container">';
+            html += '<table class="matching-table">';
+            
+            // Header row
+            html += '<thead><tr><th class="matching-header-empty"></th>';
+            group.options.forEach(opt => {
+                html += `<th class="matching-header-cell">${opt}</th>`;
+            });
+            html += '</tr></thead>';
+            
+            // Question rows
+            html += '<tbody>';
             group.questions.forEach(q => {
                 const isFlagged = flaggedQuestions.has(q.id);
                 const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
                 
-                html += `
-                    <div class="question-item mc-table-item ${isAnswered ? 'answered' : ''}" id="question-${q.id}">
-                        <i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>
-                        <div class="question-number">${q.id}</div>
-                        <div class="question-content">
-                            <label class="question-text">${q.text}</label>
-                            <div class="radio-group-horizontal">
-                                ${group.options.map(opt => `
-                                    <label class="radio-label-horizontal">
-                                        <input type="radio" 
-                                               name="q${q.id}" 
-                                               value="${opt}"
-                                               ${userAnswers[q.id] === opt ? 'checked' : ''}
-                                               onchange="saveAnswer(${q.id}, '${opt}')">
-                                    </label>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                html += `<tr class="matching-row ${isAnswered ? 'answered' : ''}" id="question-${q.id}">`;
+                html += `<td class="matching-question-cell">`;
+                html += `<i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>`;
+                html += `<span class="question-number-inline">${q.id}</span>`;
+                html += `<span class="question-text-inline">${q.text}</span>`;
+                html += `</td>`;
+                
+                // Radio button cells
+                group.options.forEach(opt => {
+                    html += `<td class="matching-radio-cell">`;
+                    html += `<input type="radio" name="q${q.id}" value="${opt}" ${userAnswers[q.id] === opt ? 'checked' : ''} onchange="saveAnswer(${q.id}, '${opt}')">`;
+                    html += `</td>`;
+                });
+                
+                html += '</tr>';
             });
+            html += '</tbody>';
+            html += '</table>';
             html += '</div>';
         } else if (group.type === 'matching') {
-            // Matching questions with horizontal radio layout
+            // Matching questions with table layout
             if (group.note) {
                 html += `<div class="question-note"><strong>NB:</strong> ${group.note}</div>`;
             }
@@ -150,34 +154,42 @@ function loadQuestions(partId) {
                 html += '</div></div>';
             }
             
-            // Create header with option letters
-            html += '<div class="matching-header-row">';
-            group.optionsList.forEach(opt => {
-                html += `<div class="matching-header-letter">${opt.key}</div>`;
-            });
-            html += '</div>';
+            // Create table with header
+            html += '<div class="matching-table-container">';
+            html += '<table class="matching-table">';
             
-            // Create questions with radio buttons
+            // Header row
+            html += '<thead><tr><th class="matching-header-empty"></th>';
+            group.optionsList.forEach(opt => {
+                html += `<th class="matching-header-cell">${opt.key}</th>`;
+            });
+            html += '</tr></thead>';
+            
+            // Question rows
+            html += '<tbody>';
             group.questions.forEach(q => {
                 const isFlagged = flaggedQuestions.has(q.id);
                 const isAnswered = userAnswers[q.id] && userAnswers[q.id].trim() !== '';
                 
-                html += `<div class="question-item matching-question ${isAnswered ? 'answered' : ''}" id="question-${q.id}">`;
+                html += `<tr class="matching-row ${isAnswered ? 'answered' : ''}" id="question-${q.id}">`;
+                html += `<td class="matching-question-cell">`;
                 html += `<i class="fas fa-flag flag-icon ${isFlagged ? 'flagged' : ''}" onclick="toggleFlag(${q.id})"></i>`;
-                html += `<div class="question-number">${q.id}</div>`;
-                html += `<div class="question-content">`;
-                html += `<label class="question-text">${q.text}</label>`;
-                html += `<div class="matching-radio-row">`;
+                html += `<span class="question-number-inline">${q.id}</span>`;
+                html += `<span class="question-text-inline">${q.text}</span>`;
+                html += `</td>`;
                 
-                // Radio buttons for each option
+                // Radio button cells
                 group.optionsList.forEach(opt => {
-                    html += `<label class="matching-radio-label">`;
+                    html += `<td class="matching-radio-cell">`;
                     html += `<input type="radio" name="q${q.id}" value="${opt.key}" ${userAnswers[q.id] === opt.key ? 'checked' : ''} onchange="saveAnswer(${q.id}, '${opt.key}')">`;
-                    html += `</label>`;
+                    html += `</td>`;
                 });
                 
-                html += `</div></div></div>`;
+                html += '</tr>';
             });
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
         } else if (group.type === 'multiple-choice') {
             // Regular multiple choice
             group.questions.forEach(q => {
@@ -236,7 +248,10 @@ function loadQuestions(partId) {
                 html += '<div class="word-buttons" id="wordButtons">';
                 group.wordList.forEach(word => {
                     const isUsed = Object.values(userAnswers).some(ans => ans && ans.toLowerCase() === word.value.toLowerCase());
-                    html += `<button class="word-btn ${isUsed ? 'used' : ''}" draggable="${!isUsed}" ondragstart="handleDragStart(event)" data-word="${word.value}" data-key="${word.key}" data-full="${word.key}. ${word.value}">${word.key}. ${word.value}</button>`;
+                    // Only show words that are NOT used
+                    if (!isUsed) {
+                        html += `<button class="word-btn" draggable="true" ondragstart="handleDragStart(event)" data-word="${word.value}" data-key="${word.key}" data-full="${word.key}. ${word.value}">${word.key}. ${word.value}</button>`;
+                    }
                 });
                 html += '</div></div>';
             }
@@ -814,23 +829,8 @@ function handleDrop(event, questionId) {
         // Now save the answer
         saveAnswer(questionId, draggedWord);
         
-        // If there was an old answer, unmark it
-        if (oldAnswer) {
-            const wordButtons = document.querySelectorAll('.word-btn');
-            wordButtons.forEach(btn => {
-                if (btn.getAttribute('data-word') === oldAnswer) {
-                    btn.classList.remove('used');
-                    btn.setAttribute('draggable', 'true');
-                }
-            });
-        }
-        
-        // Mark new word as used
-        if (draggedElement) {
-            draggedElement.classList.add('used');
-            draggedElement.setAttribute('draggable', 'false');
-            draggedElement.style.opacity = '1';
-        }
+        // Reload the word list to hide used words
+        reloadWordList();
         
         draggedWord = null;
         draggedKey = null;
@@ -850,16 +850,31 @@ function clearDropZone(questionId) {
     dropZone.textContent = '';
     dropZone.classList.remove('filled');
     
-    // Unmark word
-    const wordButtons = document.querySelectorAll('.word-btn');
-    wordButtons.forEach(btn => {
-        if (btn.getAttribute('data-word') === word) {
-            btn.classList.remove('used');
-            btn.setAttribute('draggable', 'true');
+    updateNavigation();
+    
+    // Reload the word list to show the word again
+    reloadWordList();
+}
+
+// Reload word list to update visibility
+function reloadWordList() {
+    const passage = readingData.passages[currentPart - 1];
+    passage.questionGroups.forEach(group => {
+        if (group.type === 'summary-completion' && group.wordList) {
+            const wordButtons = document.getElementById('wordButtons');
+            if (wordButtons) {
+                let html = '';
+                group.wordList.forEach(word => {
+                    const isUsed = Object.values(userAnswers).some(ans => ans && ans.toLowerCase() === word.value.toLowerCase());
+                    // Only show words that are NOT used
+                    if (!isUsed) {
+                        html += `<button class="word-btn" draggable="true" ondragstart="handleDragStart(event)" data-word="${word.value}" data-key="${word.key}" data-full="${word.key}. ${word.value}">${word.key}. ${word.value}</button>`;
+                    }
+                });
+                wordButtons.innerHTML = html;
+            }
         }
     });
-    
-    updateNavigation();
 }
 
 // Reset opacity when drag ends
