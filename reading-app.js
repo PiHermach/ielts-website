@@ -244,13 +244,10 @@ function setupResizer() {
 function setupSelectionMenu() {
     const selectionMenu = document.getElementById('selectionMenu');
     const highlightMenu = document.getElementById('highlightMenu');
+    const passagePanel = document.getElementById('passagePanel');
     
-    document.addEventListener('mouseup', (e) => {
-        if (e.target.closest('.questions-panel')) {
-            selectionMenu.style.display = 'none';
-            return;
-        }
-        
+    // Show menu immediately when text is selected
+    passagePanel.addEventListener('mouseup', (e) => {
         const selection = window.getSelection();
         const selectedText = selection.toString().trim();
         
@@ -258,6 +255,7 @@ function setupSelectionMenu() {
             selectedRange = selection.getRangeAt(0);
             const rect = selectedRange.getBoundingClientRect();
             
+            // Position menu above selection, accounting for scroll position
             selectionMenu.style.display = 'block';
             selectionMenu.style.left = `${rect.left + (rect.width / 2) - 100}px`;
             selectionMenu.style.top = `${rect.top + window.scrollY - 45}px`;
@@ -266,11 +264,18 @@ function setupSelectionMenu() {
         }
     });
     
+    // Hide menus when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.selection-menu') && !e.target.closest('.highlight')) {
             selectionMenu.style.display = 'none';
             highlightMenu.style.display = 'none';
         }
+    });
+    
+    // Also hide when clicking on questions panel
+    document.querySelector('.questions-panel').addEventListener('click', () => {
+        selectionMenu.style.display = 'none';
+        highlightMenu.style.display = 'none';
     });
 }
 

@@ -45,11 +45,46 @@
         }
         
         .logo-text { font-size: 1.5rem; font-weight: bold; color: #2563eb; }
+        
+        body.theme-black-white .logo-text {
+            color: #4a9eff;
+        }
+        
+        body.theme-yellow-black .logo-text {
+            color: yellow;
+        }
+        
         .test-info { flex: 1; text-align: center; }
         .test-title { font-size: 0.85rem; color: #666; }
+        
+        body.theme-black-white .test-title {
+            color: #aaa;
+        }
+        
+        body.theme-yellow-black .test-title {
+            color: yellow;
+        }
+        
         .test-name { font-size: 1rem; font-weight: bold; }
         .timer-display { font-size: 1rem; color: #666; }
+        
+        body.theme-black-white .timer-display {
+            color: #aaa;
+        }
+        
+        body.theme-yellow-black .timer-display {
+            color: yellow;
+        }
+        
         .header-icons { display: flex; gap: 15px; color: #666; cursor: pointer; }
+        
+        body.theme-black-white .header-icons {
+            color: #aaa;
+        }
+        
+        body.theme-yellow-black .header-icons {
+            color: yellow;
+        }
         
         .toolbar {
             background: #f5f5f5;
@@ -73,6 +108,18 @@
             border-bottom-color: #555;
         }
         
+        .toolbar-text {
+            color: #666;
+        }
+        
+        body.theme-black-white .toolbar-text {
+            color: #aaa;
+        }
+        
+        body.theme-yellow-black .toolbar-text {
+            color: yellow;
+        }
+        
         .main-container {
             display: flex;
             height: calc(100vh - 165px);
@@ -88,6 +135,14 @@
             width: 5px;
             background: #ddd;
             cursor: col-resize;
+        }
+        
+        body.theme-black-white .resizer {
+            background: #555;
+        }
+        
+        body.theme-yellow-black .resizer {
+            background: #555;
         }
         
         .resizer:hover { background: #2563eb; }
@@ -238,6 +293,19 @@
             border-top-color: #555;
         }
         
+        .part-info-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        body.theme-black-white .part-info-text {
+            color: #aaa;
+        }
+        
+        body.theme-yellow-black .part-info-text {
+            color: yellow;
+        }
+        
         .nav-center {
             display: flex;
             gap: 5px;
@@ -253,6 +321,18 @@
             cursor: pointer;
             font-weight: 500;
             position: relative;
+        }
+        
+        body.theme-black-white .part-btn {
+            background: #1a1a1a;
+            color: white;
+            border-color: #555;
+        }
+        
+        body.theme-yellow-black .part-btn {
+            background: #1a1a00;
+            color: yellow;
+            border-color: #555;
         }
         
         .part-btn.active { background: #2563eb; color: white; }
@@ -275,9 +355,21 @@
             position: relative;
         }
         
+        body.theme-black-white .nav-btn {
+            background: #1a1a1a;
+            color: white;
+            border-color: #555;
+        }
+        
+        body.theme-yellow-black .nav-btn {
+            background: #1a1a00;
+            color: yellow;
+            border-color: #555;
+        }
+        
         .nav-btn:hover { background: #e8e8e8; }
         .nav-btn.active { background: #2563eb; color: white; }
-        .nav-btn.answered { background: #90EE90; }
+        .nav-btn.answered { background: #90EE90; color: black; }
         .nav-btn.flagged::after {
             content: '🚩';
             position: absolute;
@@ -294,6 +386,14 @@
             height: 40px;
             border-radius: 4px;
             cursor: pointer;
+        }
+        
+        body.theme-black-white .nav-btn-arrow {
+            background: #444;
+        }
+        
+        body.theme-yellow-black .nav-btn-arrow {
+            background: #333;
         }
         
         .nav-btn-check {
@@ -350,7 +450,7 @@
     </div>
 
     <div class="toolbar">
-        <span style="font-size: 0.9rem; color: #666;">Read the text and answer the questions</span>
+        <span style="font-size: 0.9rem;" class="toolbar-text">Read the text and answer the questions</span>
     </div>
 
     <div class="main-container">
@@ -386,7 +486,7 @@
 
     <div class="bottom-nav">
         <div>
-            <span style="font-size: 0.9rem; color: #666;" id="partInfo">Part 1</span>
+            <span class="part-info-text" id="partInfo">Part 1</span>
         </div>
         
         <div class="nav-center" id="navCenter">
