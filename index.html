@@ -22,6 +22,9 @@
                 <li><a href="speaking.html">Speaking</a></li>
                 <li><a href="progress.html">Tiến độ</a></li>
             </ul>
+            <div class="user-section" id="userSection">
+                <!-- Will be populated by JavaScript -->
+            </div>
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -55,10 +58,10 @@
                     <h3>Reading</h3>
                     <p>Luyện đọc hiểu với giao diện chia đôi màn hình, highlight và note</p>
                     <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <a href="reading-basic.html" class="btn-link" style="flex: 1; text-align: center; padding: 10px; background: #e0f2fe; border-radius: 6px; text-decoration: none;">
+                        <a href="#" onclick="return checkLoginAndRedirect('reading-basic.html')" class="btn-link" style="flex: 1; text-align: center; padding: 10px; background: #e0f2fe; border-radius: 6px; text-decoration: none;">
                             <i class="fas fa-star"></i> Cơ bản
                         </a>
-                        <a href="reading.html" class="btn-link" style="flex: 1; text-align: center; padding: 10px; background: #fef3c7; border-radius: 6px; text-decoration: none;">
+                        <a href="#" onclick="return checkLoginAndRedirect('reading.html')" class="btn-link" style="flex: 1; text-align: center; padding: 10px; background: #fef3c7; border-radius: 6px; text-decoration: none;">
                             <i class="fas fa-fire"></i> Nâng cao
                         </a>
                     </div>
@@ -142,5 +145,58 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Check login status and update UI
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const userSection = document.getElementById('userSection');
+            
+            if (currentUser) {
+                // User is logged in
+                userSection.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        ${currentUser.isOP ? '<a href="admin.html" style="color: #ef4444; text-decoration: none; font-weight: 600;"><i class="fas fa-crown"></i> Admin</a>' : ''}
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            ${currentUser.avatar ? 
+                                `<img src="${currentUser.avatar}" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #2563eb;">` : 
+                                `<div style="width: 35px; height: 35px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;">${currentUser.name.charAt(0).toUpperCase()}</div>`
+                            }
+                            <span style="font-weight: 500;">${currentUser.name}</span>
+                        </div>
+                        <button onclick="logout()" style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </button>
+                    </div>
+                `;
+            } else {
+                // User is not logged in
+                userSection.innerHTML = `
+                    <a href="auth.html" style="background: #2563eb; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500;">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </a>
+                `;
+            }
+        });
+        
+        function logout() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('rememberMe');
+                window.location.reload();
+            }
+        }
+        
+        // Check login before accessing tests
+        function checkLoginAndRedirect(url) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để làm bài thi!');
+                window.location.href = 'auth.html';
+                return false;
+            }
+            window.location.href = url;
+            return true;
+        }
+    </script>
 </body>
 </html>
