@@ -248,17 +248,25 @@ function setupSelectionMenu() {
     
     // Show menu immediately when text is selected
     passagePanel.addEventListener('mouseup', (e) => {
+        // Prevent if resizing
+        if (isResizing) return;
+        
         const selection = window.getSelection();
         const selectedText = selection.toString().trim();
         
         if (selectedText && selection.rangeCount > 0) {
             selectedRange = selection.getRangeAt(0);
             const rect = selectedRange.getBoundingClientRect();
+            const panelRect = passagePanel.getBoundingClientRect();
             
-            // Position menu above selection, accounting for scroll position
+            // Calculate position relative to passage panel
+            const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
+            const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
+            
+            // Position menu above selection
             selectionMenu.style.display = 'block';
-            selectionMenu.style.left = `${rect.left + (rect.width / 2) - 100}px`;
-            selectionMenu.style.top = `${rect.top + window.scrollY - 45}px`;
+            selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 100}px`;
+            selectionMenu.style.top = `${relativeTop - 45}px`;
         } else {
             selectionMenu.style.display = 'none';
         }
