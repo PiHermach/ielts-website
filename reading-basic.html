@@ -1641,7 +1641,8 @@
                 
                 const themeNames = {
                     'default': '📄 Mặc định',
-                    'ocean': '🌊 Đại dương'
+                    'ocean': '🌊 Đại dương',
+                    'modern': '✨ Hiện đại'
                 };
                 
                 visualThemeSelect.innerHTML = ownedThemes.map(themeId => 
@@ -1655,7 +1656,7 @@
             const newTheme = document.getElementById('visualThemeSelect').value;
             
             // Remove old theme classes
-            document.body.classList.remove('theme-default', 'theme-ocean');
+            document.body.classList.remove('theme-default', 'theme-ocean', 'theme-modern');
             
             // Remove old theme CSS
             document.querySelectorAll('link[href^="theme-"]').forEach(link => link.remove());
@@ -1681,6 +1682,13 @@
             setTimeout(() => {
                 const dropZones = document.querySelectorAll('.drop-zone');
                 dropZones.forEach(zone => {
+                    // Force re-render by temporarily changing display
+                    const originalDisplay = zone.style.display;
+                    zone.style.display = 'none';
+                    zone.offsetHeight; // Trigger reflow
+                    zone.style.display = originalDisplay || 'inline-block';
+                    
+                    // Force CSS recalculation
                     zone.style.cssText = zone.style.cssText;
                 });
                 
@@ -1688,7 +1696,16 @@
                 if (typeof reloadSummarySection === 'function') {
                     reloadSummarySection();
                 }
-            }, 100);
+                
+                // Force repaint of the entire questions panel
+                const questionsPanel = document.getElementById('questionsPanel');
+                if (questionsPanel) {
+                    questionsPanel.style.transform = 'translateZ(0)';
+                    setTimeout(() => {
+                        questionsPanel.style.transform = '';
+                    }, 50);
+                }
+            }, 200);
         }
     </script>
     <script src="reading-data-basic.js?v=11"></script>

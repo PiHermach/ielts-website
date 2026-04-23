@@ -1,0 +1,654 @@
+/* Modern Theme - Ultra Beautiful & Advanced UI */
+
+/* Modern gradient background with animated particles */
+body.theme-modern {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism overlay */
+body.theme-modern::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Floating geometric shapes */
+body.theme-modern::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+    animation: floatingShapes 20s ease-in-out infinite;
+}
+
+@keyframes floatingShapes {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* Header with advanced glassmorphism */
+body.theme-modern .top-header {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    position: relative;
+    z-index: 10;
+}
+
+body.theme-modern .logo-text {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+body.theme-modern .test-title,
+body.theme-modern .test-name {
+    color: #2d3748;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+body.theme-modern .timer-display {
+    background: linear-gradient(135deg, #ff6b6b, #feca57);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+body.theme-modern .header-icons {
+    color: #4a5568;
+}
+
+/* Toolbar with modern styling */
+body.theme-modern .toolbar {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .toolbar-text {
+    color: #2d3748;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Main panels with ultra-modern glassmorphism */
+body.theme-modern .passage-panel {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    position: relative;
+    z-index: 10;
+    margin: 10px;
+}
+
+body.theme-modern .questions-panel {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    position: relative;
+    z-index: 10;
+    margin: 10px;
+}
+
+/* Resizer with modern styling */
+body.theme-modern .resizer {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-modern .resizer:hover {
+    background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    transform: scale(1.1);
+}
+
+/* Text styling with modern typography */
+body.theme-modern .passage-title {
+    color: #1a202c;
+    font-weight: 700;
+    border-bottom: 3px solid transparent;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-bottom: 12px;
+}
+
+body.theme-modern .passage-content p {
+    color: #2d3748;
+    line-height: 1.8;
+    font-weight: 400;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Question sections with modern cards */
+body.theme-modern .question-group-header {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+}
+
+body.theme-modern .question-section h3 {
+    color: #1a202c;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .question-instruction {
+    color: #4a5568;
+    font-weight: 500;
+}
+
+body.theme-modern .question-text {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+body.theme-modern .question-number {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 
+        0 4px 12px rgba(102, 126, 234, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+}
+
+/* Modern form elements */
+body.theme-modern .radio-label-vertical {
+    color: #2d3748;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 4px 0;
+}
+
+body.theme-modern .radio-label-vertical:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .question-content input[type="text"] {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    color: #1a202c;
+    font-weight: 500;
+    padding: 12px 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .question-content input[type="text"]:focus {
+    border-color: #667eea;
+    box-shadow: 
+        0 0 0 4px rgba(102, 126, 234, 0.2),
+        0 8px 24px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+body.theme-modern .question-item.answered .question-content input[type="text"] {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Modern tables */
+body.theme-modern .mc-table-header-cell,
+body.theme-modern .matching-header-cell {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    color: #1a202c;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+body.theme-modern .matching-table {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .matching-question-cell {
+    color: #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+}
+
+body.theme-modern .matching-radio-cell {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Modern lists and options */
+body.theme-modern .options-list,
+body.theme-modern .word-list,
+body.theme-modern .options-list-reference {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .options-list h4,
+body.theme-modern .word-list h4,
+body.theme-modern .options-list-reference h4 {
+    color: #1a202c;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .option-item,
+body.theme-modern .option-btn,
+body.theme-modern .word-btn {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .option-btn:hover,
+body.theme-modern .word-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* MODERN DROP ZONES - ULTRA BEAUTIFUL - FORCE OVERRIDE ALL STYLES */
+body.theme-modern .summary-text {
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    color: #1a202c !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    padding: 24px !important;
+    line-height: 1.8 !important;
+    font-weight: 500 !important;
+}
+
+/* Force override for ALL possible drop-zone selectors */
+body.theme-modern .drop-zone,
+body.theme-modern span.drop-zone,
+body.theme-modern .summary-container .drop-zone,
+body.theme-modern .summary-text .drop-zone,
+body.theme-modern .drop-zone[id^="drop-"],
+body.theme-modern .question-content .drop-zone,
+body.theme-modern .summary-completion .drop-zone,
+body.theme-modern div.drop-zone,
+body.theme-modern .question-item .drop-zone {
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 2px dashed rgba(102, 126, 234, 0.5) !important;
+    color: #1a202c !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    min-width: 120px !important;
+    display: inline-block !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.1) !important,
+        inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+    font-weight: 600 !important;
+    position: relative !important;
+    margin: 0 4px !important;
+    vertical-align: middle !important;
+    line-height: 1.5 !important;
+    font-size: 0.95rem !important;
+    min-height: 32px !important;
+}
+
+/* Hover states for all drop zones */
+body.theme-modern .drop-zone:hover,
+body.theme-modern span.drop-zone:hover,
+body.theme-modern .summary-container .drop-zone:hover,
+body.theme-modern .summary-text .drop-zone:hover,
+body.theme-modern .drop-zone[id^="drop-"]:hover,
+body.theme-modern .question-content .drop-zone:hover,
+body.theme-modern .summary-completion .drop-zone:hover,
+body.theme-modern div.drop-zone:hover,
+body.theme-modern .question-item .drop-zone:hover {
+    background: rgba(255, 255, 255, 0.5) !important;
+    border-color: #667eea !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 
+        0 8px 24px rgba(102, 126, 234, 0.2) !important,
+        inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Filled states for all drop zones */
+body.theme-modern .drop-zone.filled,
+body.theme-modern span.drop-zone.filled,
+body.theme-modern .summary-container .drop-zone.filled,
+body.theme-modern .summary-text .drop-zone.filled,
+body.theme-modern .drop-zone[id^="drop-"].filled,
+body.theme-modern .question-content .drop-zone.filled,
+body.theme-modern .summary-completion .drop-zone.filled,
+body.theme-modern div.drop-zone.filled,
+body.theme-modern .question-item .drop-zone.filled {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border: 2px solid #10b981 !important;
+    color: #065f46 !important;
+    box-shadow: 
+        0 4px 16px rgba(16, 185, 129, 0.3) !important,
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    font-weight: 600 !important;
+}
+
+/* Drag over states for all drop zones */
+body.theme-modern .drop-zone.drag-over,
+body.theme-modern span.drop-zone.drag-over,
+body.theme-modern .summary-container .drop-zone.drag-over,
+body.theme-modern .summary-text .drop-zone.drag-over,
+body.theme-modern .drop-zone[id^="drop-"].drag-over,
+body.theme-modern .question-content .drop-zone.drag-over,
+body.theme-modern .summary-completion .drop-zone.drag-over,
+body.theme-modern div.drop-zone.drag-over,
+body.theme-modern .question-item .drop-zone.drag-over {
+    background: rgba(102, 126, 234, 0.3) !important;
+    border-color: #667eea !important;
+    transform: translateY(-4px) scale(1.05) !important;
+    box-shadow: 
+        0 12px 32px rgba(102, 126, 234, 0.4) !important,
+        inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Question note with modern styling */
+body.theme-modern .question-note {
+    background: rgba(245, 158, 11, 0.2);
+    backdrop-filter: blur(10px);
+    color: #92400e;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+/* Modern highlights and notes */
+body.theme-modern .highlight {
+    background: rgba(251, 191, 36, 0.3);
+    backdrop-filter: blur(5px);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+}
+
+body.theme-modern .highlight.note {
+    background: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Modern selection menu */
+body.theme-modern .selection-menu,
+body.theme-modern .note-input-menu,
+body.theme-modern .note-view-menu,
+body.theme-modern .highlight-menu {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+body.theme-modern .selection-menu button,
+body.theme-modern .note-input-menu button {
+    color: #1a202c;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-modern .selection-menu button:hover,
+body.theme-modern .note-input-menu button:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateY(-1px);
+}
+
+body.theme-modern .note-input-menu input {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    color: #1a202c;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+body.theme-modern .note-content {
+    background: rgba(255, 255, 255, 0.2);
+    color: #1a202c;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Modern bottom navigation */
+body.theme-modern .bottom-nav {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 -8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+body.theme-modern .part-info-text {
+    color: #2d3748;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+body.theme-modern .part-btn {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .part-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-modern .part-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 
+        0 4px 16px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.theme-modern .nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-modern .nav-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+body.theme-modern .nav-btn.answered {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+body.theme-modern .nav-btn-arrow {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 12px;
+    box-shadow: 
+        0 4px 16px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-modern .nav-btn-arrow:hover {
+    background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
+}
+
+body.theme-modern .nav-btn-check {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 12px;
+    box-shadow: 
+        0 4px 16px rgba(16, 185, 129, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-modern .nav-btn-check:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+}
+
+/* Modern settings menu */
+body.theme-modern .settings-menu {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+body.theme-modern .settings-menu h4 {
+    color: #1a202c;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-modern .settings-menu label {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+body.theme-modern .settings-menu select {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    color: #1a202c;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-modern .settings-menu select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+}
+
+/* Smooth transitions for all elements */
+body.theme-modern * {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Advanced hover effects */
+body.theme-modern .nav-btn:hover,
+body.theme-modern .part-btn:hover,
+body.theme-modern .question-content input[type="text"]:hover {
+    transform: translateY(-2px);
+}
+
+/* Floating animation for interactive elements */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+}
+
+body.theme-modern .nav-btn-arrow:hover,
+body.theme-modern .nav-btn-check:hover {
+    animation: float 2s ease-in-out infinite;
+}

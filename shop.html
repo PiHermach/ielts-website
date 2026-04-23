@@ -135,6 +135,18 @@
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
         
+        .theme-preview.gradient-modern {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         .theme-preview.gradient-forest {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
@@ -362,6 +374,14 @@
                 price: 750,
                 icon: '🌊',
                 gradient: 'gradient-ocean'
+            },
+            {
+                id: 'modern',
+                name: 'Hiện đại tiên tiến',
+                description: 'Giao diện cực kỳ hiện đại với glassmorphism, hiệu ứng parallax, mouse trail và các animation tiên tiến. Trải nghiệm UI/UX đỉnh cao!',
+                price: 1200,
+                icon: '✨',
+                gradient: 'gradient-modern'
             }
         ];
         
