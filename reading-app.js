@@ -274,10 +274,10 @@ function setupSelectionMenu() {
                 const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
                 const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
                 
-                // Position menu above selection (closer to the text)
+                // Position menu right above selection (just 5px above)
                 selectionMenu.style.display = 'block';
                 selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 110}px`;
-                selectionMenu.style.top = `${relativeTop - 55}px`;
+                selectionMenu.style.top = `${relativeTop - 50}px`;
             } else {
                 selectionMenu.style.display = 'none';
             }
@@ -291,9 +291,14 @@ function setupSelectionMenu() {
     // Hide menus when clicking outside (only setup once)
     if (!document._selectionMenuSetup) {
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.selection-menu') && !e.target.closest('.highlight')) {
+            if (!e.target.closest('.selection-menu') && 
+                !e.target.closest('.note-input-menu') &&
+                !e.target.closest('.note-view-menu') &&
+                !e.target.closest('.highlight')) {
                 selectionMenu.style.display = 'none';
                 highlightMenu.style.display = 'none';
+                document.getElementById('noteInputMenu').style.display = 'none';
+                document.getElementById('noteViewMenu').style.display = 'none';
             }
         });
         
@@ -301,6 +306,8 @@ function setupSelectionMenu() {
         document.querySelector('.questions-panel').addEventListener('click', () => {
             selectionMenu.style.display = 'none';
             highlightMenu.style.display = 'none';
+            document.getElementById('noteInputMenu').style.display = 'none';
+            document.getElementById('noteViewMenu').style.display = 'none';
         });
         
         document._selectionMenuSetup = true;
@@ -331,27 +338,72 @@ function highlightSelection() {
     }
 }
 
-// Note selection
-function noteSelection() {
+// Show note input
+function showNoteInput() {
     if (selectedRange) {
+        const selectionMenu = document.getElementById('selectionMenu');
+        const noteInputMenu = document.getElementById('noteInputMenu');
+        const noteText = document.getElementById('noteText');
+        
+        // Position note input at same place as selection menu
+        noteInputMenu.style.left = selectionMenu.style.left;
+        noteInputMenu.style.top = selectionMenu.style.top;
+        
+        selectionMenu.style.display = 'none';
+        noteInputMenu.style.display = 'block';
+        noteText.value = '';
+        noteText.focus();
+    }
+}
+
+// Save note
+function saveNote() {
+    const noteText = document.getElementById('noteText').value.trim();
+    
+    if (selectedRange && noteText) {
         const span = document.createElement('span');
         span.className = 'highlight note';
+        span.setAttribute('data-note', noteText);
         span.onclick = function(e) {
             e.stopPropagation();
             currentHighlight = this;
-            const highlightMenu = document.getElementById('highlightMenu');
-            highlightMenu.style.display = 'block';
-            highlightMenu.style.left = `${e.pageX}px`;
-            highlightMenu.style.top = `${e.pageY + 10}px`;
+            const noteViewMenu = document.getElementById('noteViewMenu');
+            const noteContent = document.getElementById('noteContent');
+            
+            noteContent.textContent = this.getAttribute('data-note');
+            noteViewMenu.style.display = 'block';
+            noteViewMenu.style.left = `${e.pageX}px`;
+            noteViewMenu.style.top = `${e.pageY + 10}px`;
         };
         
         try {
             selectedRange.surroundContents(span);
-            document.getElementById('selectionMenu').style.display = 'none';
+            document.getElementById('noteInputMenu').style.display = 'none';
             window.getSelection().removeAllRanges();
         } catch(e) {
             alert('Please select text within a single paragraph');
         }
+    } else if (!noteText) {
+        alert('Please enter a note');
+    }
+}
+
+// Cancel note
+function cancelNote() {
+    document.getElementById('noteInputMenu').style.display = 'none';
+    window.getSelection().removeAllRanges();
+}
+
+// Delete note
+function deleteNote() {
+    if (currentHighlight) {
+        const parent = currentHighlight.parentNode;
+        while (currentHighlight.firstChild) {
+            parent.insertBefore(currentHighlight.firstChild, currentHighlight);
+        }
+        parent.removeChild(currentHighlight);
+        document.getElementById('noteViewMenu').style.display = 'none';
+        currentHighlight = null;
     }
 }
 

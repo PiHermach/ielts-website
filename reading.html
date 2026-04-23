@@ -172,143 +172,243 @@
         }
         
         .highlight { 
-            background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+            background: #fef08a;
             cursor: pointer;
             padding: 2px 0;
-            border-radius: 3px;
-            transition: all 0.2s ease;
+            border-radius: 2px;
+            transition: background 0.15s ease;
         }
         
         .highlight:hover {
-            background: linear-gradient(120deg, #fde047 0%, #facc15 100%);
-            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+            background: #fde047;
         }
         
         .highlight.note { 
-            background: linear-gradient(120deg, #86efac 0%, #4ade80 100%);
+            background: #86efac;
+            position: relative;
         }
         
         .highlight.note:hover {
-            background: linear-gradient(120deg, #4ade80 0%, #22c55e 100%);
-            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+            background: #4ade80;
         }
         
         .selection-menu {
             position: absolute;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 8px 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 6px;
             display: none;
             z-index: 10000;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 4px 8px rgba(0,0,0,0.15);
-            animation: fadeIn 0.2s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
         }
         
         .selection-menu button {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border: none;
-            padding: 8px 16px;
-            margin: 0 4px;
-            border-radius: 8px;
+            padding: 8px 14px;
+            margin: 0 2px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             font-weight: 500;
-            color: #333;
-            transition: all 0.2s ease;
+            color: #374151;
+            transition: all 0.15s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
         
         .selection-menu button:hover {
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: #f3f4f6;
+            color: #111827;
         }
         
         .selection-menu button i {
-            font-size: 1rem;
+            font-size: 0.875rem;
         }
         
-        .selection-menu button:first-child {
-            color: #f59e0b;
+        .note-input-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px;
+            display: none;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+            min-width: 280px;
         }
         
-        .selection-menu button:last-child {
-            color: #10b981;
+        .note-input-menu input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 6px;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        
+        .note-input-menu input:focus {
+            border-color: #3b82f6;
+        }
+        
+        .note-input-menu button {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 6px 12px;
+            margin: 0 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+        }
+        
+        .note-input-menu button:first-of-type {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .note-input-menu button:first-of-type:hover {
+            background: #2563eb;
+        }
+        
+        .note-input-menu button:last-of-type:hover {
+            background: #f3f4f6;
+        }
+        
+        .note-view-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px;
+            display: none;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+            min-width: 200px;
+            max-width: 300px;
+        }
+        
+        .note-content {
+            font-size: 0.875rem;
+            color: #374151;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f9fafb;
+            border-radius: 6px;
+            word-wrap: break-word;
+        }
+        
+        .note-view-menu button {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #dc2626;
+            transition: all 0.15s ease;
+            width: 100%;
+        }
+        
+        .note-view-menu button:hover {
+            background: #fef2f2;
+            border-color: #dc2626;
         }
         
         .highlight-menu {
             position: fixed;
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 6px 10px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 6px;
             display: none;
             z-index: 10000;
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3), 0 4px 8px rgba(0,0,0,0.15);
-            animation: fadeIn 0.2s ease-in-out;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
         }
         
         .highlight-menu button {
-            background: rgba(255, 255, 255, 0.95);
-            border: none;
+            background: white;
+            border: 1px solid #e5e7eb;
             color: #dc2626;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
         
         .highlight-menu button:hover {
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: #fef2f2;
+            border-color: #dc2626;
         }
         
         .question-section {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 24px;
+            border-radius: 12px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #f3f4f6;
         }
         
-        body.theme-black-white .question-section { background: #1a1a1a; }
-        body.theme-yellow-black .question-section { background: #1a1a00; color: yellow; }
+        body.theme-black-white .question-section { 
+            background: #1a1a1a;
+            border-color: #374151;
+        }
+        body.theme-yellow-black .question-section { 
+            background: #1a1a00; 
+            color: yellow;
+            border-color: #374151;
+        }
         
-        .question-section h3 { color: #2563eb; margin-bottom: 15px; }
+        .question-section h3 { 
+            color: #2563eb; 
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
         
         .question-item {
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 5px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
             position: relative;
+            border: 1px solid #f3f4f6;
+            transition: all 0.15s ease;
         }
         
-        body.theme-black-white .question-item { background: #2a2a2a; }
-        body.theme-yellow-black .question-item { background: #1a1a00; }
+        .question-item:hover {
+            border-color: #e5e7eb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
         
-        .question-item.answered { background: #e8f4f8; }
-        body.theme-black-white .question-item.answered { background: #1e3a4a; }
+        body.theme-black-white .question-item { 
+            background: #2a2a2a;
+            border-color: #374151;
+        }
+        body.theme-yellow-black .question-item { 
+            background: #1a1a00;
+            border-color: #374151;
+        }
+        
+        .question-item.answered { 
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+        }
+        body.theme-black-white .question-item.answered { 
+            background: #1e3a4a;
+            border-color: #2dd4bf;
+        }
         
         .flag-icon {
             position: absolute;
@@ -323,16 +423,28 @@
         
         .question-item input[type="text"] {
             width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            margin-top: 8px;
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            transition: all 0.15s ease;
+            outline: none;
+        }
+        
+        .question-item input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         body.theme-black-white .question-item input[type="text"] {
             background: #1a1a1a;
             color: white;
-            border-color: #555;
+            border-color: #374151;
+        }
+        
+        body.theme-black-white .question-item input[type="text"]:focus {
+            border-color: #3b82f6;
         }
         
         .bottom-nav {
@@ -530,11 +642,22 @@
 
     <div class="selection-menu" id="selectionMenu">
         <button onclick="highlightSelection()"><i class="fas fa-highlighter"></i> Highlight</button>
-        <button onclick="noteSelection()"><i class="fas fa-sticky-note"></i> Note</button>
+        <button onclick="showNoteInput()"><i class="fas fa-sticky-note"></i> Note</button>
+    </div>
+
+    <div class="note-input-menu" id="noteInputMenu">
+        <input type="text" id="noteText" placeholder="Enter your note..." />
+        <button onclick="saveNote()"><i class="fas fa-check"></i></button>
+        <button onclick="cancelNote()"><i class="fas fa-times"></i></button>
     </div>
 
     <div class="highlight-menu" id="highlightMenu">
         <button onclick="deleteHighlight()"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+
+    <div class="note-view-menu" id="noteViewMenu">
+        <div class="note-content" id="noteContent"></div>
+        <button onclick="deleteNote()"><i class="fas fa-trash"></i> Delete</button>
     </div>
 
     <div class="settings-menu" id="settingsMenu">
