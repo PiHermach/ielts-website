@@ -375,7 +375,6 @@
         // Check if user is OP
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser || !currentUser.isOP) {
-            alert('Bạn không có quyền truy cập trang này!');
             window.location.href = 'index.html';
         }
         
@@ -468,25 +467,18 @@
         
         // Delete user
         function deleteUser(userId) {
-            if (!confirm('Bạn có chắc muốn xóa người dùng này?')) {
-                return;
-            }
-            
             const users = JSON.parse(localStorage.getItem('users')) || [];
             const updatedUsers = users.filter(u => u.id !== userId);
             localStorage.setItem('users', JSON.stringify(updatedUsers));
             
             loadUsers();
-            alert('Đã xóa người dùng thành công!');
         }
         
         // Logout
         function logout() {
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('rememberMe');
-                window.location.href = 'index.html';
-            }
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('rememberMe');
+            window.location.href = 'index.html';
         }
         
         // Initialize

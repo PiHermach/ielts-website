@@ -583,7 +583,7 @@ function highlightSelection() {
             document.getElementById('selectionMenu').style.display = 'none';
             window.getSelection().removeAllRanges();
         } catch(e) {
-            alert('Please select text within a single paragraph');
+            // Silently handle selection errors
         }
     }
 }
@@ -632,10 +632,11 @@ function saveNote() {
             document.getElementById('noteInputMenu').style.display = 'none';
             window.getSelection().removeAllRanges();
         } catch(e) {
-            alert('Please select text within a single paragraph');
+            // Silently handle selection errors
         }
     } else if (!noteText) {
-        alert('Please enter a note');
+        // Silently handle empty note
+        return;
     }
 }
 
@@ -711,7 +712,6 @@ function startTimer() {
         
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            alert('Time is up!');
             submitTest();
         }
         

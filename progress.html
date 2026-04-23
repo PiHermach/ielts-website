@@ -170,15 +170,12 @@
         function saveTarget() {
             const target = document.getElementById('targetScore').value;
             localStorage.setItem('targetScore', target);
-            alert(`Đã lưu mục tiêu: ${target}`);
         }
 
         function clearData() {
-            if (confirm('Bạn có chắc muốn xóa toàn bộ dữ liệu?')) {
-                localStorage.removeItem('readingScores');
-                localStorage.removeItem('targetScore');
-                location.reload();
-            }
+            localStorage.removeItem('readingScores');
+            localStorage.removeItem('targetScore');
+            location.reload();
         }
 
         window.onload = loadProgress;

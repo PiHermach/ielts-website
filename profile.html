@@ -421,7 +421,6 @@
         // Check if user is logged in
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
-            alert('Vui lòng đăng nhập để xem hồ sơ!');
             window.location.href = 'auth.html';
         }
         
@@ -433,7 +432,6 @@
             const user = users.find(u => u.id === currentUser.id);
             
             if (!user) {
-                alert('Không tìm thấy thông tin người dùng!');
                 window.location.href = 'index.html';
                 return;
             }
@@ -493,7 +491,6 @@
             const userIndex = users.findIndex(u => u.id === currentUser.id);
             
             if (userIndex === -1) {
-                alert('Không tìm thấy thông tin người dùng!');
                 return;
             }
             

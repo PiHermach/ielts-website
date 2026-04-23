@@ -341,7 +341,6 @@
         // Check if user is logged in
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
-            alert('Vui lòng đăng nhập để truy cập shop!');
             window.location.href = 'auth.html';
         }
         
@@ -372,7 +371,6 @@
             const user = users.find(u => u.id === currentUser.id);
             
             if (!user) {
-                alert('Không tìm thấy thông tin người dùng!');
                 window.location.href = 'index.html';
                 return;
             }
@@ -440,7 +438,6 @@
             const userIndex = users.findIndex(u => u.id === currentUser.id);
             
             if (userIndex === -1) {
-                alert('Không tìm thấy thông tin người dùng!');
                 return;
             }
             
@@ -448,7 +445,6 @@
             
             // Check if user owns the theme
             if (!user.ownedThemes || !user.ownedThemes.includes(themeId)) {
-                alert('Bạn chưa sở hữu giao diện này!');
                 return;
             }
             
@@ -462,9 +458,6 @@
             currentUser.equippedTheme = themeId;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             
-            // Show success message
-            alert(`✅ Đã trang bị giao diện "${themes.find(t => t.id === themeId).name}"!\n\nGiao diện sẽ được áp dụng khi bạn làm bài test.`);
-            
             // Reload themes
             loadUserData();
         }
@@ -475,7 +468,6 @@
             const userIndex = users.findIndex(u => u.id === currentUser.id);
             
             if (userIndex === -1) {
-                alert('Không tìm thấy thông tin người dùng!');
                 return;
             }
             
@@ -483,13 +475,11 @@
             
             // Check if user has enough tokens
             if ((user.tokens || 0) < price) {
-                alert('Bạn không đủ tokens để mua giao diện này!');
                 return;
             }
             
             // Check if already owned
             if (user.ownedThemes && user.ownedThemes.includes(themeId)) {
-                alert('Bạn đã sở hữu giao diện này!');
                 return;
             }
             

@@ -203,11 +203,9 @@
         });
         
         function logout() {
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('rememberMe');
-                window.location.reload();
-            }
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('rememberMe');
+            window.location.reload();
         }
         
         // Open theme selector
@@ -230,7 +228,7 @@
             const availableThemes = themes.filter(t => ownedThemes.includes(t.id));
             
             if (availableThemes.length === 0) {
-                alert('Bạn chưa có giao diện nào! Hãy mua giao diện tại Shop.');
+                window.location.href = 'shop.html';
                 return;
             }
             
@@ -287,7 +285,6 @@
         function checkLoginAndRedirect(url) {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (!currentUser) {
-                alert('Vui lòng đăng nhập để làm bài thi!');
                 window.location.href = 'auth.html';
                 return false;
             }
