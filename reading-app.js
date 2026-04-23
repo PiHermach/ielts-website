@@ -113,7 +113,7 @@ function loadQuestions(partId) {
             });
             html += '</div>';
         } else if (group.type === 'matching') {
-            // Matching questions
+            // Matching questions with dropdown
             if (group.note) {
                 html += `<div class="question-note"><strong>NB:</strong> ${group.note}</div>`;
             }
@@ -128,6 +128,14 @@ function loadQuestions(partId) {
                         <div class="question-number">${q.id}</div>
                         <div class="question-content">
                             <label class="question-text">${q.text}</label>
+                            <select class="matching-select" onchange="saveAnswer(${q.id}, this.value)">
+                                <option value="">Choose an option</option>
+                                ${group.optionsList.map(opt => `
+                                    <option value="${opt.key}" ${userAnswers[q.id] === opt.key ? 'selected' : ''}>
+                                        ${opt.key}. ${opt.value}
+                                    </option>
+                                `).join('')}
+                            </select>
                         </div>
                     </div>
                 `;
