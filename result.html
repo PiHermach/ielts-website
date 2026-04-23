@@ -436,7 +436,7 @@
             </div>
             
             <div id="noTokenMessage" style="display: none; margin-top: 30px; padding: 15px; background: #f3f4f6; border-radius: 8px; color: #6b7280; text-align: center; font-size: 0.875rem;">
-                <i class="fas fa-info-circle"></i> Bạn đã hoàn thành bài test này hôm nay. Tokens chỉ được trao một lần mỗi ngày cho mỗi bài test.
+                <i class="fas fa-info-circle"></i> Bạn đã hoàn thành bài test này hôm nay và nhận được <span id="previousTokens" style="font-weight: 600; color: #f59e0b;">0</span> tokens. Tokens chỉ được trao một lần mỗi ngày cho mỗi bài test.
             </div>
             
             <button class="detail-button" onclick="toggleBreakdown()">Xem giải thích chi tiết</button>
@@ -597,7 +597,12 @@
                 document.getElementById('tokensEarned').textContent = results.tokensEarned;
                 document.getElementById('totalTokens').textContent = currentUser ? (currentUser.tokens || 0) : 0;
             } else if (!results.isFirstCompletion) {
+                // Calculate tokens that would have been earned for this band score
+                const bandScore = getBandScore(results.correct);
+                const tokensForThisScore = Math.floor(10 * Math.pow(bandScore, 2.5));
+                
                 document.getElementById('noTokenMessage').style.display = 'block';
+                document.getElementById('previousTokens').textContent = tokensForThisScore;
             }
             
             // Populate breakdown table

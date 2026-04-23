@@ -1676,6 +1676,19 @@
             }
             
             currentVisualTheme = newTheme;
+            
+            // Force refresh drop zones to apply new theme
+            setTimeout(() => {
+                const dropZones = document.querySelectorAll('.drop-zone');
+                dropZones.forEach(zone => {
+                    zone.style.cssText = zone.style.cssText;
+                });
+                
+                // Reload summary section if exists to ensure proper styling
+                if (typeof reloadSummarySection === 'function') {
+                    reloadSummarySection();
+                }
+            }, 100);
         }
     </script>
     <script src="reading-data.js?v=11"></script>
