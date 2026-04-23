@@ -357,44 +357,12 @@
                 owned: true
             },
             {
-                id: 'sunset',
-                name: 'Hoàng hôn rực rỡ',
-                description: 'Giao diện ấm áp với tông màu cam đỏ, tạo cảm giác năng động và tích cực.',
-                price: 500,
-                icon: '🌅',
-                gradient: 'gradient-sunset'
-            },
-            {
                 id: 'ocean',
                 name: 'Đại dương xanh',
-                description: 'Giao diện mát mẻ với tông màu xanh dương, giúp tập trung và thư giãn.',
+                description: 'Giao diện tuyệt đẹp với hiệu ứng bong bóng nổi và gợn nước theo chuột. Trải nghiệm làm bài như đang ở dưới đáy đại dương!',
                 price: 750,
                 icon: '🌊',
                 gradient: 'gradient-ocean'
-            },
-            {
-                id: 'forest',
-                name: 'Rừng xanh',
-                description: 'Giao diện tươi mới với tông màu xanh lá, mang lại cảm giác gần gũi thiên nhiên.',
-                price: 1000,
-                icon: '🌲',
-                gradient: 'gradient-forest'
-            },
-            {
-                id: 'royal',
-                name: 'Hoàng gia sang trọng',
-                description: 'Giao diện cao cấp với tông màu tím đậm, thể hiện sự sang trọng và đẳng cấp.',
-                price: 1500,
-                icon: '👑',
-                gradient: 'gradient-royal'
-            },
-            {
-                id: 'fire',
-                name: 'Ngọn lửa nhiệt huyết',
-                description: 'Giao diện mạnh mẽ với tông màu đỏ cam, khơi dậy động lực và quyết tâm.',
-                price: 2000,
-                icon: '🔥',
-                gradient: 'gradient-fire'
             }
         ];
         
@@ -427,16 +395,19 @@
         // Display themes
         function displayThemes(user) {
             const themesGrid = document.getElementById('themesGrid');
+            const equippedTheme = user.equippedTheme || 'default';
             
             themesGrid.innerHTML = themes.map(theme => {
                 const isOwned = user.ownedThemes && user.ownedThemes.includes(theme.id);
+                const isEquipped = equippedTheme === theme.id;
                 const canAfford = (user.tokens || 0) >= theme.price;
                 
                 return `
                     <div class="theme-card">
                         <div class="theme-preview ${theme.gradient}">
                             <span style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">${theme.icon}</span>
-                            ${isOwned ? '<div class="theme-badge owned"><i class="fas fa-check"></i> Đã sở hữu</div>' : ''}
+                            ${isEquipped ? '<div class="theme-badge owned" style="background: #10b981;"><i class="fas fa-check-circle"></i> Đang dùng</div>' : 
+                              isOwned ? '<div class="theme-badge owned"><i class="fas fa-check"></i> Đã sở hữu</div>' : ''}
                         </div>
                         <div class="theme-info">
                             <div class="theme-name">${theme.name}</div>
@@ -446,17 +417,56 @@
                                     <i class="fas fa-coins"></i>
                                     <span>${theme.price}</span>
                                 </div>
-                                ${isOwned ? 
-                                    '<button class="btn-owned"><i class="fas fa-check"></i> Đã mua</button>' :
-                                    `<button class="btn-buy" onclick="buyTheme('${theme.id}', ${theme.price})" ${!canAfford ? 'disabled' : ''}>
-                                        ${canAfford ? '<i class="fas fa-shopping-cart"></i> Mua ngay' : '<i class="fas fa-lock"></i> Không đủ'}
-                                    </button>`
+                                ${isEquipped ? 
+                                    '<button class="btn-owned" style="background: #10b981;"><i class="fas fa-check-circle"></i> Đang dùng</button>' :
+                                    isOwned ? 
+                                        `<button class="btn-buy" style="background: #2563eb;" onclick="equipTheme('${theme.id}')">
+                                            <i class="fas fa-tshirt"></i> Trang bị
+                                        </button>` :
+                                        `<button class="btn-buy" onclick="buyTheme('${theme.id}', ${theme.price})" ${!canAfford ? 'disabled' : ''}>
+                                            ${canAfford ? '<i class="fas fa-shopping-cart"></i> Mua ngay' : '<i class="fas fa-lock"></i> Không đủ'}
+                                        </button>`
                                 }
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+        
+        // Equip theme
+        function equipTheme(themeId) {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex === -1) {
+                alert('Không tìm thấy thông tin người dùng!');
+                return;
+            }
+            
+            const user = users[userIndex];
+            
+            // Check if user owns the theme
+            if (!user.ownedThemes || !user.ownedThemes.includes(themeId)) {
+                alert('Bạn chưa sở hữu giao diện này!');
+                return;
+            }
+            
+            // Equip theme
+            user.equippedTheme = themeId;
+            
+            // Save to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Update current user
+            currentUser.equippedTheme = themeId;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Show success message
+            alert(`✅ Đã trang bị giao diện "${themes.find(t => t.id === themeId).name}"!\n\nGiao diện sẽ được áp dụng khi bạn làm bài test.`);
+            
+            // Reload themes
+            loadUserData();
         }
         
         // Buy theme
