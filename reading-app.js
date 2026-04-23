@@ -687,21 +687,42 @@ function changeSize() {
     document.body.className = document.body.className.replace(/size-\w+/, `size-${size}`);
 }
 
+// Close settings when clicking outside
+document.addEventListener('click', (e) => {
+    const settingsMenu = document.getElementById('settingsMenu');
+    const settingsIcon = e.target.closest('.fa-bars');
+    
+    if (settingsMenu && !settingsMenu.contains(e.target) && !settingsIcon) {
+        settingsMenu.style.display = 'none';
+    }
+});
+
 // Timer
 function startTimer() {
-    let timeLeft = 60 * 60; // 60 minutes
+    let timeLeft = 60 * 60; // 60 minutes in seconds
     
-    setInterval(() => {
-        timeLeft--;
+    const updateTimer = () => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-        document.getElementById('timer').textContent = `${minutes} minutes remaining`;
+        
+        // Format as MM:SS
+        const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        document.getElementById('timer').textContent = formattedTime;
         
         if (timeLeft <= 0) {
+            clearInterval(timerInterval);
             alert('Time is up!');
             submitTest();
         }
-    }, 60000); // Update every minute
+        
+        timeLeft--;
+    };
+    
+    // Update immediately
+    updateTimer();
+    
+    // Then update every second
+    const timerInterval = setInterval(updateTimer, 1000);
 }
 
 // Submit test
