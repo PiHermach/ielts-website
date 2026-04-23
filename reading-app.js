@@ -676,11 +676,13 @@ function submitTest() {
     let totalQuestions = 0;
     readingData.passages.forEach(p => {
         p.questionGroups.forEach(group => {
-            totalQuestions += group.questions.length;
+            if (group.questions) {
+                totalQuestions += group.questions.length;
+            }
         });
     });
     
-    const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k].trim() !== '').length;
+    const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].trim() !== '').length;
     
     if (answeredCount < totalQuestions) {
         if (!confirm(`You have only answered ${answeredCount} out of ${totalQuestions} questions. Do you want to submit anyway?`)) {
@@ -688,19 +690,70 @@ function submitTest() {
         }
     }
     
-    // Calculate score
+    // Calculate score and breakdown
     let correct = 0;
+    let wrong = 0;
+    let skipped = 0;
+    const breakdown = [];
+    
     readingData.passages.forEach(passage => {
         passage.questionGroups.forEach(group => {
-            group.questions.forEach(q => {
-                const userAnswer = (userAnswers[q.id] || '').trim().toLowerCase();
-                const correctAnswer = q.answer.toLowerCase();
-                if (userAnswer === correctAnswer) {
-                    correct++;
-                }
-            });
+            const groupStats = {
+                type: getQuestionTypeName(group.type),
+                total: 0,
+                correct: 0,
+                wrong: 0,
+                skipped: 0
+            };
+            
+            if (group.questions) {
+                group.questions.forEach(q => {
+                    groupStats.total++;
+                    const userAnswer = (userAnswers[q.id] || '').trim().toLowerCase();
+                    const correctAnswer = q.answer.toLowerCase();
+                    
+                    if (!userAnswer) {
+                        skipped++;
+                        groupStats.skipped++;
+                    } else if (userAnswer === correctAnswer) {
+                        correct++;
+                        groupStats.correct++;
+                    } else {
+                        wrong++;
+                        groupStats.wrong++;
+                    }
+                });
+            }
+            
+            if (groupStats.total > 0) {
+                breakdown.push(groupStats);
+            }
         });
     });
     
-    alert(`Test submitted!\n\nYour score: ${correct}/${totalQuestions}\nPercentage: ${Math.round((correct/totalQuestions)*100)}%`);
+    // Save results to localStorage
+    const results = {
+        correct,
+        wrong,
+        skipped,
+        total: totalQuestions,
+        breakdown
+    };
+    
+    localStorage.setItem('testResults', JSON.stringify(results));
+    
+    // Redirect to result page
+    window.location.href = 'result.html';
+}
+
+function getQuestionTypeName(type) {
+    const names = {
+        'tfng': 'TRUE/FALSE/NOT GIVEN',
+        'gap-filling': 'Gap Filling',
+        'multiple-choice-table': 'Multiple Choice (Table)',
+        'matching': 'Matching',
+        'summary-completion': 'Summary Completion',
+        'multiple-choice': 'Multiple Choice'
+    };
+    return names[type] || type;
 }

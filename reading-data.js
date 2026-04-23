@@ -1,4 +1,4 @@
-// Data for 3 passages
+// Data for 3 passages with all question types
 const readingData = {
     passages: [
         {
@@ -48,91 +48,157 @@ const readingData = {
         },
         {
             id: 2,
-            title: "Climate Change Effects",
+            title: "A Mechanical Friend for Children",
             content: `
-                <p><strong>A.</strong> Climate change is one of the most pressing issues facing humanity today. The Earth's average temperature has risen by approximately 1.1°C since the pre-industrial era, primarily due to human activities such as burning fossil fuels, deforestation, and industrial processes. This warming trend has led to significant changes in weather patterns, sea levels, and ecosystems around the world.</p>
+                <p><strong>A.</strong> The development of robots that interact socially with people and assist them in everyday life has been an elusive goal of modern science. Despite impressive advances in the mechanical aspects of this problem, producing robots that bond and socialize with people for sustained periods of time has proven difficult. The most successful robots so far have been storytellers, but they have only been able to maintain human interest for a limited time.</p>
 
-                <p><strong>B.</strong> The effects of climate change are far-reaching and multifaceted. Rising temperatures have caused glaciers and ice sheets to melt at an alarming rate, contributing to sea-level rise. Coastal communities are particularly vulnerable, with some low-lying islands facing the threat of complete submersion. Additionally, extreme weather events such as hurricanes, droughts, and floods have become more frequent and intense.</p>
+                <p><strong>B.</strong> In a recent study, researchers at the Institute for Social Computation in California introduced a state of the art social robot into a classroom of 18 24-month-olds for five months as a way of studying human-robot interactions. The researchers, including Fumihide Tanaka and Javier R. Movellan, introduced the robot into a childhood education center.</p>
 
-                <p><strong>C.</strong> Scientists have identified several key indicators of climate change. These include rising global temperatures, shrinking ice sheets, declining Arctic sea ice, glacial retreat, decreased snow cover, rising sea levels, ocean acidification, and extreme weather events. The Intergovernmental Panel on Climate Change (IPCC) has warned that without immediate and substantial reductions in greenhouse gas emissions, the world will face catastrophic consequences.</p>
+                <p><strong>C.</strong> The researchers sent instructions to the robot about every two minutes to do things like giggle, dance, sit down, fall down or walk in a certain direction. The robot was also programmed to respond to being touched. The results showed that the quality of those interactions improved steadily over 27 sessions.</p>
 
-                <p><strong>D.</strong> Addressing climate change requires a coordinated global effort. Many countries have committed to reducing their carbon emissions through international agreements such as the Paris Agreement. Renewable energy sources like solar, wind, and hydroelectric power are being developed and implemented at an increasing rate. Additionally, individuals can contribute by reducing their carbon footprint through lifestyle changes.</p>
+                <p><strong>D.</strong> Initially the children treated the robot very differently from the way they treated each other. Early in the study some children cried when QRIO fell, but a month into the study, the toddlers helped QRIO stand up by pushing it back on its hands. The most important aspect of the work was touch.</p>
 
-                <p><strong>E.</strong> Despite the challenges, there is reason for optimism. Technological innovations in clean energy, carbon capture, and sustainable agriculture offer promising solutions. Public awareness of climate issues has grown significantly, leading to increased pressure on governments and corporations to take action. Young activists around the world have mobilized to demand urgent climate action.</p>
+                <p><strong>E.</strong> The construction industry is the principle user of solid wood products. However, the small size of population, plus its small manufacturing base, means that the forestry industry's domestic market-place needs careful consideration.</p>
             `,
             questionGroups: [
                 {
-                    type: "tfng",
+                    type: "multiple-choice-table",
                     title: "Questions 14-18",
-                    instruction: "Do the following statements agree with the information given in the passage?",
-                    options: ["TRUE", "FALSE", "NOT GIVEN"],
+                    instruction: "Which paragraph contains the following information?<br>Choose the correct letter, A-G.",
+                    options: ["A", "B", "C", "D", "E", "F", "G"],
                     questions: [
-                        { id: 14, text: "The Earth's temperature has increased by more than 1°C", answer: "TRUE" },
-                        { id: 15, text: "Deforestation is the main cause of climate change", answer: "FALSE" },
-                        { id: 16, text: "All coastal communities will be underwater by 2050", answer: "NOT GIVEN" },
-                        { id: 17, text: "The IPCC has warned about catastrophic consequences", answer: "TRUE" },
-                        { id: 18, text: "Solar energy is more efficient than wind energy", answer: "NOT GIVEN" }
+                        { id: 14, text: "a comparison of children's reactions to two different robots", answer: "A" },
+                        { id: 15, text: "speculation about future ways robots may communicate", answer: "E" },
+                        { id: 16, text: "changes in how children physically interacted with a robot", answer: "D" },
+                        { id: 17, text: "a comparison between human relationships with animals and robots", answer: "A" },
+                        { id: 18, text: "a description of how a robot's behaviour was controlled", answer: "C" }
                     ]
                 },
                 {
-                    type: "gap-filling",
-                    title: "Questions 19-26",
-                    instruction: "Complete the sentences below. Write NO MORE THAN TWO WORDS from the passage for each answer.",
+                    type: "matching",
+                    title: "Questions 19-23",
+                    instruction: "Match each statement with the correct person, A-D.",
+                    note: "You may use any letter more than once.",
                     questions: [
-                        { id: 19, text: "Human activities include burning ___ and deforestation.", answer: "fossil fuels" },
-                        { id: 20, text: "Glaciers are melting at an ___ rate.", answer: "alarming" },
-                        { id: 21, text: "Low-lying islands face the threat of complete ___.", answer: "submersion" },
-                        { id: 22, text: "Ocean ___ is a key indicator of climate change.", answer: "acidification" },
-                        { id: 23, text: "The ___ is an international agreement on climate.", answer: "Paris Agreement" },
-                        { id: 24, text: "Three renewable energy sources: solar, wind, and ___.", answer: "hydroelectric" },
-                        { id: 25, text: "Individuals can reduce their ___.", answer: "carbon footprint" },
-                        { id: 26, text: "___ activists have mobilized for climate action.", answer: "Young" }
+                        { id: 19, text: "Robots may need emotional qualities as well as intelligence", answer: "A" },
+                        { id: 20, text: "It is unclear whether increased human-robot interaction will be beneficial", answer: "B" },
+                        { id: 21, text: "Isolated people have an obvious need to think about robots", answer: "C" },
+                        { id: 22, text: "A wide range of behaviours is essential for effective interaction", answer: "D" },
+                        { id: 23, text: "Robots could play a valuable role in education", answer: "A" }
+                    ],
+                    optionsList: [
+                        { key: "A", value: "Fumihide Tanaka" },
+                        { key: "B", value: "Javier R. Movellan" },
+                        { key: "C", value: "Tomoko Arent" },
+                        { key: "D", value: "David Powers" }
                     ]
                 }
             ]
         },
         {
             id: 3,
-            title: "The History of Coffee",
+            title: "The Contradictions of Tourism",
             content: `
-                <p><strong>A.</strong> Coffee is one of the world's most popular beverages, consumed by millions of people every day. The coffee plant, Coffea, is believed to have originated in Ethiopia, where legend tells of a goat herder named Kaldi who discovered the energizing effects of coffee beans after noticing his goats became more active after eating the berries from a certain tree.</p>
+                <p><strong>A.</strong> Tourism may bring benefits to a society but its effects are not always straightforward. International tourism presents itself as a complex, interesting and important, full of contradictions and disputes. It has enormous growth potential, almost every country desires an expansion in the sense. Yet whether and how to grow is not always as straightforward as it might seem.</p>
 
-                <p><strong>B.</strong> From Ethiopia, coffee cultivation spread to the Arabian Peninsula. By the 15th century, coffee was being grown in Yemen, and by the 16th century, it had reached Persia, Egypt, Syria, and Turkey. Coffee houses, known as qahveh khaneh, began appearing in cities across the Middle East. These establishments became important centers for social interaction and intellectual exchange.</p>
+                <p><strong>B.</strong> Tourism can provide the ideal export for developing countries, which can capitalize on their unique cultures and natural environments. However, to do this they may need to have features such as airports, hotels, sanitation facilities, roads and medical facilities. A government can build these itself, or getting finance from foreign lenders. Alternatively, the government may attract foreign investment, allowing others to pay for the building, thus relieving itself of providing capital but also deepening dependence on a single, fickle industry.</p>
 
-                <p><strong>C.</strong> European travelers to the Middle East brought back tales of the unusual dark beverage. By the 17th century, coffee had made its way to Europe and was becoming popular across the continent. Despite some initial controversy and resistance from religious authorities, coffee houses began opening in major European cities, becoming hubs of social activity and business.</p>
+                <p><strong>C.</strong> Tourism is, however, a risky investment. It can gradually decline as a resort becomes seen as outdated, or it can be destroyed overnight by a single hurricane, or a political event. Yet commodities can be produced most efficiently and cheaply in industrial machinery to take advantage of economies of scale, an option closed to village artisans. This alienates the producers from what is being produced, and means the product no longer has any personal meaning to them.</p>
 
-                <p><strong>D.</strong> The colonial powers of Europe established coffee plantations in their tropical colonies. The Dutch were among the first to transport coffee plants to their colonies in Indonesia. The French brought coffee to the Caribbean, while the Spanish introduced it to Central and South America. Brazil, in particular, became a major coffee producer and remains so to this day.</p>
+                <p><strong>D.</strong> By definition, tourism is encounter the different, the original, the authentic. In this increasingly globalized world, what they want is regional and unique. But only through artifice can the tourist demand for authenticity be met. An event such as ceremony needs to be brought to their attention and its importance and unique nature elaborated to them. Natural sites, too, need to be presented if they are to be regarded as noteworthy, gates, permits, and indices allow tourists to recognize a sight. The actual thing!</p>
 
-                <p><strong>E.</strong> Today, coffee is a global commodity and one of the world's most valuable traded products. Modern coffee culture has evolved significantly, with specialty coffee shops and various brewing methods gaining popularity. The industry faces challenges including climate change, which threatens coffee-growing regions, and concerns about fair trade and sustainable farming practices.</p>
+                <p><strong>E.</strong> Tourism blurs the paths of a culture that are public as handicrafts, and discourages them. Saving any which tourism tends to encounter different cultures. A savvy tour which tourism tends to encourage the production of local people to tourists. Alternatively, a savvy tour which tourism tends to encourage the production of local people to tourists.</p>
             `,
             questionGroups: [
                 {
-                    type: "tfng",
+                    type: "summary-completion",
                     title: "Questions 27-31",
-                    instruction: "Do the following statements agree with the information given in the passage?",
-                    options: ["TRUE", "FALSE", "NOT GIVEN"],
+                    instruction: "Complete the summary using the list of words, A-J, below.",
+                    summaryText: `
+                        <p><strong>Tourism - an ideal export?</strong></p>
+                        <p>A developing country needs money to build things like roads, which provide the necessary <input type="text" id="answer-27" onchange="saveAnswer(27, this.value)" value="" /> for tourism. The country can get taxes or <input type="text" id="answer-28" onchange="saveAnswer(28, this.value)" value="" /> from abroad, which means the country will not receive any financial gain from them but using <input type="text" id="answer-29" onchange="saveAnswer(29, this.value)" value="" /> from the country itself.</p>
+                        <p>Tourism may be affected by natural disasters, political events and people's <input type="text" id="answer-30" onchange="saveAnswer(30, this.value)" value="" /> of how modern the resort is. Even if a country is successful, a country has to decide whether the industry's <input type="text" id="answer-31" onchange="saveAnswer(31, this.value)" value="" /> is desirable.</p>
+                    `,
+                    wordList: [
+                        { key: "A", value: "accommodation" },
+                        { key: "B", value: "investment" },
+                        { key: "C", value: "feedback" },
+                        { key: "D", value: "perceptions" },
+                        { key: "E", value: "profit" },
+                        { key: "F", value: "expansion" },
+                        { key: "G", value: "loans" },
+                        { key: "H", value: "industry" },
+                        { key: "I", value: "infrastructure" },
+                        { key: "J", value: "labour" }
+                    ],
                     questions: [
-                        { id: 27, text: "Coffee originated in Ethiopia according to legend", answer: "TRUE" },
-                        { id: 28, text: "Kaldi was a farmer who discovered coffee", answer: "FALSE" },
-                        { id: 29, text: "Coffee was first grown commercially in Yemen", answer: "NOT GIVEN" },
-                        { id: 30, text: "Coffee houses in the Middle East were called qahveh khaneh", answer: "TRUE" },
-                        { id: 31, text: "Religious authorities initially welcomed coffee in Europe", answer: "FALSE" }
+                        { id: 27, answer: "infrastructure" },
+                        { id: 28, answer: "investment" },
+                        { id: 29, answer: "loans" },
+                        { id: 30, answer: "perceptions" },
+                        { id: 31, answer: "expansion" }
                     ]
                 },
                 {
-                    type: "gap-filling",
-                    title: "Questions 32-40",
-                    instruction: "Answer the questions below. Write NO MORE THAN TWO WORDS from the passage for each answer.",
+                    type: "multiple-choice",
+                    title: "Questions 32-36",
+                    instruction: "Choose the correct letter, A, B, C, or D.",
                     questions: [
-                        { id: 32, text: "In which century did coffee reach Europe?", answer: "17th" },
-                        { id: 33, text: "Which European country transported coffee to Indonesia?", answer: "Dutch" },
-                        { id: 34, text: "Where did the French bring coffee to?", answer: "Caribbean" },
-                        { id: 35, text: "Which country became a major coffee producer?", answer: "Brazil" },
-                        { id: 36, text: "What type of coffee shops have gained popularity?", answer: "specialty" },
-                        { id: 37, text: "What threatens coffee-growing regions?", answer: "climate change" },
-                        { id: 38, text: "Coffee houses became centers for ___ exchange.", answer: "intellectual" },
-                        { id: 39, text: "Goats became more ___ after eating coffee berries.", answer: "active" },
-                        { id: 40, text: "Coffee is one of the world's most valuable ___ products.", answer: "traded" }
+                        { 
+                            id: 32, 
+                            text: "The writer says that for tourists, an authentic experience",
+                            options: [
+                                { key: "A", text: "is only possible if official barriers can be removed" },
+                                { key: "B", text: "may be missed if people are not clear what they want" },
+                                { key: "C", text: "is created in an unnatural manner" },
+                                { key: "D", text: "may be destroyed by inappropriate behaviour" }
+                            ],
+                            answer: "C"
+                        },
+                        { 
+                            id: 33, 
+                            text: "The writer refers to the rules governing seating on a bus as an example of",
+                            options: [
+                                { key: "A", text: "a way in which social change can be produced most efficiently" },
+                                { key: "B", text: "an unintentional cause of offence to local people by tourists" },
+                                { key: "C", text: "the wide variation there may be between different cultures" },
+                                { key: "D", text: "an aspect of culture which tourism tends to ignore" }
+                            ],
+                            answer: "D"
+                        },
+                        { 
+                            id: 34, 
+                            text: "Tourists' interest in traditionally made objects may lead to changes in",
+                            options: [
+                                { key: "A", text: "how they are made" },
+                                { key: "B", text: "the way which people think about the value of local goods" },
+                                { key: "C", text: "people's attitudes towards mass production" },
+                                { key: "D", text: "the extent of progress made in industrialization" }
+                            ],
+                            answer: "A"
+                        },
+                        { 
+                            id: 35, 
+                            text: "What does the writer suggest about the artists who produce goods for tourists?",
+                            options: [
+                                { key: "A", text: "They are unwilling to work in factories" },
+                                { key: "B", text: "They have a financial need to be artists" },
+                                { key: "C", text: "They would prefer to make goods for local people" },
+                                { key: "D", text: "They feel their work lacks significance" }
+                            ],
+                            answer: "D"
+                        },
+                        { 
+                            id: 36, 
+                            text: "In the final paragraph, the writer's main point is that tourism",
+                            options: [
+                                { key: "A", text: "has a complex effect on culture" },
+                                { key: "B", text: "is a major contributor to the economy" },
+                                { key: "C", text: "should be more carefully regulated" },
+                                { key: "D", text: "benefits some social groups more than others" }
+                            ],
+                            answer: "A"
+                        }
                     ]
                 }
             ]
