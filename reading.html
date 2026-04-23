@@ -15,7 +15,7 @@
         
         body.theme-white-black { background: white; color: black; }
         body.theme-black-white { background: #1a1a1a; color: white; }
-        body.theme-yellow-black { background: #fffacd; color: black; }
+        body.theme-yellow-black { background: #000; color: yellow; }
         
         body.size-normal { font-size: 16px; }
         body.size-large { font-size: 20px; }
@@ -29,6 +29,19 @@
             justify-content: space-between;
             align-items: center;
             height: 60px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-black-white .top-header {
+            background: #1a1a1a;
+            color: white;
+            border-bottom-color: #555;
+        }
+        
+        body.theme-yellow-black .top-header {
+            background: #000;
+            color: yellow;
+            border-bottom-color: #555;
         }
         
         .logo-text { font-size: 1.5rem; font-weight: bold; color: #2563eb; }
@@ -45,6 +58,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-black-white .toolbar {
+            background: #2a2a2a;
+            color: white;
+            border-bottom-color: #555;
+        }
+        
+        body.theme-yellow-black .toolbar {
+            background: #1a1a00;
+            color: yellow;
+            border-bottom-color: #555;
         }
         
         .main-container {
@@ -74,7 +100,7 @@
         }
         
         body.theme-black-white .questions-panel { background: #2a2a2a; }
-        body.theme-yellow-black .questions-panel { background: #fff9e6; }
+        body.theme-yellow-black .questions-panel { background: #000; }
         
         .passage-title {
             font-size: 1.8em;
@@ -142,7 +168,7 @@
         }
         
         body.theme-black-white .question-section { background: #1a1a1a; }
-        body.theme-yellow-black .question-section { background: #fffacd; }
+        body.theme-yellow-black .question-section { background: #1a1a00; color: yellow; }
         
         .question-section h3 { color: #2563eb; margin-bottom: 15px; }
         
@@ -155,6 +181,7 @@
         }
         
         body.theme-black-white .question-item { background: #2a2a2a; }
+        body.theme-yellow-black .question-item { background: #1a1a00; }
         
         .question-item.answered { background: #e8f4f8; }
         body.theme-black-white .question-item.answered { background: #1e3a4a; }
@@ -196,6 +223,19 @@
             justify-content: space-between;
             align-items: center;
             height: 60px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.theme-black-white .bottom-nav {
+            background: #2a2a2a;
+            color: white;
+            border-top-color: #555;
+        }
+        
+        body.theme-yellow-black .bottom-nav {
+            background: #1a1a00;
+            color: yellow;
+            border-top-color: #555;
         }
         
         .nav-center {
