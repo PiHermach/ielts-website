@@ -355,10 +355,13 @@ function setupSelectionMenu() {
                 const relativeTop = rect.top - panelRect.top + passagePanel.scrollTop;
                 const relativeLeft = rect.left - panelRect.left + passagePanel.scrollLeft;
                 
-                // Position menu right above selection (just 5px above)
+                // Get menu width (approximate)
+                const menuWidth = 180;
+                
+                // Position menu above selection (centered)
                 selectionMenu.style.display = 'block';
-                selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - 110}px`;
-                selectionMenu.style.top = `${relativeTop - 50}px`;
+                selectionMenu.style.left = `${relativeLeft + (rect.width / 2) - (menuWidth / 2)}px`;
+                selectionMenu.style.top = `${relativeTop - 80}px`;
             } else {
                 selectionMenu.style.display = 'none';
             }
