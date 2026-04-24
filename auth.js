@@ -1,9 +1,5 @@
-// ── Firebase imports (ESM via CDN) ─────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-    getFirestore, doc, setDoc, getDoc, getDocs,
-    collection, query, where, deleteDoc, updateDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+﻿// auth.js — uses Firebase compat SDK (loaded via script tags in auth.html)
+// No ES module imports needed
 
 const firebaseConfig = {
     apiKey: "AIzaSyCznTkl5K8ffyCoBOeQNSBnSnPi3bqWOJE",
@@ -14,115 +10,67 @@ const firebaseConfig = {
     appId: "1:584662072452:web:d815ca66bed404cf94d6d1"
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+// Init Firebase (compat mode — available as firebase.app(), firebase.firestore())
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
 
 // ── Cloud helpers ──────────────────────────────────────────────────────────
-
 async function cloudSaveUser(user) {
-    try { await setDoc(doc(db, "users", user.id), user, { merge: true }); } catch(e) { console.warn("cloudSave:", e); }
-}
-
-async function cloudGetUser(id) {
-    try { const s = await getDoc(doc(db, "users", id)); return s.exists() ? s.data() : null; } catch(e) { return null; }
-}
-
-async function cloudGetAllUsers() {
-    try { const s = await getDocs(collection(db, "users")); return s.docs.map(d => d.data()); } catch(e) { return null; }
+    try { await db.collection('users').doc(user.id).set(user, { merge: true }); }
+    catch(e) { console.warn('cloudSave:', e); }
 }
 
 async function cloudFindByEmail(email) {
     try {
-        const s = await getDocs(query(collection(db, "users"), where("email", "==", email)));
-        return s.empty ? null : s.docs[0].data();
+        const snap = await db.collection('users').where('email', '==', email).get();
+        return snap.empty ? null : snap.docs[0].data();
     } catch(e) { return null; }
 }
 
-async function cloudDeleteUser(id) {
-    try { await deleteDoc(doc(db, "users", id)); return true; } catch(e) { return false; }
+async function cloudGetUser(id) {
+    try {
+        const snap = await db.collection('users').doc(id).get();
+        return snap.exists ? snap.data() : null;
+    } catch(e) { return null; }
 }
 
-async function cloudUpdateUser(id, fields) {
-    try { await updateDoc(doc(db, "users", id), fields); return true; } catch(e) { return false; }
-}
-
-// Expose for other pages (admin, profile, shop, reading-app)
-window._db = db;
-window._cloudSaveUser    = cloudSaveUser;
-window._cloudGetUser     = cloudGetUser;
-window._cloudGetAllUsers = cloudGetAllUsers;
-window._cloudFindByEmail = cloudFindByEmail;
-window._cloudDeleteUser  = cloudDeleteUser;
-window._cloudUpdateUser  = cloudUpdateUser;
-
-// ── Sync: cloud → localStorage ─────────────────────────────────────────────
-// Called on login to pull latest data from cloud
-async function pullUserFromCloud(userId) {
-    const cloudUser = await cloudGetUser(userId);
-    if (!cloudUser) return null;
-
-    // Merge into localStorage users array
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const idx = users.findIndex(u => u.id === userId);
-    if (idx !== -1) {
-        // Keep local password (not stored in cloud for security)
-        const localPwd = users[idx].password;
-        users[idx] = { ...cloudUser, password: localPwd };
-    } else {
-        users.push(cloudUser);
-    }
-    localStorage.setItem('users', JSON.stringify(users));
-    return cloudUser;
-}
+// Expose cloud helpers for other pages
+window._cloudSaveUser = cloudSaveUser;
+window._cloudGetUser  = cloudGetUser;
 
 // ── OP account bootstrap ───────────────────────────────────────────────────
-async function initializeOPAccount() {
+function initializeOPAccount() {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const opExists = users.find(u => u.email === 'tranhoanggiabao2009@gmail.com');
-
     if (!opExists) {
-        const opAccount = {
-            id: 'op-admin',
-            name: 'GiaBao',
-            email: 'tranhoanggiabao2009@gmail.com',
-            password: 'Bao08032009',
-            bandScore: '9.0',
-            description: 'Administrator Account',
-            avatar: null,
-            isOP: true,
-            tokens: 10000,
-            completedTests: [],
-            ownedThemes: ['default'],
-            equippedTheme: 'default',
-            createdAt: new Date().toISOString()
+        const op = {
+            id: 'op-admin', name: 'GiaBao',
+            email: 'tranhoanggiabao2009@gmail.com', password: 'Bao08032009',
+            bandScore: '9.0', description: 'Administrator Account',
+            avatar: null, isOP: true, tokens: 10000,
+            completedTests: [], ownedThemes: ['default'],
+            equippedTheme: 'default', createdAt: new Date().toISOString()
         };
-        users.push(opAccount);
+        users.push(op);
         localStorage.setItem('users', JSON.stringify(users));
-        await cloudSaveUser(opAccount);
-    } else {
-        // Ensure tokens field exists
-        const opIndex = users.findIndex(u => u.email === 'tranhoanggiabao2009@gmail.com');
-        if (opIndex !== -1 && users[opIndex].tokens === undefined) {
-            users[opIndex].tokens = 10000;
-            users[opIndex].completedTests = users[opIndex].completedTests || [];
-            localStorage.setItem('users', JSON.stringify(users));
-            await cloudSaveUser(users[opIndex]);
-        }
+        cloudSaveUser(op);
     }
 }
-
 initializeOPAccount();
 
 // ── Session check ──────────────────────────────────────────────────────────
 window.addEventListener('load', async () => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const rememberMe  = localStorage.getItem('rememberMe');
-
     if (currentUser && rememberMe === 'true') {
-        // Pull latest data from cloud before redirecting
-        const fresh = await pullUserFromCloud(currentUser.id);
+        // Pull fresh data from cloud
+        const fresh = await cloudGetUser(currentUser.id);
         if (fresh) {
             const updated = { ...currentUser, ...fresh };
+            const localEquipped = currentUser.equippedTheme;
+            if (localEquipped) updated.equippedTheme = localEquipped;
             delete updated.password;
             localStorage.setItem('currentUser', JSON.stringify(updated));
         }
@@ -134,23 +82,25 @@ window.addEventListener('load', async () => {
 
 // ── UI helpers ─────────────────────────────────────────────────────────────
 function switchTab(tab) {
-    const tabs  = document.querySelectorAll('.auth-tab');
-    const forms = document.querySelectorAll('.auth-form');
-    tabs.forEach(t  => t.classList.remove('active'));
-    forms.forEach(f => f.classList.remove('active'));
-    if (tab === 'login') { tabs[0].classList.add('active'); forms[0].classList.add('active'); }
-    else                 { tabs[1].classList.add('active'); forms[1].classList.add('active'); }
+    document.querySelectorAll('.auth-tab').forEach(t  => t.classList.remove('active'));
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    if (tab === 'login') {
+        document.querySelectorAll('.auth-tab')[0].classList.add('active');
+        document.querySelectorAll('.auth-form')[0].classList.add('active');
+    } else {
+        document.querySelectorAll('.auth-tab')[1].classList.add('active');
+        document.querySelectorAll('.auth-form')[1].classList.add('active');
+    }
     hideError();
 }
 
-function showError(message) {
+function showError(msg) {
     const d = document.getElementById('errorMessage');
-    d.textContent = message;
-    d.classList.add('show');
+    if (d) { d.textContent = msg; d.classList.add('show'); }
 }
-
 function hideError() {
-    document.getElementById('errorMessage').classList.remove('show');
+    const d = document.getElementById('errorMessage');
+    if (d) d.classList.remove('show');
 }
 
 function previewAvatar(event) {
@@ -158,7 +108,8 @@ function previewAvatar(event) {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = e => {
-        document.getElementById('avatarPreview').innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
+        const p = document.getElementById('avatarPreview');
+        if (p) p.innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
     };
     reader.readAsDataURL(file);
 }
@@ -172,23 +123,23 @@ async function handleLogin(event) {
     const password   = document.getElementById('loginPassword').value;
     const rememberMe = document.getElementById('rememberMe').checked;
 
-    // Show loading state
-    const btn = event.target.querySelector('button[type="submit"]');
+    const btn = event.target ? event.target.querySelector('button[type="submit"]') : null;
     if (btn) { btn.disabled = true; btn.textContent = 'Đang đăng nhập...'; }
 
-    // 1. Try cloud first
     let user = null;
+
+    // 1. Try cloud
     const cloudUser = await cloudFindByEmail(email);
     if (cloudUser && cloudUser.password === password) {
         user = cloudUser;
         // Sync to localStorage
         const users = JSON.parse(localStorage.getItem('users')) || [];
         const idx = users.findIndex(u => u.id === cloudUser.id);
-        if (idx !== -1) users[idx] = cloudUser;
+        if (idx !== -1) users[idx] = { ...cloudUser, password: cloudUser.password };
         else users.push(cloudUser);
         localStorage.setItem('users', JSON.stringify(users));
     } else {
-        // 2. Fallback to localStorage (offline)
+        // 2. Fallback localStorage
         const users = JSON.parse(localStorage.getItem('users')) || [];
         user = users.find(u => u.email === email && u.password === password) || null;
     }
@@ -226,43 +177,32 @@ async function handleRegister(event) {
 
     if (password.length < 6) { showError('Mật khẩu phải có ít nhất 6 ký tự!'); return; }
 
-    const btn = event.target.querySelector('button[type="submit"]');
+    const btn = event.target ? event.target.querySelector('button[type="submit"]') : null;
     if (btn) { btn.disabled = true; btn.textContent = 'Đang đăng ký...'; }
 
-    const avatarInput = document.getElementById('avatarInput');
-    let avatar = null;
-
-    async function completeRegistration() {
-        // Check cloud for duplicate email
+    async function completeRegistration(avatar) {
+        // Check cloud duplicate
         const existing = await cloudFindByEmail(email);
         if (existing) {
             if (btn) { btn.disabled = false; btn.textContent = 'Đăng ký'; }
-            showError('Email này đã được đăng ký!');
-            return;
+            showError('Email này đã được đăng ký!'); return;
         }
-        // Also check localStorage
+        // Check localStorage duplicate
         const users = JSON.parse(localStorage.getItem('users')) || [];
         if (users.find(u => u.email === email)) {
             if (btn) { btn.disabled = false; btn.textContent = 'Đăng ký'; }
-            showError('Email này đã được đăng ký!');
-            return;
+            showError('Email này đã được đăng ký!'); return;
         }
 
         const newUser = {
-            id: 'user-' + Date.now(),
-            name, email, password, bandScore, description, avatar,
-            isOP: false, tokens: 0,
-            completedTests: [],
-            ownedThemes: ['default'],
-            equippedTheme: 'default',
+            id: 'user-' + Date.now(), name, email, password,
+            bandScore, description, avatar: avatar || null,
+            isOP: false, tokens: 0, completedTests: [],
+            ownedThemes: ['default'], equippedTheme: 'default',
             createdAt: new Date().toISOString()
         };
-
-        // Save to localStorage
         users.push(newUser);
         localStorage.setItem('users', JSON.stringify(users));
-
-        // Save to cloud (without password for security — store hashed or keep for now)
         await cloudSaveUser(newUser);
 
         const currentUser = {
@@ -275,19 +215,29 @@ async function handleRegister(event) {
         window.location.href = 'index.html';
     }
 
-    if (avatarInput.files.length > 0) {
+    const avatarInput = document.getElementById('avatarInput');
+    if (avatarInput && avatarInput.files.length > 0) {
         const reader = new FileReader();
-        reader.onload = e => { avatar = e.target.result; completeRegistration(); };
+        reader.onload = e => completeRegistration(e.target.result);
         reader.readAsDataURL(avatarInput.files[0]);
     } else {
-        completeRegistration();
+        completeRegistration(null);
     }
 }
 
-// ── Expose to global scope (needed for onclick= in HTML) ───────────────────
+// ── Attach event listeners ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm    = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const avatarInput  = document.getElementById('avatarInput');
+
+    if (loginForm)    loginForm.addEventListener('submit', handleLogin);
+    if (registerForm) registerForm.addEventListener('submit', handleRegister);
+    if (avatarInput)  avatarInput.addEventListener('change', previewAvatar);
+});
+
+// Expose for onclick= in HTML
 window.switchTab      = switchTab;
 window.handleLogin    = handleLogin;
 window.handleRegister = handleRegister;
 window.previewAvatar  = previewAvatar;
-window.showError      = showError;
-window.hideError      = hideError;

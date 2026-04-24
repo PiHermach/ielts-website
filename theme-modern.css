@@ -1,690 +1,649 @@
-/* Modern Theme - Ultra Beautiful & Advanced UI */
+﻿/* ═══════════════════════════════════════════════════════════════════════════
+   MODERN THEME — Aurora UI
+   Vibrant gradients · Light glassmorphism · Smooth animations · Premium feel
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Modern gradient background with animated particles */
+/* ── Root variables ────────────────────────────────────────────────────── */
 body.theme-modern {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    --a1: #6366f1;   /* indigo */
+    --a2: #8b5cf6;   /* violet */
+    --a3: #ec4899;   /* pink */
+    --a4: #06b6d4;   /* cyan */
+    --a5: #10b981;   /* emerald */
+    --grad: linear-gradient(135deg, var(--a1), var(--a2), var(--a3));
+    --grad2: linear-gradient(135deg, var(--a4), var(--a1));
+    --glass: rgba(255,255,255,.65);
+    --glass2: rgba(255,255,255,.45);
+    --border: rgba(255,255,255,.7);
+    --border2: rgba(99,102,241,.3);
+    --text: #1e1b4b;
+    --text2: #4338ca;
+    --text3: #6366f1;
+    --shadow: 0 8px 32px rgba(99,102,241,.15);
+    --shadow2: 0 20px 60px rgba(99,102,241,.2);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --blur: blur(24px) saturate(200%);
+
+    background:
+        radial-gradient(ellipse at 0% 0%,    rgba(99,102,241,.18)  0%, transparent 50%),
+        radial-gradient(ellipse at 100% 0%,  rgba(236,72,153,.14)  0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(6,182,212,.12)   0%, transparent 55%),
+        radial-gradient(ellipse at 30% 50%,  rgba(139,92,246,.1)   0%, transparent 45%),
+        linear-gradient(160deg, #f8f7ff 0%, #f0f0ff 30%, #fdf4ff 60%, #f0fbff 100%);
+    min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    color: var(--text);
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Glassmorphism overlay */
+/* ── Animated mesh background ──────────────────────────────────────────── */
 body.theme-modern::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
+    inset: 0;
+    background:
+        radial-gradient(ellipse 700px 500px at 5%  10%,  rgba(99,102,241,.12)  0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 95% 15%,  rgba(236,72,153,.1)   0%, transparent 60%),
+        radial-gradient(ellipse 500px 400px at 50% 90%,  rgba(6,182,212,.1)    0%, transparent 60%),
+        radial-gradient(ellipse 400px 300px at 80% 60%,  rgba(139,92,246,.08)  0%, transparent 60%);
     pointer-events: none;
-    z-index: 1;
+    z-index: 0;
+    animation: meshDrift 18s ease-in-out infinite alternate;
 }
 
-/* Floating geometric shapes */
-body.theme-modern::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 1;
-    animation: floatingShapes 20s ease-in-out infinite;
+@keyframes meshDrift {
+    0%   { transform: translate(0,0)     scale(1);    opacity: .7; }
+    33%  { transform: translate(2%,-1%)  scale(1.03); opacity: 1;  }
+    66%  { transform: translate(-1%,2%)  scale(.98);  opacity: .8; }
+    100% { transform: translate(1%,-2%)  scale(1.02); opacity: .9; }
 }
 
-@keyframes floatingShapes {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-/* Header with advanced glassmorphism */
+/* ── Header ─────────────────────────────────────────────────────────────── */
 body.theme-modern .top-header {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: var(--glass);
+    backdrop-filter: var(--blur);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 0 rgba(255,255,255,.8), var(--shadow);
     position: relative;
-    z-index: 10;
+    z-index: 100;
 }
 
 body.theme-modern .logo-text {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: -1px;
+    font-size: 1.4rem;
+}
+
+body.theme-modern .test-title {
+    color: #6366f1;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+body.theme-modern .test-name {
+    color: var(--text);
+    font-weight: 700;
+}
+body.theme-modern .timer-display {
+    background: var(--grad);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 800;
-    text-shadow: none;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
 }
+body.theme-modern .header-icons { color: #6366f1; }
 
-body.theme-modern .test-title,
-body.theme-modern .test-name {
-    color: #2d3748;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-}
-
-body.theme-modern .timer-display {
-    background: linear-gradient(135deg, #ff6b6b, #feca57);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 700;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
-body.theme-modern .header-icons {
-    color: #4a5568;
-}
-
-/* Toolbar with modern styling */
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
 body.theme-modern .toolbar {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(15px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,.5);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,.6);
 }
-
 body.theme-modern .toolbar-text {
-    color: #2d3748;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    color: #4338ca;
+    font-size: .85rem;
+    font-weight: 500;
 }
 
-/* Main panels with ultra-modern glassmorphism */
+/* ── Main panels ─────────────────────────────────────────────────────────── */
 body.theme-modern .passage-panel {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 24px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: rgba(255,255,255,.6);
+    backdrop-filter: var(--blur);
+    border-right: 1px solid rgba(255,255,255,.7);
+    box-shadow: inset -1px 0 0 rgba(99,102,241,.08);
     position: relative;
     z-index: 10;
-    margin: 10px;
 }
 
 body.theme-modern .questions-panel {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 24px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: rgba(248,247,255,.55);
+    backdrop-filter: var(--blur);
+    border-left: 1px solid rgba(255,255,255,.6);
     position: relative;
     z-index: 10;
-    margin: 10px;
 }
 
-/* Resizer with modern styling */
+/* ── Resizer ─────────────────────────────────────────────────────────────── */
 body.theme-modern .resizer {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(180deg, #6366f1, #8b5cf6, #ec4899);
+    box-shadow: 0 0 16px rgba(99,102,241,.4);
+    transition: all .3s ease;
 }
-
 body.theme-modern .resizer:hover {
-    background: linear-gradient(135deg, #5a67d8, #6b46c1);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-    transform: scale(1.1);
+    box-shadow: 0 0 28px rgba(99,102,241,.6);
+    transform: scaleX(1.5);
 }
 
-/* Text styling with modern typography */
+/* ── Typography ──────────────────────────────────────────────────────────── */
 body.theme-modern .passage-title {
-    color: #1a202c;
-    font-weight: 700;
-    border-bottom: 3px solid transparent;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    background-size: 100% 3px;
-    background-repeat: no-repeat;
-    background-position: bottom;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding-bottom: 12px;
+    color: #1e1b4b;
+    font-weight: 800;
+    font-size: 1.1em;
+    letter-spacing: -.3px;
+    border-bottom: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                var(--grad) border-box;
+    padding-bottom: 14px;
 }
 
 body.theme-modern .passage-content p {
-    color: #2d3748;
-    line-height: 1.8;
-    font-weight: 400;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    color: #374151;
+    line-height: 1.85;
+    font-size: .95em;
 }
 
-/* Question sections with modern cards */
+/* ── Question groups ─────────────────────────────────────────────────────── */
 body.theme-modern .question-group-header {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(15px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    box-shadow: 
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    background: rgba(255,255,255,.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.8);
+    border-left: 4px solid transparent;
+    border-image: var(--grad) 1;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
     margin-bottom: 20px;
 }
 
 body.theme-modern .question-section h3 {
-    color: #1a202c;
+    color: #1e1b4b;
     font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: .95rem;
 }
-
 body.theme-modern .question-instruction {
-    color: #4a5568;
-    font-weight: 500;
+    color: #4338ca;
+    font-size: .85rem;
+    line-height: 1.6;
 }
-
-body.theme-modern .question-text {
-    color: #2d3748;
-    font-weight: 500;
-}
+body.theme-modern .question-text { color: #374151; line-height: 1.6; }
 
 body.theme-modern .question-number {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
+    background: var(--grad);
+    color: #fff;
     border: none;
-    border-radius: 12px;
-    box-shadow: 
-        0 4px 12px rgba(102, 126, 234, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    font-weight: 700;
+    border-radius: 8px;
+    font-weight: 800;
+    box-shadow: 0 2px 10px rgba(99,102,241,.35);
+    min-width: 28px;
+    height: 28px;
+    font-size: .8rem;
 }
 
-/* Modern form elements */
+/* ── Radio buttons ───────────────────────────────────────────────────────── */
 body.theme-modern .radio-label-vertical {
-    color: #2d3748;
-    font-weight: 500;
-    padding: 12px 16px;
-    border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    margin: 4px 0;
+    color: #374151;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    transition: all .2s ease;
+    cursor: pointer;
+    background: rgba(255,255,255,.4);
 }
-
 body.theme-modern .radio-label-vertical:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: rgba(99,102,241,.08);
+    border-color: rgba(99,102,241,.3);
+    transform: translateX(4px);
+    box-shadow: 0 2px 12px rgba(99,102,241,.15);
 }
 
+/* ── Text inputs ─────────────────────────────────────────────────────────── */
 body.theme-modern .question-content input[type="text"] {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
-    color: #1a202c;
-    font-weight: 500;
-    padding: 12px 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,.7);
+    color: #1e1b4b;
+    border: 2px solid rgba(99,102,241,.2);
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    transition: all .25s ease;
+    font-size: .9rem;
+    padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(99,102,241,.08);
 }
-
 body.theme-modern .question-content input[type="text"]:focus {
-    border-color: #667eea;
-    box-shadow: 
-        0 0 0 4px rgba(102, 126, 234, 0.2),
-        0 8px 24px rgba(0, 0, 0, 0.15);
-    background: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99,102,241,.15), 0 4px 16px rgba(99,102,241,.15);
+    background: rgba(255,255,255,.9);
+    outline: none;
 }
-
 body.theme-modern .question-item.answered .question-content input[type="text"] {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: #10b981;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    border-color: var(--a5);
+    background: rgba(16,185,129,.06);
+    box-shadow: 0 0 0 3px rgba(16,185,129,.12);
 }
 
-/* Modern tables */
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+body.theme-modern .matching-table {
+    background: rgba(255,255,255,.6);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.8);
+    box-shadow: var(--shadow);
+}
 body.theme-modern .mc-table-header-cell,
 body.theme-modern .matching-header-cell {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    color: #1a202c;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    font-weight: 700;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(139,92,246,.1));
+    color: #4338ca;
+    border: 1px solid rgba(99,102,241,.15);
+    font-weight: 800;
+    font-size: .78rem;
+    letter-spacing: .8px;
+    text-transform: uppercase;
 }
-
-body.theme-modern .matching-table {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(15px);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
 body.theme-modern .matching-question-cell {
-    color: #2d3748;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    font-weight: 500;
+    color: #374151;
+    border-color: rgba(99,102,241,.1);
+    font-size: .88rem;
 }
-
 body.theme-modern .matching-radio-cell {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(99,102,241,.1);
+    background: rgba(255,255,255,.3);
 }
+body.theme-modern .matching-row:hover { background: rgba(99,102,241,.04) !important; }
 
-/* Modern lists and options */
+/* ── Word list & options ─────────────────────────────────────────────────── */
 body.theme-modern .options-list,
 body.theme-modern .word-list,
 body.theme-modern .options-list-reference {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(15px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
 }
-
 body.theme-modern .options-list h4,
 body.theme-modern .word-list h4,
 body.theme-modern .options-list-reference h4 {
-    color: #1a202c;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-body.theme-modern .option-item,
-body.theme-modern .option-btn,
+body.theme-modern .option-item {
+    background: rgba(255,255,255,.5);
+    color: #374151;
+    border: 1px solid rgba(99,102,241,.12);
+    border-radius: 8px;
+    font-size: .85rem;
+}
+
 body.theme-modern .word-btn {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    color: #2d3748;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,.7);
+    color: #4338ca;
+    border: 1.5px solid rgba(99,102,241,.2);
+    border-radius: 10px;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: all .2s ease;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(99,102,241,.1);
 }
-
-body.theme-modern .option-btn:hover,
 body.theme-modern .word-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, rgba(99,102,241,.1), rgba(139,92,246,.1));
+    border-color: #6366f1;
+    color: #4338ca;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(99,102,241,.25);
 }
 
-/* MODERN DROP ZONES - ULTRA BEAUTIFUL - MAXIMUM SPECIFICITY OVERRIDE */
-body.theme-modern .summary-text {
-    background: rgba(255, 255, 255, 0.3) !important;
-    backdrop-filter: blur(15px) saturate(180%) !important;
-    color: #1a202c !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
-    padding: 24px !important;
-    line-height: 1.8 !important;
-    font-weight: 500 !important;
+/* ── Summary / Drop zones ────────────────────────────────────────────────── */
+body.theme-modern .summary-text,
+body.theme-modern .summary-container {
+    background: rgba(255,255,255,.6) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255,255,255,.8) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #374151 !important;
+    line-height: 2 !important;
+    font-size: .92rem !important;
 }
 
-/* MAXIMUM SPECIFICITY - Force override ALL possible drop-zone styles */
 body.theme-modern .drop-zone,
 body.theme-modern span.drop-zone,
-body.theme-modern .summary-container .drop-zone,
-body.theme-modern .summary-text .drop-zone,
 body.theme-modern .drop-zone[id^="drop-"],
-body.theme-modern .question-content .drop-zone,
-body.theme-modern .summary-completion .drop-zone,
-body.theme-modern div.drop-zone,
-body.theme-modern .question-item .drop-zone,
-body.theme-modern .summary-container span.drop-zone,
-body.theme-modern .summary-text span.drop-zone {
-    background: rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(15px) saturate(180%) !important;
-    border: 2px dashed rgba(102, 126, 234, 0.5) !important;
-    color: #1a202c !important;
-    padding: 12px 16px !important;
-    border-radius: 12px !important;
+body.theme-modern .summary-container .drop-zone,
+body.theme-modern .summary-text .drop-zone {
+    background: rgba(99,102,241,.08) !important;
+    border: 2px dashed rgba(99,102,241,.4) !important;
+    color: #4338ca !important;
+    border-radius: 10px !important;
+    padding: 5px 14px !important;
     min-width: 120px !important;
     display: inline-block !important;
     text-align: center !important;
     cursor: pointer !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 
-        0 4px 12px rgba(0, 0, 0, 0.1) !important,
-        inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+    transition: all .2s ease !important;
     font-weight: 600 !important;
-    position: relative !important;
-    margin: 0 4px !important;
-    vertical-align: middle !important;
-    line-height: 1.5 !important;
-    font-size: 0.95rem !important;
-    min-height: 32px !important;
+    font-size: .88rem !important;
+    box-shadow: 0 2px 8px rgba(99,102,241,.1) !important;
 }
-
-/* Hover states with maximum specificity */
 body.theme-modern .drop-zone:hover,
 body.theme-modern span.drop-zone:hover,
-body.theme-modern .summary-container .drop-zone:hover,
-body.theme-modern .summary-text .drop-zone:hover,
-body.theme-modern .drop-zone[id^="drop-"]:hover,
-body.theme-modern .question-content .drop-zone:hover,
-body.theme-modern .summary-completion .drop-zone:hover,
-body.theme-modern div.drop-zone:hover,
-body.theme-modern .question-item .drop-zone:hover,
-body.theme-modern .summary-container span.drop-zone:hover,
-body.theme-modern .summary-text span.drop-zone:hover {
-    background: rgba(255, 255, 255, 0.5) !important;
-    border-color: #667eea !important;
-    transform: translateY(-2px) scale(1.02) !important;
-    box-shadow: 
-        0 8px 24px rgba(102, 126, 234, 0.2) !important,
-        inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+body.theme-modern .drop-zone[id^="drop-"]:hover {
+    background: rgba(99,102,241,.15) !important;
+    border-color: #6366f1 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(99,102,241,.2) !important;
 }
-
-/* Filled states with maximum specificity */
 body.theme-modern .drop-zone.filled,
 body.theme-modern span.drop-zone.filled,
-body.theme-modern .summary-container .drop-zone.filled,
-body.theme-modern .summary-text .drop-zone.filled,
-body.theme-modern .drop-zone[id^="drop-"].filled,
-body.theme-modern .question-content .drop-zone.filled,
-body.theme-modern .summary-completion .drop-zone.filled,
-body.theme-modern div.drop-zone.filled,
-body.theme-modern .question-item .drop-zone.filled,
-body.theme-modern .summary-container span.drop-zone.filled,
-body.theme-modern .summary-text span.drop-zone.filled {
-    background: rgba(16, 185, 129, 0.2) !important;
-    border: 2px solid #10b981 !important;
+body.theme-modern .drop-zone[id^="drop-"].filled {
+    background: rgba(16,185,129,.1) !important;
+    border: 2px solid var(--a5) !important;
     color: #065f46 !important;
-    box-shadow: 
-        0 4px 16px rgba(16, 185, 129, 0.3) !important,
-        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-    font-weight: 600 !important;
+    box-shadow: 0 2px 12px rgba(16,185,129,.2) !important;
 }
-
-/* Drag over states with maximum specificity */
 body.theme-modern .drop-zone.drag-over,
 body.theme-modern span.drop-zone.drag-over,
-body.theme-modern .summary-container .drop-zone.drag-over,
-body.theme-modern .summary-text .drop-zone.drag-over,
-body.theme-modern .drop-zone[id^="drop-"].drag-over,
-body.theme-modern .question-content .drop-zone.drag-over,
-body.theme-modern .summary-completion .drop-zone.drag-over,
-body.theme-modern div.drop-zone.drag-over,
-body.theme-modern .question-item .drop-zone.drag-over,
-body.theme-modern .summary-container span.drop-zone.drag-over,
-body.theme-modern .summary-text span.drop-zone.drag-over {
-    background: rgba(102, 126, 234, 0.3) !important;
-    border-color: #667eea !important;
-    transform: translateY(-4px) scale(1.05) !important;
-    box-shadow: 
-        0 12px 32px rgba(102, 126, 234, 0.4) !important,
-        inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+body.theme-modern .drop-zone[id^="drop-"].drag-over {
+    background: rgba(99,102,241,.2) !important;
+    border-color: #6366f1 !important;
+    transform: scale(1.04) !important;
+    box-shadow: 0 8px 24px rgba(99,102,241,.3) !important;
 }
 
-/* Question note with modern styling */
-body.theme-modern .question-note {
-    background: rgba(245, 158, 11, 0.2);
-    backdrop-filter: blur(10px);
-    color: #92400e;
-    border-left: 4px solid #f59e0b;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+body.theme-modern .question-number-inline {
+    background: rgba(99,102,241,.12) !important;
+    border-color: rgba(99,102,241,.3) !important;
+    color: #4338ca !important;
+    font-weight: 700 !important;
 }
 
-/* Modern highlights and notes */
+/* ── Highlights & notes ──────────────────────────────────────────────────── */
 body.theme-modern .highlight {
-    background: rgba(251, 191, 36, 0.3);
-    backdrop-filter: blur(5px);
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+    background: rgba(251,191,36,.3);
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(251,191,36,.4);
 }
-
 body.theme-modern .highlight.note {
-    background: rgba(16, 185, 129, 0.3);
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    background: rgba(16,185,129,.2);
+    box-shadow: 0 0 0 1px rgba(16,185,129,.3);
 }
 
-/* Modern selection menu */
+/* ── Selection / note menus ──────────────────────────────────────────────── */
 body.theme-modern .selection-menu,
 body.theme-modern .note-input-menu,
 body.theme-modern .note-view-menu,
 body.theme-modern .highlight-menu {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255,255,255,.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(99,102,241,.2);
     border-radius: 16px;
-    box-shadow: 
-        0 12px 32px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow2);
 }
-
 body.theme-modern .selection-menu button,
 body.theme-modern .note-input-menu button {
-    color: #1a202c;
+    color: #4338ca;
     font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 body.theme-modern .selection-menu button:hover,
 body.theme-modern .note-input-menu button:hover {
-    background: rgba(102, 126, 234, 0.2);
-    transform: translateY(-1px);
+    background: rgba(99,102,241,.1);
+    border-radius: 8px;
 }
-
 body.theme-modern .note-input-menu input {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    color: #1a202c;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255,255,255,.8);
+    color: #1e1b4b;
+    border: 2px solid rgba(99,102,241,.2);
     border-radius: 8px;
-    font-weight: 500;
 }
-
+body.theme-modern .note-input-menu input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+}
 body.theme-modern .note-content {
-    background: rgba(255, 255, 255, 0.2);
-    color: #1a202c;
+    background: rgba(99,102,241,.06);
+    color: #374151;
     border-radius: 8px;
-    font-weight: 500;
+    font-size: .88rem;
 }
 
-/* Modern bottom navigation - Ultra Beautiful */
+/* ── Bottom navigation ───────────────────────────────────────────────────── */
 body.theme-modern .bottom-nav {
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(30px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255,255,255,.75) !important;
+    backdrop-filter: blur(28px) saturate(200%) !important;
+    border-top: 1px solid rgba(255,255,255,.9) !important;
     border-radius: 24px 24px 0 0 !important;
-    box-shadow: 
-        0 -12px 40px rgba(0, 0, 0, 0.15) !important,
-        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    padding: 20px !important;
-    z-index: 1000 !important;
-}
-
-/* Modern navigation layout */
-body.theme-modern .nav-center {
-    display: flex !important;
-    gap: 8px !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-wrap: wrap !important;
+    box-shadow: 0 -8px 40px rgba(99,102,241,.12), 0 -1px 0 rgba(255,255,255,.9) !important;
+    height: auto !important;
+    padding: 12px 20px !important;
 }
 
 body.theme-modern .part-info-text {
-    color: #2d3748;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    color: #6366f1 !important;
+    font-size: .75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .8px !important;
 }
 
+/* Part buttons */
 body.theme-modern .part-btn {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    color: #2d3748;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,.6) !important;
+    color: #4338ca !important;
+    border: 1.5px solid rgba(99,102,241,.2) !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: .82rem !important;
+    transition: all .2s ease !important;
+    box-shadow: 0 2px 8px rgba(99,102,241,.08) !important;
 }
-
 body.theme-modern .part-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    background: rgba(99,102,241,.1) !important;
+    border-color: #6366f1 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(99,102,241,.2) !important;
 }
-
 body.theme-modern .part-btn.active {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    box-shadow: 
-        0 4px 16px rgba(102, 126, 234, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: var(--grad) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 20px rgba(99,102,241,.4) !important;
 }
 
+/* Question number buttons */
 body.theme-modern .nav-btn {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    color: #2d3748;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(255,255,255,.6) !important;
+    color: #4338ca !important;
+    border: 1.5px solid rgba(99,102,241,.15) !important;
+    border-radius: 9px !important;
+    font-weight: 700 !important;
+    font-size: .8rem !important;
+    transition: all .15s ease !important;
+    box-shadow: 0 1px 4px rgba(99,102,241,.08) !important;
 }
-
 body.theme-modern .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(99,102,241,.1) !important;
+    border-color: rgba(99,102,241,.4) !important;
+    transform: translateY(-1px) !important;
 }
-
 body.theme-modern .nav-btn.active {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    background: var(--grad) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+    box-shadow: 0 3px 12px rgba(99,102,241,.4) !important;
 }
-
 body.theme-modern .nav-btn.answered {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(5,150,105,.1)) !important;
+    color: #065f46 !important;
+    border-color: rgba(16,185,129,.3) !important;
+}
+body.theme-modern .nav-btn.flagged {
+    background: rgba(245,158,11,.12) !important;
+    border-color: rgba(245,158,11,.3) !important;
+    color: #92400e !important;
 }
 
+/* Arrow & check buttons */
 body.theme-modern .nav-btn-arrow {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 12px;
-    box-shadow: 
-        0 4px 16px rgba(102, 126, 234, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--grad) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 20px rgba(99,102,241,.4) !important;
+    transition: all .2s ease !important;
+    border: none !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
-
+body.theme-modern .nav-btn-arrow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+    border-radius: inherit;
+}
 body.theme-modern .nav-btn-arrow:hover {
-    background: linear-gradient(135deg, #5a67d8, #6b46c1);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 28px rgba(99,102,241,.5) !important;
 }
 
 body.theme-modern .nav-btn-check {
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-radius: 12px;
-    box-shadow: 
-        0 4px 16px rgba(16, 185, 129, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 20px rgba(16,185,129,.4) !important;
+    transition: all .2s ease !important;
+    border: none !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
-
+body.theme-modern .nav-btn-check::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+    border-radius: inherit;
+}
 body.theme-modern .nav-btn-check:hover {
-    background: linear-gradient(135deg, #059669, #047857);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 28px rgba(16,185,129,.5) !important;
 }
 
-/* Modern settings menu */
+/* ── Settings menu ───────────────────────────────────────────────────────── */
 body.theme-modern .settings-menu {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    box-shadow: 
-        0 12px 32px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(99,102,241,.15);
+    border-radius: 18px;
+    box-shadow: var(--shadow2);
 }
-
 body.theme-modern .settings-menu h4 {
-    color: #1a202c;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: .9rem;
 }
-
 body.theme-modern .settings-menu label {
-    color: #2d3748;
-    font-weight: 600;
+    color: #6366f1;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
 }
-
 body.theme-modern .settings-menu select {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    color: #1a202c;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
+    background: rgba(255,255,255,.8);
+    color: #1e1b4b;
+    border: 2px solid rgba(99,102,241,.2);
+    border-radius: 10px;
+    font-size: .88rem;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: border-color .2s;
     font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 body.theme-modern .settings-menu select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+    outline: none;
 }
 
-/* Additional class for JavaScript targeting */
-body.theme-modern .modern-drop-zone {
-    background: rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(15px) saturate(180%) !important;
-    border: 2px dashed rgba(102, 126, 234, 0.5) !important;
-    color: #1a202c !important;
-    border-radius: 12px !important;
-    box-shadow: 
-        0 4px 12px rgba(0, 0, 0, 0.1) !important,
-        inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+/* ── Question note ───────────────────────────────────────────────────────── */
+body.theme-modern .question-note {
+    background: rgba(245,158,11,.08);
+    color: #92400e;
+    border-left: 3px solid #f59e0b;
+    border-radius: 8px;
+    font-size: .85rem;
 }
 
-/* Smooth transitions for all elements */
+/* ── Answered indicator ──────────────────────────────────────────────────── */
+body.theme-modern .question-item.answered {
+    position: relative;
+}
+body.theme-modern .question-item.answered::before {
+    content: '';
+    position: absolute;
+    left: -6px; top: 4px; bottom: 4px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--a5), rgba(16,185,129,.3));
+    border-radius: 2px;
+}
+
+/* ── Flag icon ───────────────────────────────────────────────────────────── */
+body.theme-modern .flag-icon { color: #d1d5db; }
+body.theme-modern .flag-icon:hover { color: #f59e0b; }
+body.theme-modern .flag-icon.flagged {
+    color: #f59e0b;
+    filter: drop-shadow(0 0 4px rgba(245,158,11,.5));
+}
+
+/* ── Ripple glow ─────────────────────────────────────────────────────────── */
+body.theme-modern .modern-glow {
+    box-shadow: 0 0 0 3px rgba(99,102,241,.25), 0 4px 20px rgba(99,102,241,.2) !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+body.theme-modern ::-webkit-scrollbar { width: 6px; height: 6px; }
+body.theme-modern ::-webkit-scrollbar-track { background: rgba(99,102,241,.05); border-radius: 3px; }
+body.theme-modern ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6366f1, #8b5cf6);
+    border-radius: 3px;
+}
+body.theme-modern ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+}
+
+/* ── Text selection ──────────────────────────────────────────────────────── */
+body.theme-modern ::selection {
+    background: rgba(99,102,241,.2);
+    color: #1e1b4b;
+}
+
+/* ── Smooth transitions ──────────────────────────────────────────────────── */
 body.theme-modern * {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color .2s ease, border-color .2s ease,
+                color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
-
-/* Advanced hover effects */
-body.theme-modern .nav-btn:hover,
-body.theme-modern .part-btn:hover,
-body.theme-modern .question-content input[type="text"]:hover {
-    transform: translateY(-2px);
-}
-
-/* Floating animation for interactive elements */
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-4px); }
-}
-
-body.theme-modern .nav-btn-arrow:hover,
-body.theme-modern .nav-btn-check:hover {
-    animation: float 2s ease-in-out infinite;
-}
+body.theme-modern .bubble,
+body.theme-modern .plankton,
+body.theme-modern .light-ray { transition: none; }

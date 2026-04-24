@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Result - IELTS THGB</title>
+    <title>Test Result - IELTS THGB</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -361,6 +361,61 @@
         .result-card {
             animation: fadeIn 0.5s ease-out;
         }
+        @keyframes lobbyGradient { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        /* ── Ocean theme overrides ── */
+        body.theme-ocean { background: linear-gradient(180deg,#001f3f 0%,#0a4d68 40%,#088395 100%) !important; }
+        body.theme-ocean .result-card { background: rgba(8,131,149,.5) !important; border: 1px solid rgba(5,191,219,.3) !important; }
+        body.theme-ocean .result-title, body.theme-ocean .breakdown-title { color: #e0f7fa !important; }
+        body.theme-ocean .progress-text, body.theme-ocean .progress-label { color: #e0f7fa !important; }
+        body.theme-ocean .stat-item { background: rgba(10,77,104,.6) !important; border-color: rgba(5,191,219,.3) !important; }
+        body.theme-ocean .stat-label { color: #b2ebf2 !important; }
+        body.theme-ocean .breakdown-table th { background: rgba(5,191,219,.2) !important; color: #e0f7fa !important; border-color: rgba(5,191,219,.3) !important; }
+        body.theme-ocean .breakdown-table td { border-color: rgba(5,191,219,.2) !important; color: #e0f7fa !important; }
+        body.theme-ocean .breakdown-table tr:hover { background: rgba(5,191,219,.1) !important; }
+        body.theme-ocean .answer-item { background: rgba(10,77,104,.5) !important; border-color: rgba(5,191,219,.25) !important; }
+        body.theme-ocean .answer-item.correct { background: rgba(16,185,129,.2) !important; }
+        body.theme-ocean .answer-item.wrong   { background: rgba(239,68,68,.2) !important; }
+        body.theme-ocean .answer-item.skipped { background: rgba(245,158,11,.2) !important; }
+        body.theme-ocean .question-text, body.theme-ocean .answer-label { color: #e0f7fa !important; }
+        body.theme-ocean .answer-value { background: rgba(10,77,104,.7) !important; color: #e0f7fa !important; }
+        body.theme-ocean .answer-explanation { background: rgba(5,191,219,.15) !important; border-left-color: #05bfdb !important; }
+        body.theme-ocean .explanation-title { color: #05bfdb !important; }
+        body.theme-ocean .explanation-text { color: #e0f7fa !important; }
+        body.theme-ocean .logo-link { background: rgba(10,77,104,.7) !important; }
+        body.theme-ocean .logo-text { color: #05bfdb !important; }
+        body.theme-ocean .breakdown-section { border-top-color: rgba(5,191,219,.3) !important; }
+        body.theme-ocean #noTokenMessage { background: rgba(10,77,104,.6) !important; color: #b2ebf2 !important; }
+
+      /* -- Modern theme overrides (Aurora Light) -- */
+        body.theme-modern {
+            background: radial-gradient(ellipse at 0% 0%, rgba(99,102,241,.18) 0%, transparent 50%),
+                        radial-gradient(ellipse at 100% 0%, rgba(236,72,153,.14) 0%, transparent 50%),
+                        linear-gradient(160deg, #f8f7ff 0%, #f0f0ff 30%, #fdf4ff 60%, #f0fbff 100%) !important;
+        }
+        body.theme-modern .result-card { background: rgba(255,255,255,.75) !important; backdrop-filter: blur(20px) !important; border: 1px solid rgba(255,255,255,.9) !important; box-shadow: 0 8px 40px rgba(99,102,241,.12) !important; }
+        body.theme-modern .result-title, body.theme-modern .breakdown-title { color: #1e1b4b !important; font-weight: 800 !important; }
+        body.theme-modern .progress-text { color: #1e1b4b !important; font-weight: 800 !important; }
+        body.theme-modern .progress-label { color: #6366f1 !important; font-weight: 600 !important; }
+        body.theme-modern .stat-item { background: rgba(255,255,255,.7) !important; border: 1px solid rgba(99,102,241,.15) !important; box-shadow: 0 4px 16px rgba(99,102,241,.08) !important; }
+        body.theme-modern .stat-label { color: #6b7280 !important; }
+        body.theme-modern .breakdown-table th { background: rgba(99,102,241,.08) !important; color: #4338ca !important; border-color: rgba(99,102,241,.15) !important; font-weight: 700 !important; }
+        body.theme-modern .breakdown-table td { border-color: rgba(99,102,241,.1) !important; color: #374151 !important; }
+        body.theme-modern .breakdown-table tr:hover { background: rgba(99,102,241,.04) !important; }
+        body.theme-modern .answer-item { background: rgba(255,255,255,.7) !important; backdrop-filter: blur(8px) !important; border-color: rgba(99,102,241,.15) !important; }
+        body.theme-modern .answer-item.correct { background: rgba(16,185,129,.08) !important; border-color: rgba(16,185,129,.3) !important; }
+        body.theme-modern .answer-item.wrong   { background: rgba(239,68,68,.06) !important; border-color: rgba(239,68,68,.25) !important; }
+        body.theme-modern .answer-item.skipped { background: rgba(245,158,11,.06) !important; border-color: rgba(245,158,11,.25) !important; }
+        body.theme-modern .question-text { color: #1e1b4b !important; }
+        body.theme-modern .answer-label { color: #6366f1 !important; font-weight: 700 !important; }
+        body.theme-modern .answer-value { background: rgba(255,255,255,.8) !important; color: #1e1b4b !important; }
+        body.theme-modern .answer-explanation { background: rgba(99,102,241,.06) !important; border-left-color: #6366f1 !important; border-radius: 8px !important; }
+        body.theme-modern .explanation-title { color: #4338ca !important; }
+        body.theme-modern .explanation-text { color: #374151 !important; }
+        body.theme-modern .logo-link { background: rgba(255,255,255,.8) !important; backdrop-filter: blur(12px) !important; }
+        body.theme-modern .logo-text { color: #6366f1 !important; font-weight: 800 !important; }
+        body.theme-modern .breakdown-section { border-top-color: rgba(99,102,241,.2) !important; }
+        body.theme-modern #noTokenMessage { background: rgba(99,102,241,.06) !important; color: #4338ca !important; border: 1px solid rgba(99,102,241,.15) !important; border-radius: 10px !important; }
+        body.theme-modern #bandScore { background: linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     </style>
 </head>
 <body>
@@ -592,5 +647,11 @@
             window.location.href = 'review.html';
         }
     </script>
+    <script src="apply-theme.js"></script>
 </body>
 </html>
+
+
+
+
+

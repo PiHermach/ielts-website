@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -150,7 +150,8 @@
     </footer>
 
     <script src="script.js"></script>
-    <script type="module" src="cloud-sync.js"></script>
+    <script src="apply-theme.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script><script src="cloud-sync.js"></script>
     <script type="module">
         // Pull latest user data from cloud on page load
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -184,13 +185,15 @@
                     users.push(cloudData);
                 }
                 localStorage.setItem('users', JSON.stringify(users));
-                // Update currentUser session
+                // Merge cloud data but keep local equippedTheme (most recent)
+                const localEquipped = currentUser.equippedTheme;
                 const updated = { ...currentUser, ...cloudData };
+                if (localEquipped) updated.equippedTheme = localEquipped;
                 delete updated.password;
                 localStorage.setItem('currentUser', JSON.stringify(updated));
-                // Refresh token display
-                const tokenEl = document.querySelector('#topRightSection .fas.fa-coins');
-                if (tokenEl) tokenEl.nextSibling.textContent = updated.tokens || 0;
+                // Refresh token display only
+                const tokenSpan = document.querySelector('#topRightSection .fas.fa-coins + span');
+                if (tokenSpan) tokenSpan.textContent = updated.tokens || 0;
             } catch(e) { console.warn("refresh failed:", e); }
         }
 
@@ -313,13 +316,28 @@
             const userIndex = users.findIndex(u => u.id === currentUser.id);
             
             if (userIndex !== -1) {
+                // Save to both users array and currentUser
                 users[userIndex].equippedTheme = themeId;
                 localStorage.setItem('users', JSON.stringify(users));
                 
                 currentUser.equippedTheme = themeId;
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 
+                // Sync to cloud
+                if (typeof window._cloudSaveUser === 'function') {
+                    window._cloudSaveUser(users[userIndex]);
+                }
+
+                // Apply theme immediately — just swap body class + effects
+                document.body.classList.remove('theme-default', 'theme-ocean', 'theme-modern');
+                if (typeof window._cleanupEffects === 'function') window._cleanupEffects();
+                if (themeId !== 'default' && typeof window._applyTheme === 'function') {
+                    window._applyTheme(themeId);
+                }
+                
                 closeThemeModal();
+                // Reopen modal to show updated selection
+                openThemeSelector();
             }
         }
         
@@ -341,3 +359,4 @@
     </script>
 </body>
 </html>
+

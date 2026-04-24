@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -1643,7 +1643,7 @@
         }
     </style>
 </head>
-<body class="theme-white-black size-normal">
+<body class="theme-white-black size-normal reading-page">
     <div class="top-header">
         <div class="logo-text">IELTS THGB</div>
         <div class="test-info">
@@ -1785,15 +1785,83 @@
             }
         }
         
+
+        // ── Modern color palette ──────────────────────────────────────────
+        const modernColors = [
+            { id: 'indigo', label: 'Indigo',   a1: '#6366f1', a2: '#8b5cf6', a3: '#ec4899', bg: 'rgba(99,102,241,.18)'  },
+            { id: 'rose',   label: 'Rose',     a1: '#f43f5e', a2: '#ec4899', a3: '#f97316', bg: 'rgba(244,63,94,.18)'   },
+            { id: 'emerald',label: 'Emerald',  a1: '#10b981', a2: '#059669', a3: '#06b6d4', bg: 'rgba(16,185,129,.18)'  },
+            { id: 'amber',  label: 'Amber',    a1: '#f59e0b', a2: '#f97316', a3: '#ef4444', bg: 'rgba(245,158,11,.18)'  },
+            { id: 'sky',    label: 'Sky',      a1: '#0ea5e9', a2: '#6366f1', a3: '#8b5cf6', bg: 'rgba(14,165,233,.18)'  },
+        ];
+
+        let currentModernColor = localStorage.getItem('modernColor') || 'indigo';
+
+        function applyModernColor(colorId) {
+            const col = modernColors.find(c => c.id === colorId);
+            if (!col) return;
+            currentModernColor = colorId;
+            localStorage.setItem('modernColor', colorId);
+
+            // Inject/update CSS variables on body
+            document.body.style.setProperty('--a1', col.a1);
+            document.body.style.setProperty('--a2', col.a2);
+            document.body.style.setProperty('--a3', col.a3);
+            document.body.style.setProperty('--grad', `linear-gradient(135deg, ${col.a1}, ${col.a2}, ${col.a3})`);
+            document.body.style.setProperty('--grad2', `linear-gradient(135deg, ${col.a3}, ${col.a1})`);
+            document.body.style.setProperty('--border2', `${col.a1}55`);
+            document.body.style.setProperty('--m-glow', `0 0 20px ${col.a1}66`);
+
+            // Update background ambient
+            document.body.style.background = `
+                radial-gradient(ellipse at 0% 0%,    ${col.bg} 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 0%,  rgba(236,72,153,.14) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(6,182,212,.12)  0%, transparent 55%),
+                linear-gradient(160deg, #f8f7ff 0%, #f0f0ff 30%, #fdf4ff 60%, #f0fbff 100%)
+            `;
+
+            // Update swatch selection UI
+            document.querySelectorAll('.color-swatch').forEach(s => {
+                s.style.outline = s.dataset.color === colorId ? `3px solid ${col.a1}` : 'none';
+                s.style.transform = s.dataset.color === colorId ? 'scale(1.2)' : 'scale(1)';
+            });
+        }
+
+        function buildColorSwatches() {
+            const container = document.getElementById('colorSwatches');
+            if (!container) return;
+            container.innerHTML = modernColors.map(col => `
+                <button class="color-swatch" data-color="${col.id}"
+                    title="${col.label}"
+                    onclick="applyModernColor('${col.id}')"
+                    style="
+                        width:28px; height:28px; border-radius:50%;
+                        background: linear-gradient(135deg, ${col.a1}, ${col.a2});
+                        border: 2px solid rgba(255,255,255,.8);
+                        cursor: pointer;
+                        transition: all .2s ease;
+                        outline-offset: 3px;
+                        ${currentModernColor === col.id ? `outline: 3px solid ${col.a1}; transform: scale(1.2);` : ''}
+                    ">
+                </button>
+            `).join('');
+        }
+
+        function toggleModernColorPicker(show) {
+            const picker = document.getElementById('modernColorPicker');
+            if (picker) {
+                picker.style.display = show ? 'block' : 'none';
+                if (show) buildColorSwatches();
+            }
+        }
         // Change visual theme function
         function changeVisualTheme() {
             const newTheme = document.getElementById('visualThemeSelect').value;
             if (newTheme === currentVisualTheme) return;
 
-            // 1. Cleanup current theme effects (e.g. mouse trail, particles)
-            if (typeof window.cleanupModernTheme === 'function') {
-                window.cleanupModernTheme();
-            }
+            // 1. Cleanup current theme effects
+            if (typeof window.cleanupModernTheme === 'function') window.cleanupModernTheme();
+            if (typeof window.cleanupOceanTheme  === 'function') window.cleanupOceanTheme();
 
             // 2. Remove theme body classes
             document.body.classList.remove('theme-default', 'theme-ocean', 'theme-modern', 'modern-enhanced');
@@ -1819,16 +1887,30 @@
                 // theme JS calls initModernTheme() on its own when loaded
             }
 
-            // 6. Reload summary section so drop-zones are re-rendered with correct classes
+            // 6. Show/hide Modern color picker and apply saved color
+            toggleModernColorPicker(newTheme === 'modern');
+            if (newTheme === 'modern') {
+                setTimeout(() => applyModernColor(currentModernColor), 200);
+            } else {
+                document.body.style.removeProperty('--a1');
+                document.body.style.removeProperty('--a2');
+                document.body.style.removeProperty('--a3');
+                document.body.style.removeProperty('--grad');
+                document.body.style.background = '';
+            }
+            // 7. Reload summary section
             setTimeout(() => {
-                if (typeof reloadSummarySection === 'function') {
-                    reloadSummarySection();
-                }
+                if (typeof reloadSummarySection === 'function') reloadSummarySection();
             }, 50);
         }
     </script>
     <script src="reading-data.js?v=12"></script>
     <script src="reading-app.js?v=12"></script>
-    <script type="module" src="cloud-sync.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script><script src="cloud-sync.js"></script>
 </body>
 </html>
+
+
+
+
+

@@ -161,6 +161,25 @@ const readingData = {
                         { key: "C", value: "Tomoko Arent" },
                         { key: "D", value: "David Powers" }
                     ]
+                },
+                {
+                    type: "gap-filling",
+                    title: "Questions 24-26",
+                    instruction: "Complete the sentences below. Write NO MORE THAN TWO WORDS from the passage for each answer.",
+                    questions: [
+                        {
+                            id: 24, text: "The study lasted for ___________ months.", answer: "five",
+                            explanation: "Paragraph B: <em>\"introduced a state of the art social robot into a classroom of 18 24-month-olds for <strong>five months</strong>.\"</em> The answer is <strong>five</strong>."
+                        },
+                        {
+                            id: 25, text: "The robot was sent instructions approximately every ___________ minutes.", answer: "two",
+                            explanation: "Paragraph C: <em>\"The researchers sent instructions to the robot about every <strong>two minutes</strong>.\"</em> The answer is <strong>two</strong>."
+                        },
+                        {
+                            id: 26, text: "The quality of interactions improved over ___________ sessions.", answer: "27",
+                            explanation: "Paragraph C: <em>\"The results showed that the quality of those interactions improved steadily over <strong>27 sessions</strong>.\"</em> The answer is <strong>27</strong>."
+                        }
+                    ]
                 }
             ]
         },
