@@ -439,28 +439,7 @@
                 <i class="fas fa-info-circle"></i> Bạn đã hoàn thành bài test này hôm nay và nhận được <span id="previousTokens" style="font-weight: 600; color: #f59e0b;">0</span> tokens. Tokens chỉ được trao một lần mỗi ngày cho mỗi bài test.
             </div>
             
-            <button class="detail-button" onclick="toggleBreakdown()">Xem giải thích chi tiết</button>
-            
-            <div class="breakdown-section" id="breakdownSection" style="display: none;">
-                <h2 class="breakdown-title">Bảng dữ liệu chi tiết</h2>
-                <table class="breakdown-table">
-                    <thead>
-                        <tr>
-                            <th>Loại câu hỏi</th>
-                            <th>Số câu hỏi</th>
-                            <th style="color: #10b981;">Đúng</th>
-                            <th style="color: #ef4444;">Sai</th>
-                            <th style="color: #f59e0b;">Bỏ qua</th>
-                            <th>Tổng</th>
-                        </tr>
-                    </thead>
-                    <tbody id="breakdownBody">
-                    </tbody>
-                </table>
-                
-                <h2 class="breakdown-title" style="margin-top: 40px;">Hướng dẫn giải chi tiết</h2>
-                <div class="detailed-answers" id="detailedAnswers"></div>
-            </div>
+            <button class="detail-button" onclick="toggleBreakdown()">📖 Xem giải thích chi tiết</button>
         </div>
     </div>
     
@@ -605,91 +584,12 @@
                 document.getElementById('previousTokens').textContent = tokensForThisScore;
             }
             
-            // Populate breakdown table
-            const breakdownBody = document.getElementById('breakdownBody');
-            results.breakdown.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td style="font-weight: 600;">${item.type}</td>
-                    <td>${item.total}</td>
-                    <td style="color: #10b981; font-weight: 600;">${item.correct}</td>
-                    <td style="color: #ef4444; font-weight: 600;">${item.wrong}</td>
-                    <td style="color: #f59e0b; font-weight: 600;">${item.skipped}</td>
-                    <td style="font-weight: 600;">${item.correct}/${item.total}</td>
-                `;
-                breakdownBody.appendChild(row);
-            });
-            
-            // Populate detailed answers with explanations
-            if (results.detailedAnswers) {
-                const detailedAnswersDiv = document.getElementById('detailedAnswers');
-                results.detailedAnswers.forEach(answer => {
-                    const statusClass = answer.isSkipped ? 'skipped' : (answer.isCorrect ? 'correct' : 'wrong');
-                    
-                    // Generate explanation
-                    const explanation = generateExplanation(answer);
-                    
-                    const answerItem = document.createElement('div');
-                    answerItem.className = `answer-item ${statusClass}`;
-                    answerItem.innerHTML = `
-                        <div class="answer-header">
-                            <div class="question-number-badge">${answer.questionId}</div>
-                            <div class="question-text">${answer.questionText}</div>
-                        </div>
-                        <div class="answer-details">
-                            <div class="answer-row">
-                                <div class="answer-label">Câu trả lời của bạn</div>
-                                <div class="answer-value user">${answer.userAnswer}</div>
-                            </div>
-                            <div class="answer-row">
-                                <div class="answer-label">Đáp án đúng</div>
-                                <div class="answer-value correct-answer">${answer.correctAnswer}</div>
-                            </div>
-                        </div>
-                        ${explanation ? `
-                            <div class="answer-explanation">
-                                <div class="explanation-title">💡 Giải thích</div>
-                                <div class="explanation-text">${explanation}</div>
-                            </div>
-                        ` : ''}
-                    `;
-                    detailedAnswersDiv.appendChild(answerItem);
-                });
-            }
+            // Populate breakdown table (kept for reference, not displayed)
+            // Redirect to review page handles detailed breakdown
         });
         
-        // Generate explanation for each answer
-        function generateExplanation(answer) {
-            const qId = answer.questionId;
-            const type = answer.type;
-            const correct = answer.correctAnswer;
-            const user = answer.userAnswer;
-            
-            // Basic explanations based on question type
-            if (type.includes('TRUE/FALSE/NOT GIVEN')) {
-                if (correct === 'TRUE') {
-                    return `Thông tin trong câu hỏi được nêu rõ trong đoạn văn và khớp với nội dung. Đáp án đúng là <strong>TRUE</strong>.`;
-                } else if (correct === 'FALSE') {
-                    return `Thông tin trong câu hỏi mâu thuẫn với nội dung trong đoạn văn. Đáp án đúng là <strong>FALSE</strong>.`;
-                } else {
-                    return `Thông tin này không được đề cập trong đoạn văn. Đáp án đúng là <strong>NOT GIVEN</strong>.`;
-                }
-            } else if (type.includes('Gap Filling') || type.includes('Sentence Completion')) {
-                return `Từ khóa "<strong>${correct}</strong>" xuất hiện trong đoạn văn và phù hợp với ngữ cảnh của câu. Hãy chú ý đến các từ xung quanh để xác định đáp án chính xác.`;
-            } else if (type.includes('Multiple Choice')) {
-                return `Đáp án <strong>${correct}</strong> là lựa chọn đúng dựa trên thông tin được cung cấp trong đoạn văn. Các lựa chọn khác không được hỗ trợ bởi văn bản hoặc mâu thuẫn với nội dung.`;
-            } else if (type.includes('Matching')) {
-                return `Thông tin trong câu hỏi khớp với đoạn <strong>${correct}</strong>. Hãy tìm kiếm các từ khóa và ý chính trong đoạn văn để xác định đáp án.`;
-            } else if (type.includes('Summary')) {
-                return `Từ "<strong>${correct}</strong>" là từ phù hợp nhất để điền vào chỗ trống dựa trên ngữ cảnh và ý nghĩa của câu trong bản tóm tắt.`;
-            }
-            
-            return `Đáp án đúng là <strong>${correct}</strong>. Hãy đọc kỹ đoạn văn và chú ý đến các từ khóa để tìm ra đáp án chính xác.`;
-        }
-        
         function toggleBreakdown() {
-            const section = document.getElementById('breakdownSection');
-            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+            window.location.href = 'review.html';
         }
     </script>
 </body>

@@ -1,0 +1,365 @@
+﻿
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Review - IELTS THGB</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f0f2f5;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.review-header{background:#1e293b;color:white;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.review-header .logo{font-size:1.1rem;font-weight:700;color:#60a5fa;text-decoration:none}
+.review-header .test-info{flex:1;text-align:center}
+.review-header .test-info h2{font-size:1rem;font-weight:600;color:#e2e8f0}
+.review-header .test-info p{font-size:.8rem;color:#94a3b8;margin-top:2px}
+.score-badge{display:flex;align-items:center;gap:8px}
+.score-badge .band{background:linear-gradient(135deg,#3b82f6,#8b5cf6);padding:6px 14px;border-radius:20px;font-weight:700;font-size:1rem}
+.score-badge .stats{display:flex;gap:8px;font-size:.8rem}
+.stat-pill{padding:4px 10px;border-radius:12px;font-weight:600}
+.stat-pill.c{background:rgba(16,185,129,.2);color:#6ee7b7}
+.stat-pill.w{background:rgba(239,68,68,.2);color:#fca5a5}
+.stat-pill.s{background:rgba(245,158,11,.2);color:#fcd34d}
+.back-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.85rem;text-decoration:none;display:flex;align-items:center;gap:6px;transition:background .2s}
+.back-btn:hover{background:rgba(255,255,255,.2)}
+.part-tabs{background:#1e293b;border-bottom:1px solid #334155;display:flex;gap:4px;padding:0 20px;flex-shrink:0}
+.part-tab{padding:10px 20px;color:#94a3b8;cursor:pointer;border-bottom:3px solid transparent;font-size:.9rem;font-weight:600;transition:all .2s}
+.part-tab.active{color:#60a5fa;border-bottom-color:#3b82f6}
+.part-tab:hover{color:#e2e8f0}
+.main-area{display:flex;flex:1;overflow:hidden;gap:0}
+.passage-col{flex:1;overflow-y:auto;padding:24px;background:white;border-right:1px solid #e2e8f0}
+.questions-col{width:45%;overflow-y:auto;padding:24px;background:#f8fafc}
+.passage-title{font-size:1.2rem;font-weight:700;color:#1e293b;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #e2e8f0}
+.passage-content p{line-height:1.9;color:#374151;margin-bottom:12px;font-size:.95rem}
+.q-badge{display:inline-flex;align-items:center;justify-content:center;background:#3b82f6;color:white;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px;cursor:pointer;margin:0 3px;vertical-align:middle;transition:all .2s;white-space:nowrap;box-shadow:0 1px 4px rgba(59,130,246,.4)}
+.q-badge:hover{background:#1d4ed8;transform:scale(1.1);box-shadow:0 2px 8px rgba(59,130,246,.5)}
+.q-badge.correct{background:#10b981}
+.q-badge.wrong{background:#ef4444}
+.q-badge.skipped{background:#f59e0b}
+.section-header{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.section-header h3{font-size:.95rem;font-weight:700;color:#1e293b;margin-bottom:4px}
+.section-header p{font-size:.82rem;color:#64748b;line-height:1.5}
+.q-item{background:white;border:2px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:10px;transition:border-color .2s}
+.q-item.correct{border-color:#10b981;background:#f0fdf4}
+.q-item.wrong{border-color:#ef4444;background:#fef2f2}
+.q-item.skipped{border-color:#f59e0b;background:#fffbeb}
+.q-item-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.q-num{min-width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+.q-item.correct .q-num{background:#10b981;color:white}
+.q-item.wrong .q-num{background:#ef4444;color:white}
+.q-item.skipped .q-num{background:#f59e0b;color:white}
+.q-text{font-size:.88rem;color:#374151;line-height:1.5;flex:1}
+.answer-row{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.ans-label{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;min-width:80px}
+.ans-val{font-size:.85rem;font-weight:600;padding:4px 10px;border-radius:6px}
+.ans-val.user-correct{background:#d1fae5;color:#065f46;border:1.5px solid #10b981}
+.ans-val.user-wrong{background:#fee2e2;color:#991b1b;border:1.5px solid #ef4444;text-decoration:line-through;font-style:italic}
+.ans-val.user-skipped{background:#fef3c7;color:#92400e;border:1.5px solid #f59e0b}
+.ans-val.correct-ans{background:#d1fae5;color:#065f46;border:1.5px solid #10b981}
+.radio-review{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.radio-opt{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;font-size:.85rem;border:1.5px solid transparent}
+.radio-opt.opt-correct{background:#d1fae5;border-color:#10b981;color:#065f46;font-weight:600}
+.radio-opt.opt-wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b;text-decoration:line-through;font-style:italic}
+.radio-opt.opt-neutral{background:#f8fafc;border-color:#e2e8f0;color:#374151}
+.radio-opt .opt-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.opt-icon.ic-correct{background:#10b981;color:white}
+.opt-icon.ic-wrong{background:#ef4444;color:white}
+.opt-icon.ic-neutral{background:#e2e8f0;color:#94a3b8}
+.table-review{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:6px}
+.table-review th{background:#f1f5f9;padding:6px 8px;text-align:center;font-weight:700;color:#64748b;border:1px solid #e2e8f0}
+.table-review td{padding:6px 8px;border:1px solid #e2e8f0;text-align:center}
+.table-review .q-cell{text-align:left;font-size:.8rem;color:#374151;max-width:200px}
+.radio-cell-correct input{accent-color:#10b981}
+.radio-cell-wrong input{accent-color:#ef4444}
+.drop-review{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-size:.85rem;font-weight:600;margin:0 3px;vertical-align:middle}
+.drop-review.dr-correct{background:#d1fae5;border:1.5px solid #10b981;color:#065f46}
+.drop-review.dr-wrong{background:#fee2e2;border:1.5px solid #ef4444;color:#991b1b}
+.drop-review.dr-skipped{background:#fef3c7;border:1.5px dashed #f59e0b;color:#92400e}
+.drop-review .dr-wrong-val{text-decoration:line-through;font-style:italic;margin-right:4px}
+.drop-review .dr-correct-val{color:#065f46;font-weight:700}
+.q-num-inline{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;background:#e2e8f0;border:1.5px solid #cbd5e1;border-radius:4px;font-size:.75rem;font-weight:700;color:#475569;margin-right:3px;vertical-align:middle}
+.summary-review-text{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;line-height:2.2;font-size:.9rem;color:#374151;margin-bottom:12px}
+.word-list-review{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-top:8px}
+.word-list-review h4{font-size:.8rem;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.word-chips{display:flex;flex-wrap:wrap;gap:6px}
+.word-chip{padding:3px 10px;border-radius:12px;font-size:.8rem;font-weight:600;background:#e2e8f0;color:#475569}
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+.popup-overlay.show{opacity:1;pointer-events:all}
+.popup{background:white;border-radius:16px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:translateY(20px);transition:transform .2s}
+.popup-overlay.show .popup{transform:translateY(0)}
+.popup-header{padding:20px 24px 16px;border-bottom:1px solid #e2e8f0;display:flex;align-items:flex-start;gap:12px;position:sticky;top:0;background:white;z-index:1;border-radius:16px 16px 0 0}
+.popup-qnum{min-width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.popup-qnum.correct{background:#10b981;color:white}
+.popup-qnum.wrong{background:#ef4444;color:white}
+.popup-qnum.skipped{background:#f59e0b;color:white}
+.popup-title{flex:1}
+.popup-title h3{font-size:1rem;font-weight:700;color:#1e293b;line-height:1.4}
+.popup-title p{font-size:.8rem;color:#64748b;margin-top:3px}
+.popup-close{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:1.2rem;padding:4px;border-radius:6px;transition:color .2s}
+.popup-close:hover{color:#374151}
+.popup-body{padding:20px 24px}
+.popup-answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.popup-ans-box{padding:12px;border-radius:10px}
+.popup-ans-box.user-box{background:#fef2f2;border:1.5px solid #ef4444}
+.popup-ans-box.user-box.correct{background:#f0fdf4;border-color:#10b981}
+.popup-ans-box.user-box.skipped{background:#fffbeb;border-color:#f59e0b}
+.popup-ans-box.correct-box{background:#f0fdf4;border:1.5px solid #10b981}
+.popup-ans-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.popup-ans-label.wrong-label{color:#ef4444}
+.popup-ans-label.correct-label{color:#10b981}
+.popup-ans-label.skip-label{color:#f59e0b}
+.popup-ans-val{font-size:.95rem;font-weight:700;color:#1e293b}
+.popup-ans-val.wrong-val{color:#ef4444;text-decoration:line-through;font-style:italic}
+.popup-ans-val.correct-val{color:#10b981}
+.popup-ans-val.skip-val{color:#f59e0b}
+.explanation-box{background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #3b82f6;border-radius:8px;padding:14px}
+.explanation-box h4{font-size:.78rem;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.explanation-box p{font-size:.88rem;color:#1e3a5f;line-height:1.7}
+.explanation-box em{font-style:italic;color:#1d4ed8}
+.explanation-box strong{font-weight:700;color:#1e293b;background:#dbeafe;padding:1px 4px;border-radius:3px}
+</style>
+</head><body><div class="review-header"><a href="result.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kết quả</a><div class="test-info"><h2 id="testTitle">Review bài làm</h2><p id="testSubtitle">Chế độ xem - không thể chỉnh sửa</p></div><div class="score-badge"><div class="band" id="hdrBand">--</div><div class="stats"><span class="stat-pill c" id="hdrC">0 ✓</span><span class="stat-pill w" id="hdrW">0 ✗</span><span class="stat-pill s" id="hdrS">0 –</span></div></div></div><div class="part-tabs" id="partTabs"></div><div class="main-area"><div class="passage-col" id="passageCol"></div><div class="questions-col" id="questionsCol"></div></div><div class="popup-overlay" id="popupOverlay" onclick="closePopup(event)"><div class="popup" id="popup"><div class="popup-header"><div class="popup-qnum" id="popupQNum">1</div><div class="popup-title"><h3 id="popupQText"></h3><p id="popupQType"></p></div><button class="popup-close" onclick="closePopupBtn()"><i class="fas fa-times"></i></button></div><div class="popup-body"><div class="popup-answers" id="popupAnswers"></div><div class="explanation-box" id="popupExplanation"></div></div></div></div>
+<script>
+const results = JSON.parse(localStorage.getItem('testResults')) || {};
+const testType = results.testType || 'advanced';
+const userAnswers = results.userAnswers || {};
+const detailedAnswers = results.detailedAnswers || [];
+const bandScoreTable = {40:9.0,39:8.5,38:8.5,37:8.0,36:8.0,35:7.5,34:7.5,33:7.0,32:7.0,31:6.5,30:6.5,29:6.0,28:6.0,27:6.0,26:5.5,25:5.5,24:5.5,23:5.0,22:5.0,21:5.0,20:5.0,19:4.5,18:4.0,17:4.0,16:4.0,15:3.5,14:3.5,13:3.0,12:3.0,11:3.0,10:2.5,9:2.5,8:2.5,7:2.0,6:2.0,5:2.0,4:2.0,3:1.0,2:1.0,1:1.0,0:0.0};
+let currentPart = 1;
+let readingData = null;
+
+function getStatus(qId, correctAnswer) {
+  const ua = (userAnswers[qId] || '').trim();
+  if (!ua) return 'skipped';
+  return ua.toLowerCase() === correctAnswer.toLowerCase() ? 'correct' : 'wrong';
+}
+
+function openPopup(qId) {
+  let qData = null;
+  let groupType = '';
+  readingData.passages.forEach(p => {
+    p.questionGroups.forEach(g => {
+      (g.questions || []).forEach(q => {
+        if (q.id === qId) { qData = q; groupType = g.type; }
+      });
+    });
+  });
+  if (!qData) return;
+  const status = getStatus(qId, qData.answer);
+  const ua = (userAnswers[qId] || '').trim() || '(Bỏ qua)';
+  const el = document.getElementById('popupOverlay');
+  const qnum = document.getElementById('popupQNum');
+  qnum.textContent = qId;
+  qnum.className = 'popup-qnum ' + status;
+  document.getElementById('popupQText').textContent = qData.text || ('Câu ' + qId);
+  document.getElementById('popupQType').textContent = groupType.replace(/-/g,' ').toUpperCase();
+  const userBoxClass = status === 'correct' ? 'user-box correct' : status === 'skipped' ? 'user-box skipped' : 'user-box';
+  const userLabelClass = status === 'correct' ? 'correct-label' : status === 'skipped' ? 'skip-label' : 'wrong-label';
+  const userValClass = status === 'correct' ? 'correct-val' : status === 'skipped' ? 'skip-val' : 'wrong-val';
+  document.getElementById('popupAnswers').innerHTML =
+    '<div class="popup-ans-box ' + userBoxClass + '">' +
+      '<div class="popup-ans-label ' + userLabelClass + '">' + (status==='correct'?'✓ Đúng':status==='skipped'?'– Bỏ qua':'✗ Sai') + '</div>' +
+      '<div class="popup-ans-val ' + userValClass + '">' + ua + '</div>' +
+    '</div>' +
+    '<div class="popup-ans-box correct-box">' +
+      '<div class="popup-ans-label correct-label">✓ Đáp án đúng</div>' +
+      '<div class="popup-ans-val correct-val">' + qData.answer + '</div>' +
+    '</div>';
+  const expBox = document.getElementById('popupExplanation');
+  if (qData.explanation) {
+    expBox.style.display = 'block';
+    expBox.innerHTML = '<h4><i class="fas fa-lightbulb"></i> Giải thích chi tiết</h4><p>' + qData.explanation + '</p>';
+  } else {
+    expBox.style.display = 'none';
+  }
+  el.classList.add('show');
+  document.getElementById('questionsCol').querySelectorAll('.q-item[data-qid="'+qId+'"]').forEach(el2 => {
+    el2.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+}
+
+function closePopup(e) { if (e.target === document.getElementById('popupOverlay')) closePopupBtn(); }
+function closePopupBtn() { document.getElementById('popupOverlay').classList.remove('show'); }
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopupBtn(); });
+</script>
+<script>
+function buildPassage(partIdx) {
+  const passage = readingData.passages[partIdx];
+  let html = '<div class="passage-title">' + passage.title + '</div><div class="passage-content">' + passage.content + '</div>';
+  document.getElementById('passageCol').innerHTML = html;
+  // Insert Q-badges before each paragraph that contains answer evidence
+  // We insert badges at the top of the passage panel as a quick-nav strip
+  let badgeStrip = '<div style="margin-bottom:16px;padding:10px;background:#f1f5f9;border-radius:8px;border:1px solid #e2e8f0;">';
+  badgeStrip += '<div style="font-size:.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Câu hỏi trong bài (click để xem giải thích)</div>';
+  badgeStrip += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+  passage.questionGroups.forEach(g => {
+    (g.questions || []).forEach(q => {
+      const st = getStatus(q.id, q.answer);
+      badgeStrip += '<span class="q-badge ' + st + '" onclick="openPopup(' + q.id + ')">Q' + q.id + '</span>';
+    });
+  });
+  badgeStrip += '</div></div>';
+  document.getElementById('passageCol').innerHTML = badgeStrip + html;
+}
+
+function buildQuestions(partIdx) {
+  const passage = readingData.passages[partIdx];
+  let html = '';
+  passage.questionGroups.forEach(g => {
+    html += '<div class="section-header"><h3>' + g.title + '</h3>';
+    if (g.instruction) html += '<p>' + g.instruction + '</p>';
+    html += '</div>';
+    if (g.type === 'tfng') {
+      g.questions.forEach(q => {
+        const st = getStatus(q.id, q.answer);
+        const ua = (userAnswers[q.id] || '').trim();
+        html += '<div class="q-item ' + st + '" data-qid="' + q.id + '" onclick="openPopup(' + q.id + ')" style="cursor:pointer">';
+        html += '<div class="q-item-header"><div class="q-num">' + q.id + '</div><div class="q-text">' + q.text + '</div></div>';
+        html += '<div class="radio-review">';
+        ['TRUE','FALSE','NOT GIVEN'].forEach(opt => {
+          const isUser = ua === opt;
+          const isCorrect = q.answer === opt;
+          let cls = 'opt-neutral', icCls = 'ic-neutral', icon = '';
+          if (isCorrect) { cls = 'opt-correct'; icCls = 'ic-correct'; icon = '✓'; }
+          else if (isUser && !isCorrect) { cls = 'opt-wrong'; icCls = 'ic-wrong'; icon = '✗'; }
+          html += '<div class="radio-opt ' + cls + '"><div class="opt-icon ' + icCls + '">' + icon + '</div>' + opt + (isUser && !isCorrect ? ' <span style="font-size:.75rem;color:#ef4444;margin-left:4px">(bạn chọn)</span>' : '') + '</div>';
+        });
+        html += '</div></div>';
+      });
+    } else if (g.type === 'gap-filling') {
+      g.questions.forEach(q => {
+        const st = getStatus(q.id, q.answer);
+        const ua = (userAnswers[q.id] || '').trim();
+        html += '<div class="q-item ' + st + '" data-qid="' + q.id + '" onclick="openPopup(' + q.id + ')" style="cursor:pointer">';
+        html += '<div class="q-item-header"><div class="q-num">' + q.id + '</div><div class="q-text">' + q.text + '</div></div>';
+        html += '<div class="answer-row"><span class="ans-label">Bạn trả lời:</span>';
+        if (!ua) html += '<span class="ans-val user-skipped">(Bỏ qua)</span>';
+        else if (st === 'correct') html += '<span class="ans-val user-correct">' + ua + '</span>';
+        else html += '<span class="ans-val user-wrong">' + ua + '</span>';
+        if (st !== 'correct') html += '<span class="ans-label" style="margin-left:8px">Đáp án:</span><span class="ans-val correct-ans">' + q.answer + '</span>';
+        html += '</div></div>';
+      });
+    } else if (g.type === 'multiple-choice') {
+      g.questions.forEach(q => {
+        const st = getStatus(q.id, q.answer);
+        const ua = (userAnswers[q.id] || '').trim();
+        html += '<div class="q-item ' + st + '" data-qid="' + q.id + '" onclick="openPopup(' + q.id + ')" style="cursor:pointer">';
+        html += '<div class="q-item-header"><div class="q-num">' + q.id + '</div><div class="q-text">' + q.text + '</div></div>';
+        html += '<div class="radio-review">';
+        (q.options || []).forEach(opt => {
+          const isUser = ua === opt.key;
+          const isCorrect = q.answer === opt.key;
+          let cls = 'opt-neutral', icCls = 'ic-neutral', icon = '';
+          if (isCorrect) { cls = 'opt-correct'; icCls = 'ic-correct'; icon = '✓'; }
+          else if (isUser && !isCorrect) { cls = 'opt-wrong'; icCls = 'ic-wrong'; icon = '✗'; }
+          html += '<div class="radio-opt ' + cls + '"><div class="opt-icon ' + icCls + '">' + icon + '</div><strong>' + opt.key + '.</strong>&nbsp;' + opt.text + '</div>';
+        });
+        html += '</div></div>';
+      });
+    } else if (g.type === 'multiple-choice-table') {
+      html += '<div style="overflow-x:auto"><table class="table-review"><thead><tr><th class="q-cell">Câu hỏi</th>';
+      (g.options || []).forEach(o => { html += '<th>' + o + '</th>'; });
+      html += '</tr></thead><tbody>';
+      g.questions.forEach(q => {
+        const st = getStatus(q.id, q.answer);
+        const ua = (userAnswers[q.id] || '').trim();
+        html += '<tr style="cursor:pointer" onclick="openPopup(' + q.id + ')">';
+        html += '<td class="q-cell"><span class="q-num" style="display:inline-flex;min-width:24px;height:24px;border-radius:6px;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;margin-right:6px;background:' + (st==='correct'?'#10b981':st==='wrong'?'#ef4444':'#f59e0b') + ';color:white">' + q.id + '</span>' + q.text + '</td>';
+        (g.options || []).forEach(o => {
+          const isUser = ua === o;
+          const isCorrect = q.answer === o;
+          let cellStyle = '';
+          if (isCorrect) cellStyle = 'background:#d1fae5';
+          else if (isUser && !isCorrect) cellStyle = 'background:#fee2e2';
+          html += '<td style="' + cellStyle + '">';
+          if (isCorrect) html += '<span style="color:#10b981;font-weight:700;font-size:1rem">✓</span>';
+          else if (isUser && !isCorrect) html += '<span style="color:#ef4444;font-weight:700;font-size:1rem">✗</span>';
+          html += '</td>';
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+    } else if (g.type === 'matching') {
+      if (g.optionsList) {
+        html += '<div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:8px">';
+        g.optionsList.forEach(o => { html += '<span style="background:white;border:1px solid #e2e8f0;border-radius:6px;padding:4px 10px;font-size:.82rem"><strong>' + o.key + '.</strong> ' + o.value + '</span>'; });
+        html += '</div>';
+      }
+      html += '<div style="overflow-x:auto"><table class="table-review"><thead><tr><th class="q-cell">Câu hỏi</th>';
+      (g.optionsList || []).forEach(o => { html += '<th>' + o.key + '</th>'; });
+      html += '</tr></thead><tbody>';
+      g.questions.forEach(q => {
+        const st = getStatus(q.id, q.answer);
+        const ua = (userAnswers[q.id] || '').trim();
+        html += '<tr style="cursor:pointer" onclick="openPopup(' + q.id + ')">';
+        html += '<td class="q-cell"><span style="display:inline-flex;min-width:24px;height:24px;border-radius:6px;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;margin-right:6px;background:' + (st==='correct'?'#10b981':st==='wrong'?'#ef4444':'#f59e0b') + ';color:white">' + q.id + '</span>' + q.text + '</td>';
+        (g.optionsList || []).forEach(o => {
+          const isUser = ua === o.key;
+          const isCorrect = q.answer === o.key;
+          let cellStyle = '';
+          if (isCorrect) cellStyle = 'background:#d1fae5';
+          else if (isUser && !isCorrect) cellStyle = 'background:#fee2e2';
+          html += '<td style="' + cellStyle + '">';
+          if (isCorrect) html += '<span style="color:#10b981;font-weight:700">✓</span>';
+          else if (isUser && !isCorrect) html += '<span style="color:#ef4444;font-weight:700">✗</span>';
+          html += '</td>';
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+    } else if (g.type === 'summary-completion') {
+      // Build read-only summary with inline answer display
+      let summaryHTML = g.summaryText || '';
+      (g.questions || []).forEach(q => {
+        const st = getStatus(q.id, q.answer);
+        const ua = (userAnswers[q.id] || '').trim();
+        let dropHTML = '<span class="q-num-inline">' + q.id + '</span>';
+        if (!ua) {
+          dropHTML += '<span class="drop-review dr-skipped" onclick="openPopup(' + q.id + ')" style="cursor:pointer">(bỏ qua) → <span class="dr-correct-val">' + q.answer + '</span></span>';
+        } else if (st === 'correct') {
+          dropHTML += '<span class="drop-review dr-correct" onclick="openPopup(' + q.id + ')" style="cursor:pointer">' + ua + '</span>';
+        } else {
+          dropHTML += '<span class="drop-review dr-wrong" onclick="openPopup(' + q.id + ')" style="cursor:pointer"><span class="dr-wrong-val">' + ua + '</span>→ <span class="dr-correct-val">' + q.answer + '</span></span>';
+        }
+        const regex = new RegExp('<input[^>]*id="answer-' + q.id + '"[^>]*>', 'g');
+        summaryHTML = summaryHTML.replace(regex, dropHTML);
+      });
+      html += '<div class="summary-review-text">' + summaryHTML + '</div>';
+      if (g.wordList) {
+        html += '<div class="word-list-review"><h4>List of words</h4><div class="word-chips">';
+        g.wordList.forEach(w => { html += '<span class="word-chip">' + w.key + '. ' + w.value + '</span>'; });
+        html += '</div></div>';
+      }
+    }
+  });
+  document.getElementById('questionsCol').innerHTML = html;
+}
+
+function showPart(idx) {
+  currentPart = idx;
+  document.querySelectorAll('.part-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
+  buildPassage(idx);
+  buildQuestions(idx);
+}
+
+function init() {
+  const bandScore = bandScoreTable[results.correct] || 0;
+  document.getElementById('hdrBand').textContent = 'Band ' + bandScore.toFixed(1);
+  document.getElementById('hdrC').textContent = (results.correct || 0) + ' ✓';
+  document.getElementById('hdrW').textContent = (results.wrong || 0) + ' ✗';
+  document.getElementById('hdrS').textContent = (results.skipped || 0) + ' –';
+  const isBasic = (results.testType === 'basic');
+  document.getElementById('testTitle').textContent = isBasic ? 'Review - Basic Test' : 'Review - Advanced Test';
+  const tabsEl = document.getElementById('partTabs');
+  readingData.passages.forEach((p, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'part-tab' + (i === 0 ? ' active' : '');
+    tab.textContent = 'Part ' + (i+1) + ' – ' + p.title;
+    tab.onclick = () => showPart(i);
+    tabsEl.appendChild(tab);
+  });
+  showPart(0);
+}
+
+// Load correct data file then init
+const script = document.createElement('script');
+script.src = (results.testType === 'basic') ? 'reading-data-basic.js' : 'reading-data.js';
+script.onload = () => { readingData = window.readingData; init(); };
+document.head.appendChild(script);
+</script></body></html>

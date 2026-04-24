@@ -837,16 +837,19 @@ function submitTest() {
     }
     
     // Save results to localStorage
+    const testType = window.location.pathname.includes('basic') ? 'basic' : 'advanced';
     const results = {
         correct,
         wrong,
         skipped,
         total: totalQuestions,
         breakdown,
-        detailedAnswers, // Add detailed answers
+        detailedAnswers,
         bandScore,
         tokensEarned: isFirstCompletion ? tokensEarned : 0,
-        isFirstCompletion
+        isFirstCompletion,
+        testType,
+        userAnswers: {...userAnswers} // snapshot of all answers for review page
     };
     
     localStorage.setItem('testResults', JSON.stringify(results));
