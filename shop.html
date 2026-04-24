@@ -478,6 +478,9 @@
             currentUser.equippedTheme = themeId;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             
+            // Sync to cloud
+            if (typeof window._cloudSaveUser === 'function') window._cloudSaveUser(user);
+            
             // Reload themes
             loadUserData();
         }
@@ -520,6 +523,9 @@
             currentUser.ownedThemes = user.ownedThemes;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             
+            // Sync to cloud
+            if (typeof window._cloudSaveUser === 'function') window._cloudSaveUser(user);
+            
             // Show success modal
             document.getElementById('successModal').classList.add('show');
             
@@ -535,5 +541,6 @@
         // Initialize
         loadUserData();
     </script>
+    <script type="module" src="cloud-sync.js"></script>
 </body>
 </html>

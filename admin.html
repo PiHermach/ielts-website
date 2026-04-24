@@ -379,11 +379,32 @@
         }
         
         let allUsers = [];
-        
-        // Load users
-        function loadUsers() {
+
+        // Load users - pull from cloud first, fallback to localStorage
+        async function loadUsers() {
+            // Try cloud first
+            if (typeof window._cloudGetAllUsers === 'function') {
+                const cloudUsers = await window._cloudGetAllUsers();
+                if (cloudUsers && cloudUsers.length > 0) {
+                    // Merge passwords from localStorage (not stored in cloud)
+                    const localUsers = JSON.parse(localStorage.getItem('users')) || [];
+                    const merged = cloudUsers.map(cu => {
+                        const local = localUsers.find(u => u.id === cu.id);
+                        return local ? { ...cu, password: local.password } : cu;
+                    });
+                    localStorage.setItem('users', JSON.stringify(merged));
+                    allUsers = merged;
+                    renderUsers(merged);
+                    return;
+                }
+            }
+            // Fallback to localStorage
             const users = JSON.parse(localStorage.getItem('users')) || [];
             allUsers = users;
+            renderUsers(users);
+        }
+
+        function renderUsers(users) {
             
             // Update stats
             document.getElementById('totalUsers').textContent = users.length;
@@ -471,6 +492,9 @@
             const updatedUsers = users.filter(u => u.id !== userId);
             localStorage.setItem('users', JSON.stringify(updatedUsers));
             
+            // Sync delete to cloud
+            if (typeof window._cloudDeleteUser === 'function') window._cloudDeleteUser(userId);
+            
             loadUsers();
         }
         
@@ -484,5 +508,6 @@
         // Initialize
         loadUsers();
     </script>
+    <script type="module" src="cloud-sync.js"></script>
 </body>
 </html>

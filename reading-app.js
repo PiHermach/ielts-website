@@ -833,6 +833,11 @@ function submitTest() {
             
             // Save updated users
             localStorage.setItem('users', JSON.stringify(users));
+            
+            // Sync to cloud
+            if (typeof window._cloudSaveUser === 'function') {
+                window._cloudSaveUser(users[userIndex]);
+            }
         }
     }
     

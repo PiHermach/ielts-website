@@ -519,6 +519,11 @@
             };
             localStorage.setItem('currentUser', JSON.stringify(updatedCurrentUser));
             
+            // Sync to cloud
+            if (typeof window._cloudSaveUser === 'function') {
+                window._cloudSaveUser(users[userIndex]);
+            }
+            
             // Show success message
             const successMessage = document.getElementById('successMessage');
             successMessage.classList.add('show');
@@ -538,5 +543,6 @@
         // Initialize
         loadUserData();
     </script>
+    <script type="module" src="cloud-sync.js"></script>
 </body>
 </html>

@@ -150,6 +150,52 @@
     </footer>
 
     <script src="script.js"></script>
+    <script type="module" src="cloud-sync.js"></script>
+    <script type="module">
+        // Pull latest user data from cloud on page load
+        import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const _cfg = {
+            apiKey: "AIzaSyCznTkl5K8ffyCoBOeQNSBnSnPi3bqWOJE",
+            authDomain: "ielts-thgb.firebaseapp.com",
+            projectId: "ielts-thgb",
+            storageBucket: "ielts-thgb.firebasestorage.app",
+            messagingSenderId: "584662072452",
+            appId: "1:584662072452:web:d815ca66bed404cf94d6d1"
+        };
+        const _app = getApps().length ? getApps()[0] : initializeApp(_cfg);
+        const _db  = getFirestore(_app);
+
+        async function refreshCurrentUser() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            try {
+                const snap = await getDoc(doc(_db, "users", currentUser.id));
+                if (!snap.exists()) return;
+                const cloudData = snap.data();
+                // Merge cloud data into localStorage
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const idx = users.findIndex(u => u.id === currentUser.id);
+                if (idx !== -1) {
+                    const localPwd = users[idx].password;
+                    users[idx] = { ...cloudData, password: localPwd };
+                } else {
+                    users.push(cloudData);
+                }
+                localStorage.setItem('users', JSON.stringify(users));
+                // Update currentUser session
+                const updated = { ...currentUser, ...cloudData };
+                delete updated.password;
+                localStorage.setItem('currentUser', JSON.stringify(updated));
+                // Refresh token display
+                const tokenEl = document.querySelector('#topRightSection .fas.fa-coins');
+                if (tokenEl) tokenEl.nextSibling.textContent = updated.tokens || 0;
+            } catch(e) { console.warn("refresh failed:", e); }
+        }
+
+        refreshCurrentUser();
+    </script>
     <script>
         // Check login status and update UI
         document.addEventListener('DOMContentLoaded', () => {
