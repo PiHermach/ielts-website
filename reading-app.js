@@ -800,8 +800,8 @@ function submitTest() {
     const tokensEarned = calculateTokens(bandScore);
     
     // Get current test identifier (basic or advanced)
-    const testType = window.location.pathname.includes('basic') ? 'reading-basic' : 'reading-advanced';
-    const testId = `${testType}-${new Date().toISOString().split('T')[0]}`; // Test type + date
+    const testId_type = window.location.pathname.includes('basic') ? 'reading-basic' : 'reading-advanced';
+    const testId = `${testId_type}-${new Date().toISOString().split('T')[0]}`; // Test type + date
     
     // Check if user already completed this test today and award tokens
     let isFirstCompletion = false;

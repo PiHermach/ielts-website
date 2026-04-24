@@ -517,6 +517,7 @@
             
             // Update current user
             currentUser.tokens = user.tokens;
+            currentUser.ownedThemes = user.ownedThemes;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             
             // Show success modal
