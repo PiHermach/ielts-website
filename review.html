@@ -1,5 +1,5 @@
 ﻿
-<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Review - IELTS THGB</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Review - IELTS THGB</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><script src="review-data-adv.js"></script><script src="review-data-basic.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f0f2f5;height:100vh;display:flex;flex-direction:column;overflow:hidden}
@@ -357,9 +357,16 @@ function init() {
   showPart(0);
 }
 
-// Load correct data file then init
-const script = document.createElement('script');
-script.src = (results.testType === 'basic') ? 'reading-data-basic.js' : 'reading-data.js';
-script.onload = () => { readingData = window.readingData; init(); };
-document.head.appendChild(script);
+// Pick correct data based on testType (both loaded via static script tags)
+function startReview() {
+  readingData = (results.testType === 'basic') ? window._basicData : window._advData;
+  if (!readingData) {
+    document.getElementById('passageCol').innerHTML = '<p style="color:#ef4444;padding:24px;font-size:1rem">Lỗi: Không tải được dữ liệu. Vui lòng thử lại.</p>';
+    return;
+  }
+  init();
+}
+// Auto-start after DOM ready
+document.addEventListener('DOMContentLoaded', startReview);
 </script></body></html>
+
