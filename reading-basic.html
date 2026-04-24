@@ -1507,6 +1507,140 @@
             background: #000;
             border-color: #4b5563;
         }
+
+        /* Modern theme drop-zone override - inline to guarantee priority */
+        body.theme-modern .bottom-nav {
+            background: rgba(15, 15, 30, 0.7) !important;
+            backdrop-filter: blur(30px) saturate(200%) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 20px 20px 0 0 !important;
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+            height: auto !important;
+            padding: 14px 20px !important;
+        }
+        body.theme-modern .part-btn {
+            background: rgba(255,255,255,0.12) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            color: #e2e8f0 !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+            transition: all 0.25s ease !important;
+        }
+        body.theme-modern .part-btn:hover {
+            background: rgba(255,255,255,0.22) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.35) !important;
+        }
+        body.theme-modern .part-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.5) !important;
+        }
+        body.theme-modern .nav-btn {
+            background: rgba(255,255,255,0.1) !important;
+            border: 1px solid rgba(255,255,255,0.15) !important;
+            color: #e2e8f0 !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+        }
+        body.theme-modern .nav-btn:hover {
+            background: rgba(255,255,255,0.2) !important;
+            transform: translateY(-1px) !important;
+        }
+        body.theme-modern .nav-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: white !important;
+            border-color: transparent !important;
+        }
+        body.theme-modern .nav-btn.answered {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white !important;
+            border-color: transparent !important;
+        }
+        body.theme-modern .nav-btn.flagged {
+            background: rgba(245, 158, 11, 0.3) !important;
+            border-color: rgba(245, 158, 11, 0.5) !important;
+        }
+        body.theme-modern .nav-btn-arrow {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 4px 14px rgba(102,126,234,0.4) !important;
+            transition: all 0.25s ease !important;
+        }
+        body.theme-modern .nav-btn-arrow:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.55) !important;
+        }
+        body.theme-modern .nav-btn-check {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 4px 14px rgba(16,185,129,0.4) !important;
+            transition: all 0.25s ease !important;
+        }
+        body.theme-modern .nav-btn-check:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 20px rgba(16,185,129,0.55) !important;
+        }
+        body.theme-modern .part-info-text {
+            color: #a0aec0 !important;
+            font-weight: 600 !important;
+        }
+
+        body.theme-modern .drop-zone {
+            background: rgba(255, 255, 255, 0.4) !important;
+            border: 2px dashed rgba(102, 126, 234, 0.5) !important;
+            color: #1a202c !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+        }
+        body.theme-modern .drop-zone.filled {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border: 2px solid #10b981 !important;
+            color: #065f46 !important;
+        }
+        body.theme-modern .drop-zone.drag-over {
+            background: rgba(102, 126, 234, 0.3) !important;
+            border-color: #667eea !important;
+        }
+        body.theme-modern .summary-container {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            color: #1a202c !important;
+        }
+        body.theme-modern .question-number-inline {
+            background: rgba(255, 255, 255, 0.4) !important;
+            border-color: rgba(102, 126, 234, 0.4) !important;
+            color: #1a202c !important;
+        }
+
+        /* Ocean theme drop-zone override - inline to guarantee priority */
+        body.theme-ocean .drop-zone {
+            background: rgba(10, 77, 104, 0.8) !important;
+            border: 2px dashed rgba(5, 191, 219, 0.6) !important;
+            color: #e0f7fa !important;
+            border-radius: 4px !important;
+        }
+        body.theme-ocean .drop-zone.filled {
+            background: rgba(16, 185, 129, 0.4) !important;
+            border: 2px solid #10b981 !important;
+            color: #d1fae5 !important;
+        }
+        body.theme-ocean .drop-zone.drag-over {
+            background: rgba(5, 191, 219, 0.4) !important;
+            border-color: #05bfdb !important;
+        }
+        body.theme-ocean .summary-container {
+            background: rgba(10, 77, 104, 0.6) !important;
+            border-color: rgba(5, 191, 219, 0.3) !important;
+            color: #e0f7fa !important;
+        }
+        body.theme-ocean .question-number-inline {
+            background: rgba(10, 77, 104, 0.8) !important;
+            border-color: rgba(5, 191, 219, 0.5) !important;
+            color: #05bfdb !important;
+        }
     </style>
 </head>
 <body class="theme-white-black size-normal">
@@ -1654,66 +1788,42 @@
         // Change visual theme function
         function changeVisualTheme() {
             const newTheme = document.getElementById('visualThemeSelect').value;
-            
-            // Cleanup old theme effects
+            if (newTheme === currentVisualTheme) return;
+
+            // 1. Cleanup current theme effects
             if (typeof window.cleanupModernTheme === 'function') {
                 window.cleanupModernTheme();
             }
-            
-            // Remove old theme classes
-            document.body.classList.remove('theme-default', 'theme-ocean', 'theme-modern');
-            
-            // Remove old theme CSS
-            document.querySelectorAll('link[href^="theme-"]').forEach(link => link.remove());
-            document.querySelectorAll('script[src^="theme-"]').forEach(script => script.remove());
-            
-            // Apply new theme
+
+            // 2. Remove theme body classes
+            document.body.classList.remove('theme-default', 'theme-ocean', 'theme-modern', 'modern-enhanced');
+
+            // 3. Remove dynamically loaded theme CSS & JS
+            document.querySelectorAll('link[href^="theme-"]').forEach(l => l.remove());
+            document.querySelectorAll('script[src^="theme-"]').forEach(s => s.remove());
+
+            // 4. Apply new theme class immediately so inline CSS overrides kick in
             document.body.classList.add(`theme-${newTheme}`);
-            
-            if (newTheme !== 'default') {
-                const themeCSS = document.createElement('link');
-                themeCSS.rel = 'stylesheet';
-                themeCSS.href = `theme-${newTheme}.css`;
-                document.head.appendChild(themeCSS);
-                
-                const themeJS = document.createElement('script');
-                themeJS.src = `theme-${newTheme}.js`;
-                themeJS.onload = () => {
-                    console.log(`🎨 ${newTheme} theme loaded and initialized!`);
-                };
-                document.head.appendChild(themeJS);
-            }
-            
             currentVisualTheme = newTheme;
-            
-            // Force refresh drop zones to apply new theme
+
+            // 5. Load external CSS + JS for non-default themes
+            if (newTheme !== 'default') {
+                const css = document.createElement('link');
+                css.rel = 'stylesheet';
+                css.href = `theme-${newTheme}.css`;
+                document.head.appendChild(css);
+
+                const js = document.createElement('script');
+                js.src = `theme-${newTheme}.js`;
+                document.head.appendChild(js);
+            }
+
+            // 6. Reload summary section so drop-zones are re-rendered
             setTimeout(() => {
-                const dropZones = document.querySelectorAll('.drop-zone');
-                dropZones.forEach(zone => {
-                    // Force re-render by temporarily changing display
-                    const originalDisplay = zone.style.display;
-                    zone.style.display = 'none';
-                    zone.offsetHeight; // Trigger reflow
-                    zone.style.display = originalDisplay || 'inline-block';
-                    
-                    // Force CSS recalculation
-                    zone.style.cssText = zone.style.cssText;
-                });
-                
-                // Reload summary section if exists to ensure proper styling
                 if (typeof reloadSummarySection === 'function') {
                     reloadSummarySection();
                 }
-                
-                // Force repaint of the entire questions panel
-                const questionsPanel = document.getElementById('questionsPanel');
-                if (questionsPanel) {
-                    questionsPanel.style.transform = 'translateZ(0)';
-                    setTimeout(() => {
-                        questionsPanel.style.transform = '';
-                    }, 50);
-                }
-            }, 300);
+            }, 50);
         }
     </script>
     <script src="reading-data-basic.js?v=11"></script>

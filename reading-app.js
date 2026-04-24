@@ -980,13 +980,6 @@ function reloadSummarySection() {
                     );
                 });
                 summaryContainer.innerHTML = summaryHTML;
-                
-                // Force apply modern styles if modern theme is active
-                setTimeout(() => {
-                    if (document.body.classList.contains('theme-modern') && typeof window.forceApplyModernStyles === 'function') {
-                        window.forceApplyModernStyles();
-                    }
-                }, 50);
             }
             
             if (wordList && group.wordList) {

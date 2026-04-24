@@ -1,410 +1,194 @@
 // Modern Theme JavaScript - Advanced Effects & Animations
+// Uses named references so cleanup works correctly
 
-// Create floating particles
+// ── Particles ──────────────────────────────────────────────────────────────
 function createFloatingParticles() {
-    const particleCount = 15;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'floating-particle';
-        particle.style.cssText = `
-            position: fixed;
-            width: ${Math.random() * 8 + 4}px;
-            height: ${Math.random() * 8 + 4}px;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.6), rgba(118, 75, 162, 0.6));
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 2;
-            left: ${Math.random() * 100}vw;
-            top: ${Math.random() * 100}vh;
-            animation: floatParticle ${15 + Math.random() * 10}s linear infinite;
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
-        `;
-        
-        document.body.appendChild(particle);
+    for (let i = 0; i < 15; i++) {
+        const p = document.createElement('div');
+        p.className = 'modern-floating-particle';
+        const size = Math.random() * 8 + 4;
+        p.style.cssText = `
+            position:fixed; width:${size}px; height:${size}px;
+            background:linear-gradient(45deg,rgba(102,126,234,.6),rgba(118,75,162,.6));
+            border-radius:50%; pointer-events:none; z-index:2;
+            left:${Math.random()*100}vw; top:${Math.random()*100}vh;
+            animation:modernFloatParticle ${15+Math.random()*10}s linear infinite;
+            box-shadow:0 0 20px rgba(102,126,234,.4);`;
+        document.body.appendChild(p);
     }
 }
 
-// Create geometric shapes
+// ── Geometric shapes ────────────────────────────────────────────────────────
 function createGeometricShapes() {
-    const shapes = ['circle', 'triangle', 'square'];
-    const shapeCount = 8;
-    
-    for (let i = 0; i < shapeCount; i++) {
-        const shape = document.createElement('div');
-        const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+    for (let i = 0; i < 8; i++) {
+        const s = document.createElement('div');
         const size = Math.random() * 60 + 20;
-        
-        shape.className = `geometric-shape ${shapeType}`;
-        shape.style.cssText = `
-            position: fixed;
-            width: ${size}px;
-            height: ${size}px;
-            pointer-events: none;
-            z-index: 1;
-            left: ${Math.random() * 100}vw;
-            top: ${Math.random() * 100}vh;
-            opacity: 0.1;
-            animation: geometricFloat ${20 + Math.random() * 10}s ease-in-out infinite;
-        `;
-        
-        if (shapeType === 'circle') {
-            shape.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
-            shape.style.borderRadius = '50%';
-        } else if (shapeType === 'triangle') {
-            shape.style.width = '0';
-            shape.style.height = '0';
-            shape.style.borderLeft = `${size/2}px solid transparent`;
-            shape.style.borderRight = `${size/2}px solid transparent`;
-            shape.style.borderBottom = `${size}px solid rgba(102, 126, 234, 0.3)`;
+        s.className = 'modern-geometric-shape';
+        s.style.cssText = `
+            position:fixed; pointer-events:none; z-index:1;
+            left:${Math.random()*100}vw; top:${Math.random()*100}vh;
+            opacity:.1; animation:modernGeoFloat ${20+Math.random()*10}s ease-in-out infinite;`;
+        const t = Math.floor(Math.random() * 3);
+        if (t === 0) {
+            s.style.width = s.style.height = size + 'px';
+            s.style.background = 'linear-gradient(45deg,#667eea,#764ba2)';
+            s.style.borderRadius = '50%';
+        } else if (t === 1) {
+            s.style.width = s.style.height = '0';
+            s.style.borderLeft = `${size/2}px solid transparent`;
+            s.style.borderRight = `${size/2}px solid transparent`;
+            s.style.borderBottom = `${size}px solid rgba(102,126,234,.3)`;
         } else {
-            shape.style.background = 'linear-gradient(45deg, #f093fb, #f5576c)';
-            shape.style.borderRadius = '8px';
-            shape.style.transform = 'rotate(45deg)';
+            s.style.width = s.style.height = size + 'px';
+            s.style.background = 'linear-gradient(45deg,#f093fb,#f5576c)';
+            s.style.borderRadius = '8px';
+            s.style.transform = 'rotate(45deg)';
         }
-        
-        document.body.appendChild(shape);
+        document.body.appendChild(s);
     }
 }
 
-// Add CSS animations
-const modernAnimations = document.createElement('style');
-modernAnimations.textContent = `
-    @keyframes floatParticle {
-        0% {
-            transform: translateY(100vh) translateX(0) rotate(0deg);
-            opacity: 0;
+// ── Inject keyframes once ───────────────────────────────────────────────────
+(function injectStyles() {
+    if (document.getElementById('modern-theme-keyframes')) return;
+    const s = document.createElement('style');
+    s.id = 'modern-theme-keyframes';
+    s.textContent = `
+        @keyframes modernFloatParticle {
+            0%   { transform:translateY(100vh) rotate(0deg);   opacity:0; }
+            10%  { opacity:1; }
+            90%  { opacity:1; }
+            100% { transform:translateY(-120px) rotate(360deg); opacity:0; }
         }
-        10% {
-            opacity: 1;
+        @keyframes modernGeoFloat {
+            0%,100% { transform:translateY(0)    rotate(0deg)   scale(1);   }
+            25%     { transform:translateY(-20px) rotate(90deg)  scale(1.1); }
+            50%     { transform:translateY(0)    rotate(180deg) scale(.9);  }
+            75%     { transform:translateY(-10px) rotate(270deg) scale(1.05);}
         }
-        90% {
-            opacity: 1;
+        @keyframes modernRipple {
+            to { transform:scale(2.5); opacity:0; }
         }
-        100% {
-            transform: translateY(-100px) translateX(${Math.random() * 200 - 100}px) rotate(360deg);
-            opacity: 0;
+        @keyframes modernTrailFade {
+            0%   { opacity:.8; transform:scale(1);   }
+            100% { opacity:0;  transform:scale(.2);  }
         }
-    }
-    
-    @keyframes geometricFloat {
-        0%, 100% {
-            transform: translateY(0) rotate(0deg) scale(1);
+        .modern-glow {
+            box-shadow:0 0 0 3px rgba(102,126,234,.45),
+                       0 6px 20px rgba(102,126,234,.3) !important;
         }
-        25% {
-            transform: translateY(-20px) rotate(90deg) scale(1.1);
-        }
-        50% {
-            transform: translateY(0) rotate(180deg) scale(0.9);
-        }
-        75% {
-            transform: translateY(-10px) rotate(270deg) scale(1.05);
-        }
-    }
-    
-    .modern-glow {
-        box-shadow: 0 0 20px rgba(102, 126, 234, 0.4) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-    
-    .modern-pulse {
-        animation: modernPulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes modernPulse {
-        0%, 100% {
-            transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
-        }
-        50% {
-            transform: scale(1.02);
-            box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
-        }
-    }
-`;
-document.head.appendChild(modernAnimations);
+    `;
+    document.head.appendChild(s);
+})();
 
-// Enhanced interactions with proper re-initialization
+// ── Mouse trail ─────────────────────────────────────────────────────────────
+// Store the handler on window so cleanup can remove the exact same reference
+function _modernMouseTrailHandler(e) {
+    const dot = document.createElement('div');
+    dot.className = 'modern-mouse-trail';
+    dot.style.cssText = `
+        position:fixed; width:9px; height:9px;
+        background:linear-gradient(45deg,rgba(102,126,234,.7),rgba(118,75,162,.7));
+        border-radius:50%; pointer-events:none; z-index:9999;
+        left:${e.clientX-4}px; top:${e.clientY-4}px;
+        animation:modernTrailFade .9s ease-out forwards;
+        box-shadow:0 0 10px rgba(102,126,234,.5);`;
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 900);
+}
+
+function addMouseTrail() {
+    // Remove any previous listener first
+    document.removeEventListener('mousemove', _modernMouseTrailHandler);
+    document.addEventListener('mousemove', _modernMouseTrailHandler);
+}
+
+// ── Button interactions ─────────────────────────────────────────────────────
 function addModernInteractions() {
-    // Remove old event listeners first
-    document.querySelectorAll('.modern-glow, .modern-pulse').forEach(el => {
-        el.classList.remove('modern-glow', 'modern-pulse');
+    // Glow on hover
+    document.querySelectorAll(
+        '.nav-btn, .part-btn, .nav-btn-arrow, .nav-btn-check, .drop-zone, input[type="text"]'
+    ).forEach(el => {
+        el.removeEventListener('mouseenter', el._mEnter);
+        el.removeEventListener('mouseleave', el._mLeave);
+        el._mEnter = () => el.classList.add('modern-glow');
+        el._mLeave = () => el.classList.remove('modern-glow');
+        el.addEventListener('mouseenter', el._mEnter);
+        el.addEventListener('mouseleave', el._mLeave);
     });
-    
-    // Add glow effect to interactive elements
-    const interactiveElements = document.querySelectorAll('.nav-btn, .part-btn, input[type="text"], .drop-zone, .nav-btn-arrow, .nav-btn-check');
-    
-    interactiveElements.forEach(element => {
-        // Remove old listeners
-        element.removeEventListener('mouseenter', element._modernMouseEnter);
-        element.removeEventListener('mouseleave', element._modernMouseLeave);
-        element.removeEventListener('focus', element._modernFocus);
-        element.removeEventListener('blur', element._modernBlur);
-        
-        // Create new listeners
-        element._modernMouseEnter = () => {
-            element.classList.add('modern-glow');
-        };
-        element._modernMouseLeave = () => {
-            element.classList.remove('modern-glow');
-        };
-        element._modernFocus = () => {
-            element.classList.add('modern-pulse');
-        };
-        element._modernBlur = () => {
-            element.classList.remove('modern-pulse');
-        };
-        
-        // Add new listeners
-        element.addEventListener('mouseenter', element._modernMouseEnter);
-        element.addEventListener('mouseleave', element._modernMouseLeave);
-        element.addEventListener('focus', element._modernFocus);
-        element.addEventListener('blur', element._modernBlur);
-    });
-    
-    // Add ripple effect to buttons
-    const buttons = document.querySelectorAll('.nav-btn, .part-btn, .nav-btn-arrow, .nav-btn-check');
-    
-    buttons.forEach(button => {
-        // Remove old click listener
-        button.removeEventListener('click', button._modernClick);
-        
-        // Create new click listener
-        button._modernClick = function(e) {
-            // Remove old ripples
-            this.querySelectorAll('.ripple-effect').forEach(ripple => ripple.remove());
-            
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple-effect';
+
+    // Ripple on click
+    document.querySelectorAll('.nav-btn, .part-btn, .nav-btn-arrow, .nav-btn-check').forEach(btn => {
+        btn.removeEventListener('click', btn._mClick);
+        btn._mClick = function(e) {
+            this.querySelectorAll('.modern-ripple').forEach(r => r.remove());
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                background: rgba(255, 255, 255, 0.4);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s ease-out;
-                pointer-events: none;
-                z-index: 1;
-            `;
-            
+            const r = document.createElement('span');
+            r.className = 'modern-ripple';
+            r.style.cssText = `
+                position:absolute; border-radius:50%; pointer-events:none; z-index:1;
+                width:${size}px; height:${size}px;
+                left:${e.clientX - rect.left - size/2}px;
+                top:${e.clientY  - rect.top  - size/2}px;
+                background:rgba(255,255,255,.35);
+                transform:scale(0); animation:modernRipple .55s ease-out;`;
             this.style.position = 'relative';
             this.style.overflow = 'hidden';
-            this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
+            this.appendChild(r);
+            setTimeout(() => r.remove(), 600);
         };
-        
-        // Add new click listener
-        button.addEventListener('click', button._modernClick);
-    });
-    
-    console.log('🎨 Modern interactions re-initialized!');
-}
-
-// Add ripple animation
-const rippleStyle = document.createElement('style');
-rippleStyle.textContent = `
-    @keyframes ripple {
-        to {
-            transform: scale(2);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(rippleStyle);
-
-// Parallax effect for background elements
-function addParallaxEffect() {
-    let ticking = false;
-    
-    function updateParallax() {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.floating-particle, .geometric-shape');
-        
-        parallaxElements.forEach((element, index) => {
-            const speed = 0.5 + (index % 3) * 0.2;
-            const yPos = -(scrolled * speed);
-            element.style.transform = `translateY(${yPos}px)`;
-        });
-        
-        ticking = false;
-    }
-    
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(updateParallax);
-            ticking = true;
-        }
-    }
-    
-    window.addEventListener('scroll', requestTick);
-}
-
-// Mouse trail effect
-function addMouseTrail() {
-    const trail = [];
-    const trailLength = 10;
-    
-    document.addEventListener('mousemove', (e) => {
-        trail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-        
-        if (trail.length > trailLength) {
-            trail.shift();
-        }
-        
-        // Remove old trail elements
-        document.querySelectorAll('.mouse-trail').forEach(el => {
-            if (Date.now() - parseInt(el.dataset.time) > 1000) {
-                el.remove();
-            }
-        });
-        
-        // Create new trail element
-        const trailElement = document.createElement('div');
-        trailElement.className = 'mouse-trail';
-        trailElement.dataset.time = Date.now();
-        trailElement.style.cssText = `
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.6), rgba(118, 75, 162, 0.6));
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            left: ${e.clientX - 4}px;
-            top: ${e.clientY - 4}px;
-            animation: trailFade 1s ease-out forwards;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
-        `;
-        
-        document.body.appendChild(trailElement);
+        btn.addEventListener('click', btn._mClick);
     });
 }
 
-// Add trail fade animation
-const trailStyle = document.createElement('style');
-trailStyle.textContent = `
-    @keyframes trailFade {
-        0% {
-            opacity: 1;
-            transform: scale(1);
-        }
-        100% {
-            opacity: 0;
-            transform: scale(0.3);
-        }
-    }
-`;
-document.head.appendChild(trailStyle);
+// ── Cleanup (called by changeVisualTheme when leaving Modern) ───────────────
+function cleanupModernTheme() {
+    document.querySelectorAll(
+        '.modern-floating-particle, .modern-geometric-shape, .modern-mouse-trail, .modern-ripple'
+    ).forEach(el => el.remove());
 
-// Force apply modern styles to drop zones
-function forceApplyModernStyles() {
-    const dropZones = document.querySelectorAll('.drop-zone');
-    
-    dropZones.forEach(zone => {
-        // Force remove any inline styles that might override
-        zone.style.background = '';
-        zone.style.border = '';
-        zone.style.color = '';
-        
-        // Add modern class for additional targeting
-        zone.classList.add('modern-drop-zone');
-        
-        // Force CSS recalculation
-        zone.offsetHeight;
-        
-        // Apply styles directly as backup
-        if (document.body.classList.contains('theme-modern')) {
-            zone.style.setProperty('background', 'rgba(255, 255, 255, 0.4)', 'important');
-            zone.style.setProperty('backdrop-filter', 'blur(15px) saturate(180%)', 'important');
-            zone.style.setProperty('border', '2px dashed rgba(102, 126, 234, 0.5)', 'important');
-            zone.style.setProperty('color', '#1a202c', 'important');
-            zone.style.setProperty('border-radius', '12px', 'important');
-            zone.style.setProperty('box-shadow', '0 4px 12px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5)', 'important');
-        }
+    document.removeEventListener('mousemove', _modernMouseTrailHandler);
+
+    document.querySelectorAll(
+        '.nav-btn, .part-btn, .nav-btn-arrow, .nav-btn-check, .drop-zone, input[type="text"]'
+    ).forEach(el => {
+        el.removeEventListener('mouseenter', el._mEnter);
+        el.removeEventListener('mouseleave', el._mLeave);
+        el.removeEventListener('click', el._mClick);
+        el.classList.remove('modern-glow');
+        delete el._mEnter; delete el._mLeave; delete el._mClick;
     });
-    
-    console.log('🎨 Modern styles force applied to', dropZones.length, 'drop zones');
+
+    const kf = document.getElementById('modern-theme-keyframes');
+    // Keep keyframes style tag – removing it mid-animation causes flicker.
+    // Just leave it; it's harmless when the theme class is gone.
+
+    console.log('🧹 Modern theme cleaned up');
 }
 
-// Initialize all modern effects
+// ── Init ────────────────────────────────────────────────────────────────────
 function initModernTheme() {
-    // Small delay to ensure DOM is ready
     setTimeout(() => {
         createFloatingParticles();
         createGeometricShapes();
-        addModernInteractions();
-        addParallaxEffect();
         addMouseTrail();
-        
-        // Force apply modern styles to existing drop zones
-        forceApplyModernStyles();
-        
-        // Add modern class to body for additional styling
+        addModernInteractions();
         document.body.classList.add('modern-enhanced');
-        
-        console.log('🎨 Modern Theme activated with advanced effects!');
-        
-        // Re-apply styles periodically to ensure they stick
-        setInterval(() => {
-            if (document.body.classList.contains('theme-modern')) {
-                forceApplyModernStyles();
-            }
-        }, 2000);
-    }, 100);
+        console.log('✨ Modern Theme initialised');
+    }, 80);
 }
 
-// Auto-initialize when script loads
-initModernTheme();
+// Expose globals
+window.cleanupModernTheme    = cleanupModernTheme;
+window.addModernInteractions = addModernInteractions;
 
-// Cleanup function for when switching away from modern theme
-function cleanupModernTheme() {
-    // Remove all modern effects
-    document.querySelectorAll('.floating-particle').forEach(el => el.remove());
-    document.querySelectorAll('.geometric-shape').forEach(el => el.remove());
-    document.querySelectorAll('.mouse-trail').forEach(el => el.remove());
-    document.querySelectorAll('.ripple-effect').forEach(el => el.remove());
-    
-    // Remove modern classes
-    document.querySelectorAll('.modern-glow, .modern-pulse, .modern-enhanced').forEach(el => {
-        el.classList.remove('modern-glow', 'modern-pulse', 'modern-enhanced');
-    });
-    
-    // Remove event listeners
-    document.querySelectorAll('.nav-btn, .part-btn, input[type="text"], .drop-zone, .nav-btn-arrow, .nav-btn-check').forEach(element => {
-        element.removeEventListener('mouseenter', element._modernMouseEnter);
-        element.removeEventListener('mouseleave', element._modernMouseLeave);
-        element.removeEventListener('focus', element._modernFocus);
-        element.removeEventListener('blur', element._modernBlur);
-        element.removeEventListener('click', element._modernClick);
-    });
-    
-    console.log('🧹 Modern theme cleaned up!');
-}
-
-// Make functions globally available
-window.cleanupModernTheme = cleanupModernTheme;
-window.forceApplyModernStyles = forceApplyModernStyles;
-
-// Re-initialize interactions when content changes
-const observer = new MutationObserver(() => {
+// Re-attach interactions whenever the DOM changes (new nav buttons rendered)
+const _modernObserver = new MutationObserver(() => {
     if (document.body.classList.contains('theme-modern')) {
         addModernInteractions();
-        forceApplyModernStyles();
     }
 });
+_modernObserver.observe(document.body, { childList: true, subtree: true });
 
-observer.observe(document.body, {
-    childList: true,
-    subtree: true
-});
+initModernTheme();
