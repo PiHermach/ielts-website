@@ -283,3 +283,11 @@ async function handleRegister(event) {
         completeRegistration();
     }
 }
+
+// ── Expose to global scope (needed for onclick= in HTML) ───────────────────
+window.switchTab      = switchTab;
+window.handleLogin    = handleLogin;
+window.handleRegister = handleRegister;
+window.previewAvatar  = previewAvatar;
+window.showError      = showError;
+window.hideError      = hideError;
