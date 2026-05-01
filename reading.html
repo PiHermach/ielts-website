@@ -1747,60 +1747,64 @@
             window.location.href = 'auth.html';
         }
         
-        // Load equipped theme
+        // ── Load equipped theme & populate settings ──────────────────────
         let currentVisualTheme = 'default';
-        if (currentUser) {
+        (function initTheme() {
+            if (!currentUser) return;
             const users = JSON.parse(localStorage.getItem('users')) || [];
-            const user = users.find(u => u.id === currentUser.id);
-            
-            if (user && user.equippedTheme) {
-                const themeId = user.equippedTheme;
-                currentVisualTheme = themeId;
-                
-                // Apply theme class
-                document.body.classList.add(`theme-${themeId}`);
-                
-                // Load theme CSS if not default
-                if (themeId !== 'default') {
-                    const themeCSS = document.createElement('link');
-                    themeCSS.rel = 'stylesheet';
-                    themeCSS.href = `theme-${themeId}.css`;
-                    document.head.appendChild(themeCSS);
-                    
-                    // Load theme JS if exists
-                    const themeJS = document.createElement('script');
-                    themeJS.src = `theme-${themeId}.js`;
-                    document.head.appendChild(themeJS);
-                }
-            }
-            
-            // Load visual theme selector
-            const ownedThemes = (user && user.ownedThemes) || (currentUser && currentUser.ownedThemes) || ['default'];
-            const visualThemeSelect = document.getElementById('visualThemeSelect');
-            const themeNames = { 'default': '�� Mặc định', 'ocean': '🌊 Đại dương', 'modern': '✨ Hiện đại' };
-            visualThemeSelect.innerHTML = ownedThemes.map(tid =>
-                `<option value="${tid}" ${tid === currentVisualTheme ? 'selected' : ''}>${themeNames[tid] || tid}</option>`
-            ).join('');
-            // Show correct sub-options for initial theme
-            updateThemeSubOptions(currentVisualTheme);
-        
+            const user  = users.find(u => u.id === currentUser.id);
 
-                // Update sub-options based on selected visual theme
+            // Determine equipped theme
+            const themeId = (user && user.equippedTheme) || currentUser.equippedTheme || 'default';
+            currentVisualTheme = themeId;
+
+            // Apply theme immediately
+            if (themeId !== 'default') {
+                document.body.classList.add('theme-' + themeId);
+                const css = document.createElement('link');
+                css.rel = 'stylesheet'; css.href = 'theme-' + themeId + '.css';
+                document.head.appendChild(css);
+                const js = document.createElement('script');
+                js.src = 'theme-' + themeId + '.js';
+                document.head.appendChild(js);
+            }
+
+            // Populate visual theme selector
+            const ownedThemes = (user && user.ownedThemes) || currentUser.ownedThemes || ['default'];
+            const sel = document.getElementById('visualThemeSelect');
+            const names = { default: 'Mac dinh', ocean: 'Dai duong', modern: 'Hien dai' };
+            sel.innerHTML = ownedThemes.map(function(tid) {
+                var label = tid === 'default' ? '\uD83D\uDCC4 M\u1EB7c \u0111\u1ECBnh'
+                          : tid === 'ocean'   ? '\uD83C\uDF0A \u0110\u1EA1i d\u01B0\u01A1ng'
+                          : tid === 'modern'  ? '\u2728 Hi\u1EC7n \u0111\u1EA1i'
+                          : tid;
+                return '<option value="' + tid + '"' + (tid === currentVisualTheme ? ' selected' : '') + '>' + label + '</option>';
+            }).join('');
+
+            // Show/hide sub-options for initial theme
+            updateThemeSubOptions(themeId);
+
+            // Apply saved modern color if modern theme
+            if (themeId === 'modern') {
+                setTimeout(function() { applyModernColor(currentModernColor); }, 200);
+            }
+        })();
+
+        // ── Show/hide Color Theme row vs Modern color picker ───────────────
         function updateThemeSubOptions(themeId) {
-            const colorThemeRow = document.getElementById('colorThemeRow');
-            const modernColorPicker = document.getElementById('modernColorPicker');
+            var row    = document.getElementById('colorThemeRow');
+            var picker = document.getElementById('modernColorPicker');
             if (themeId === 'ocean') {
-                if (colorThemeRow) colorThemeRow.style.display = 'none';
-                if (modernColorPicker) modernColorPicker.style.display = 'none';
+                if (row)    row.style.display    = 'none';
+                if (picker) picker.style.display = 'none';
             } else if (themeId === 'modern') {
-                if (colorThemeRow) colorThemeRow.style.display = 'none';
-                if (modernColorPicker) { modernColorPicker.style.display = 'block'; buildColorSwatches(); }
+                if (row)    row.style.display    = 'none';
+                if (picker) { picker.style.display = 'block'; buildColorSwatches(); }
             } else {
-                if (colorThemeRow) colorThemeRow.style.display = 'block';
-                if (modernColorPicker) modernColorPicker.style.display = 'none';
+                if (row)    row.style.display    = 'block';
+                if (picker) picker.style.display = 'none';
             }
         }
-
         // ── Modern color palette ──────────────────────────────────────────
         const modernColors = [
             { id: 'indigo', label: 'Indigo',   a1: '#6366f1', a2: '#8b5cf6', a3: '#ec4899', bg: 'rgba(99,102,241,.18)'  },
@@ -1924,6 +1928,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script><script src="cloud-sync.js"></script>
 </body>
 </html>
+
 
 
 
