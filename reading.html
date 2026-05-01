@@ -1770,7 +1770,13 @@
             }
 
             // Populate visual theme selector
-            const ownedThemes = (user && user.ownedThemes) || currentUser.ownedThemes || ['default'];
+            // Ensure ownedThemes always has at least 'default'
+            var ownedThemes = ['default'];
+            if (user && Array.isArray(user.ownedThemes) && user.ownedThemes.length > 0) {
+                ownedThemes = user.ownedThemes;
+            } else if (currentUser && Array.isArray(currentUser.ownedThemes) && currentUser.ownedThemes.length > 0) {
+                ownedThemes = currentUser.ownedThemes;
+            }
             const sel = document.getElementById('visualThemeSelect');
             const names = { default: 'Mac dinh', ocean: 'Dai duong', modern: 'Hien dai' };
             sel.innerHTML = ownedThemes.map(function(tid) {
@@ -1789,6 +1795,31 @@
                 setTimeout(function() { applyModernColor(currentModernColor); }, 200);
             }
         })();
+
+
+        // Safety net: repopulate selector after DOM ready
+        document.addEventListener("DOMContentLoaded", function() {
+            var sel2 = document.getElementById("visualThemeSelect");
+            if (!sel2) return;
+            if (sel2.options.length === 0 || (sel2.options.length === 1 && sel2.options[0].value === "")) {
+                var cu2 = JSON.parse(localStorage.getItem("currentUser") || "null");
+                if (!cu2) return;
+                var us2 = JSON.parse(localStorage.getItem("users") || "[]");
+                var u2 = us2.find(function(u) { return u.id === cu2.id; });
+                var ow2 = (u2 && u2.ownedThemes) || cu2.ownedThemes || ["default"];
+                var html2 = "";
+                for (var i2 = 0; i2 < ow2.length; i2++) {
+                    var t2 = ow2[i2];
+                    var lbl = t2 === "default" ? "\uD83D\uDCC4 M\u1EB7c \u0111\u1ECBnh"
+                            : t2 === "ocean"   ? "\uD83C\uDF0A \u0110\u1EA1i d\u01B0\u01A1ng"
+                            : t2 === "modern"  ? "\u2728 Hi\u1EC7n \u0111\u1EA1i"
+                            : t2;
+                    html2 += "<option value=\"" + t2 + "\"" + (t2 === currentVisualTheme ? " selected" : "") + ">" + lbl + "</option>";
+                }
+                sel2.innerHTML = html2;
+                if (typeof updateThemeSubOptions === "function") updateThemeSubOptions(currentVisualTheme);
+            }
+        });
 
         // ── Show/hide Color Theme row vs Modern color picker ───────────────
         function updateThemeSubOptions(themeId) {
@@ -1928,6 +1959,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script><script src="cloud-sync.js"></script>
 </body>
 </html>
+
+
+
 
 
 
