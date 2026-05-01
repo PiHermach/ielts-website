@@ -1706,12 +1706,14 @@
             <label style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.5px;">Màu sắc:</label>
             <div id="colorSwatches" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
         </div>
-         <label>Color Theme:</label>
-        <select id="themeSelect" onchange="changeTheme()">
-            <option value="white-black">White on Black</option>
-            <option value="black-white">Black on White</option>
-            <option value="yellow-black">Yellow on Black</option>
-        </select>
+     <div id="colorThemeRow">
+            <label>Color Theme:</label>
+            <select id="themeSelect" onchange="changeTheme()">
+                <option value="white-black">White on Black</option>
+                <option value="black-white">Black on White</option>
+                <option value="yellow-black">Yellow on Black</option>
+            </select>
+        </div>
         <label>Font Size:</label>
         <select id="sizeSelect" onchange="changeSize()">
             <option value="normal">Normal</option>
@@ -1773,22 +1775,31 @@
             }
             
             // Load visual theme selector
-            if (user) {
-                const ownedThemes = user.ownedThemes || ['default'];
-                const visualThemeSelect = document.getElementById('visualThemeSelect');
-                
-                const themeNames = {
-                    'default': '📄 Mặc định',
-                    'ocean': '🌊 Đại dương',
-                    'modern': '✨ Hiện đại'
-                };
-                
-                visualThemeSelect.innerHTML = ownedThemes.map(themeId => 
-                    `<option value="${themeId}" ${themeId === currentVisualTheme ? 'selected' : ''}>${themeNames[themeId] || themeId}</option>`
-                ).join('');
+            const ownedThemes = (user && user.ownedThemes) || (currentUser && currentUser.ownedThemes) || ['default'];
+            const visualThemeSelect = document.getElementById('visualThemeSelect');
+            const themeNames = { 'default': '�� Mặc định', 'ocean': '🌊 Đại dương', 'modern': '✨ Hiện đại' };
+            visualThemeSelect.innerHTML = ownedThemes.map(tid =>
+                `<option value="${tid}" ${tid === currentVisualTheme ? 'selected' : ''}>${themeNames[tid] || tid}</option>`
+            ).join('');
+            // Show correct sub-options for initial theme
+            updateThemeSubOptions(currentVisualTheme);
+        
+
+                // Update sub-options based on selected visual theme
+        function updateThemeSubOptions(themeId) {
+            const colorThemeRow = document.getElementById('colorThemeRow');
+            const modernColorPicker = document.getElementById('modernColorPicker');
+            if (themeId === 'ocean') {
+                if (colorThemeRow) colorThemeRow.style.display = 'none';
+                if (modernColorPicker) modernColorPicker.style.display = 'none';
+            } else if (themeId === 'modern') {
+                if (colorThemeRow) colorThemeRow.style.display = 'none';
+                if (modernColorPicker) { modernColorPicker.style.display = 'block'; buildColorSwatches(); }
+            } else {
+                if (colorThemeRow) colorThemeRow.style.display = 'block';
+                if (modernColorPicker) modernColorPicker.style.display = 'none';
             }
         }
-        
 
         // ── Modern color palette ──────────────────────────────────────────
         const modernColors = [
@@ -1891,8 +1902,8 @@
                 document.head.appendChild(js);
             }
 
-            // 6. Show/hide Modern color picker and apply saved color
-            toggleModernColorPicker(newTheme === 'modern');
+            // 6. Update sub-options (color theme row / modern picker)
+            updateThemeSubOptions(newTheme);
             if (newTheme === 'modern') {
                 setTimeout(() => applyModernColor(currentModernColor), 200);
             } else {
@@ -1915,6 +1926,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script><script src="cloud-sync.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
